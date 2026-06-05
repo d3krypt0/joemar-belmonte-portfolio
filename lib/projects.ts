@@ -3,6 +3,13 @@ export interface ProjectMetric {
   label: string
 }
 
+export interface PipelineNode {
+  num:         string
+  integration: string
+  title:       string
+  desc:        string
+}
+
 export interface ProjectData {
   name:        string
   type:        string
@@ -11,6 +18,7 @@ export interface ProjectData {
   metrics:     [ProjectMetric, ProjectMetric]
   accent:      string
   keywords?:   string[]
+  pipeline?:   PipelineNode[]
 }
 
 export const ALL_PROJECTS: ProjectData[] = [
@@ -65,6 +73,23 @@ export const ALL_PROJECTS: ProjectData[] = [
     stack:       ['n8n', 'Groq API', 'Gmail', 'Airtable', 'Telegram'],
     metrics:     [{ value: '0', label: 'Manual Review' }, { value: 'AI', label: 'Lead Scoring' }],
     accent:      '#059669',
+  },
+  {
+    name:        'AI Media Monitoring & PR System',
+    type:        'Make.com Automation — 6 Modules',
+    description: 'Automated PR pipeline that scans Google Alerts every morning, runs each mention through Claude AI for sentiment analysis and draft replies, queues Gmail drafts for journalist follow-ups, logs everything to Notion, and sends the team a Telegram briefing — before their first coffee.',
+    stack:       ['Make.com', 'Claude API', 'Google Alerts RSS', 'Gmail', 'Notion', 'Telegram Bot'],
+    metrics:     [{ value: '6', label: 'Modules' }, { value: '7AM', label: 'Daily Trigger' }],
+    accent:      '#7C3AED',
+    keywords:    ['media monitoring', 'pr automation', 'make.com', 'google alerts', 'press mentions', 'journalist', 'morning brief', 'media scan'],
+    pipeline: [
+      { num: '01', integration: 'MAKE.COM → SCHEDULE',          title: 'Daily 7AM Trigger',        desc: 'Pulls active client list from Notion — name, keywords, tone, pending pitches.' },
+      { num: '02', integration: 'MAKE.COM → GOOGLE ALERTS RSS', title: 'Media Scan',               desc: "Hits each client's Google Alerts feed. Filters last 24hrs. Extracts headline, URL, source." },
+      { num: '03', integration: 'MAKE.COM → CLAUDE API',        title: 'AI Analysis',              desc: "Claude reads each mention. Outputs sentiment, 2-sentence summary, and draft reply in founder's voice." },
+      { num: '04', integration: 'MAKE.COM → GMAIL',             title: 'Auto-Draft Queued',        desc: 'If follow-up flagged, Gmail draft created — not sent. Team reviews and hits send.' },
+      { num: '05', integration: 'MAKE.COM → NOTION',            title: 'Publications Log Updated', desc: 'Every mention logged: outlet, URL, sentiment, summary. Weekly reports auto-generate.' },
+      { num: '06', integration: 'MAKE.COM → TELEGRAM BOT',      title: 'Morning Brief Sent',       desc: 'Team receives: mentions found, sentiment breakdown, drafts queued, urgent items flagged.' },
+    ],
   },
 ]
 

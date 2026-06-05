@@ -76,6 +76,9 @@ Production-ready multi-agent platform using Claude API and self-hosted n8n. Agen
 **MenuCostingAI**
 AI SaaS for restaurant costing and profitability analysis. Built with Claude Vision API for menu parsing and cost extraction. Currently in beta with pilot restaurant users in the Philippines. **Claude reads the menu; the system does the math.**
 
+**AI Media Monitoring & PR System** *(Make.com)*
+A 6-module Make.com automation that runs daily at 7AM. It scans Google Alerts RSS feeds for client mentions in the last 24 hours, passes each mention to Claude API for sentiment analysis and draft reply generation in the founder's voice, queues Gmail drafts for journalist follow-ups (human-reviewed before sending), logs everything to a Notion Publications database, and sends a Telegram morning brief to the team. Integrations: Make.com, Claude API, Google Alerts RSS, Gmail, Notion, Telegram Bot. The system eliminates manual media monitoring entirely. **6 modules. Zero missed mentions.**
+
 ---
 
 ## EXPERIENCE

@@ -343,6 +343,38 @@ function WorkSection() {
 }
 
 /* ─── Contact section ─────────────────────────────────────── */
+const EMAIL = 'joemarbelmonte.automation@gmail.com'
+
+function CopyEmailButton() {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      // fallback: select a hidden input
+    }
+  }
+
+  return (
+    <button
+      onClick={handleCopy}
+      className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-lg font-semibold text-[14px] transition-all"
+      style={{
+        background:   'var(--color-surface)',
+        color:        copied ? '#10b981' : 'var(--color-text)',
+        border:       `1px solid ${copied ? '#10b981' : 'var(--color-border)'}`,
+        cursor:       'pointer',
+      }}
+    >
+      <span style={{ fontSize: 15 }}>{copied ? '✓' : '📋'}</span>
+      {copied ? 'Copied!' : EMAIL}
+    </button>
+  )
+}
+
 function ContactSection() {
   return (
     <section
@@ -364,7 +396,7 @@ function ContactSection() {
             </h3>
             <p className="text-[15px] leading-relaxed mb-6" style={{ color: 'var(--color-muted)' }}>
               I take on 2–3 projects per month. Clear scope, production-ready delivery, clean handoff.
-              Pick a time that works for you — the first call is free, no commitment required.
+              Pick a time on the calendar — the first call is free, no commitment required.
             </p>
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2 text-[14px]" style={{ color: 'var(--color-muted)' }}>
@@ -373,7 +405,7 @@ function ContactSection() {
               </div>
               <div className="flex items-center gap-2 text-[14px]" style={{ color: 'var(--color-muted)' }}>
                 <span style={{ color: 'var(--color-accent)' }}>→</span>
-                PHT (UTC+8) · flexible for any timezone
+                PHT (UTC+8), flexible for any timezone
               </div>
               <div className="flex items-center gap-2 text-[14px]" style={{ color: 'var(--color-muted)' }}>
                 <span style={{ color: 'var(--color-accent)' }}>→</span>
@@ -384,31 +416,26 @@ function ContactSection() {
               <p className="text-[13px] mb-3" style={{ color: 'var(--color-muted)' }}>
                 Prefer email?
               </p>
-              <a
-                href="mailto:joemarbelmonte.automation@gmail.com"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-[14px] transition-all hover:opacity-85"
-                style={{
-                  background: 'var(--color-surface)',
-                  color:      'var(--color-text)',
-                  border:     '1px solid var(--color-border)',
-                }}
-              >
-                joemarbelmonte.automation@gmail.com
-              </a>
+              <CopyEmailButton />
             </div>
           </Reveal>
 
-          {/* Right — Calendly embed */}
+          {/* Right — Calendly inline embed */}
           <Reveal delay={120}>
             <div
-              className="rounded-2xl overflow-hidden"
-              style={{ border: '1px solid var(--color-border)' }}
+              className="rounded-2xl"
+              style={{
+                border:   '1px solid var(--color-border)',
+                overflow: 'hidden',
+                height:   740,
+              }}
             >
               <iframe
-                src="https://calendly.com/joemarbelmonte-automation/30min?hide_gdpr_banner=1&background_color=0c0c0c&text_color=efefef&primary_color=00d4ff"
+                src="https://calendly.com/joemarbelmonte-automation/30min?hide_gdpr_banner=1"
                 width="100%"
-                height="660"
+                height="740"
                 frameBorder="0"
+                scrolling="no"
                 title="Book a free 30-minute call with Joemar"
                 style={{ display: 'block', minWidth: 280 }}
               />

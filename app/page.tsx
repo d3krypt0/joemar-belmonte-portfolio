@@ -20,7 +20,6 @@ const WELCOME_CHIPS = [
   { text: "I'm wasting hours on manual tasks — where do I start?", icon: '⚡' },
   { text: 'What would you automate in my business?',               icon: '🤖' },
   { text: 'Show me a project similar to my industry',              icon: '📂' },
-  { text: 'Are you available for new projects?',                   icon: '📅' },
   { text: 'Book a free 30-min strategy call',                      icon: '📞' },
 ]
 
@@ -600,8 +599,8 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
                        onChipClick, onChange, onSubmit, onKeyDown }: WelcomeViewProps) {
   return (
     <motion.div
-      className="flex flex-col items-center justify-center h-full overflow-y-auto px-5 pb-14 gap-6"
-      style={{ paddingTop: '72px' }}
+      className="flex flex-col items-center h-full overflow-y-auto px-5 pb-16 gap-6"
+      style={{ paddingTop: '80px' }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, y: -28, transition: { duration: 0.25 } }}

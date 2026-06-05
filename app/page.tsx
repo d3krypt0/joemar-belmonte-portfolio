@@ -3,7 +3,7 @@
 import { useChat } from 'ai/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { ArrowUp, ArrowLeft, Loader2, Sun, Moon, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react'
+import { ArrowUp, ArrowLeft, ArrowDown, Loader2, Sun, Moon, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -21,6 +21,7 @@ const WELCOME_CHIPS = [
   { text: 'What would you automate in my business?',               icon: '🤖' },
   { text: 'Show me a project similar to my industry',              icon: '📂' },
   { text: 'Are you available for new projects?',                   icon: '📅' },
+  { text: 'Book a free 30-min strategy call',                      icon: '📞' },
 ]
 
 const CHAT_CHIPS = [
@@ -34,7 +35,7 @@ const CHAT_CHIPS = [
 export default function HomePage() {
   const [hasStarted, setHasStarted]   = useState(false)
   const [avatarState, setAvatarState] = useState<AvatarState>('idle')
-  const [theme, setTheme]             = useState<Theme>('dark')
+  const [theme, setTheme]             = useState<Theme>('light')
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef    = useRef<HTMLTextAreaElement>(null)
@@ -139,15 +140,15 @@ export default function HomePage() {
         }}
       />
 
-      {/* Theme toggle on welcome screen only */}
-      {!hasStarted && (
-        <div className="fixed top-4 right-4 z-50">
-          <ThemeToggle theme={theme} onToggle={toggleTheme} />
-        </div>
-      )}
+      {/* Global nav bar */}
+      <NavBar theme={theme} onToggleTheme={toggleTheme} />
+
+      {/* Scroll navigation buttons */}
+      <ScrollNav />
 
       {/* ── Chat section: sticky, always takes first viewport ── */}
       <div
+        id="top"
         className="sticky top-0 h-[100dvh] relative"
         style={{ zIndex: 10 }}
       >
@@ -222,6 +223,181 @@ function ScrollIndicator({ targetId }: { targetId: string }) {
       <span className="font-mono text-[9px] uppercase tracking-[0.2em]">Portfolio</span>
       <ChevronDown size={14} className="animate-bounce" />
     </button>
+  )
+}
+
+/* ─── Navigation bar ──────────────────────────────────────── */
+const NAV_LINKS = [
+  { label: 'Ask Me',   href: '#top'      },
+  { label: 'Services', href: '#services' },
+  { label: 'Work',     href: '#work'     },
+  { label: 'Contact',  href: '#contact'  },
+]
+
+function NavBar({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () => void }) {
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const handleNav = (href: string) => {
+    if (href === '#top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  return (
+    <nav
+      className="fixed top-0 left-0 right-0 flex items-center justify-between px-5 sm:px-8"
+      style={{
+        height:         52,
+        zIndex:         100,
+        background:     scrolled
+          ? 'color-mix(in srgb, var(--color-bg) 88%, transparent)'
+          : 'transparent',
+        backdropFilter: scrolled ? 'blur(12px)' : 'none',
+        borderBottom:   scrolled ? '1px solid var(--color-border)' : '1px solid transparent',
+        transition:     'background 250ms ease, border-color 250ms ease, backdrop-filter 250ms ease',
+      }}
+    >
+      {/* Brand */}
+      <button
+        onClick={() => handleNav('#top')}
+        className="font-display font-bold text-[13px] tracking-wide flex-shrink-0"
+        style={{ color: 'var(--color-text)' }}
+      >
+        JB
+        <span className="font-mono font-normal text-[11px] ml-1.5" style={{ color: 'var(--color-accent)' }}>
+          .ai
+        </span>
+      </button>
+
+      {/* Links */}
+      <div className="hidden sm:flex items-center gap-1">
+        {NAV_LINKS.map(link => (
+          <button
+            key={link.label}
+            onClick={() => handleNav(link.href)}
+            className="px-3.5 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-150"
+            style={{ color: 'var(--color-muted)' }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text)'
+              ;(e.currentTarget as HTMLButtonElement).style.background = 'var(--color-surface)'
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-muted)'
+              ;(e.currentTarget as HTMLButtonElement).style.background = 'transparent'
+            }}
+          >
+            {link.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Right: theme toggle + CTA */}
+      <div className="flex items-center gap-2">
+        <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+        <a
+          href="https://calendly.com/joemarbelmonte-automation/30min"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-[12px] font-semibold transition-opacity hover:opacity-85"
+          style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+        >
+          Book a Call
+        </a>
+      </div>
+    </nav>
+  )
+}
+
+/* ─── Scroll navigation buttons (go to top / go to bottom) ── */
+function ScrollNav() {
+  const [scrollY, setScrollY] = useState(0)
+  const [pageH,   setPageH]   = useState(0)
+  const [viewH,   setViewH]   = useState(0)
+
+  useEffect(() => {
+    const update = () => {
+      setScrollY(window.scrollY)
+      setPageH(document.body.scrollHeight)
+      setViewH(window.innerHeight)
+    }
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
+    }
+  }, [])
+
+  const atTop    = scrollY < 100
+  const atBottom = pageH - scrollY - viewH < 60
+
+  const goTop    = () => window.scrollTo({ top: 0, behavior: 'smooth' })
+  const goBottom = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+
+  if (atTop && pageH <= viewH) return null
+
+  return (
+    <div
+      className="fixed right-4 bottom-6 flex flex-col gap-2"
+      style={{ zIndex: 80 }}
+    >
+      {!atTop && (
+        <motion.div
+          initial={{ opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 16 }}
+          transition={{ duration: 0.2 }}
+        >
+          <button
+            onClick={goTop}
+            aria-label="Go to top"
+            className="flex flex-col items-center gap-0.5 px-2.5 py-2 rounded-xl transition-all hover:opacity-80"
+            style={{
+              background:   'var(--color-surface)',
+              border:       '1px solid var(--color-border)',
+              color:        'var(--color-muted)',
+              minWidth:     48,
+            }}
+          >
+            <ArrowUp size={14} strokeWidth={2.5} />
+            <span className="font-mono text-[9px] uppercase tracking-wide leading-none">Top</span>
+          </button>
+        </motion.div>
+      )}
+
+      {!atBottom && (
+        <motion.div
+          initial={{ opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 16 }}
+          transition={{ duration: 0.2, delay: 0.04 }}
+        >
+          <button
+            onClick={goBottom}
+            aria-label="Go to bottom"
+            className="flex flex-col items-center gap-0.5 px-2.5 py-2 rounded-xl transition-all hover:opacity-80"
+            style={{
+              background:   'var(--color-surface)',
+              border:       '1px solid var(--color-border)',
+              color:        'var(--color-muted)',
+              minWidth:     48,
+            }}
+          >
+            <ArrowDown size={14} strokeWidth={2.5} />
+            <span className="font-mono text-[9px] uppercase tracking-wide leading-none">Bottom</span>
+          </button>
+        </motion.div>
+      )}
+    </div>
   )
 }
 

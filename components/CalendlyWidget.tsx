@@ -73,8 +73,12 @@ export default function CalendlyWidget() {
   /* ── Re-init widget when theme changes ────────────────── */
   useEffect(() => {
     if (!ready || !widgetRef.current) return
-    widgetRef.current.setAttribute('data-url', getCalendlyUrl(isDark))
-    window.Calendly?.initInlineWidgets()
+    try {
+      widgetRef.current.setAttribute('data-url', getCalendlyUrl(isDark))
+      window.Calendly?.initInlineWidgets()
+    } catch {
+      // Calendly init failed silently
+    }
   }, [ready, isDark])
 
   return (

@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { ALL_PROJECTS, type ProjectData, type PipelineNode } from '@/lib/projects'
 import ProjectCard from './ProjectCard'
 import TechMarquee from './TechMarquee'
-import CalendlyWidget from './CalendlyWidget'
+
+const CalendlyWidget = dynamic(() => import('./CalendlyWidget'), { ssr: false })
 
 /* ─── Intersection-based reveal hook ──────────────────────── */
 function useVisible(threshold = 0.1) {

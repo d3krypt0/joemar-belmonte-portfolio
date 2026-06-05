@@ -343,14 +343,6 @@ function WorkSection() {
 }
 
 /* ─── Contact section ─────────────────────────────────────── */
-const INFO_ROWS = [
-  { label: 'Location',     value: 'Philippines'           },
-  { label: 'Timezone',     value: 'PHT (UTC+8)'           },
-  { label: 'Availability', value: 'Part-time · 4 hrs/day' },
-  { label: 'Response',     value: 'Within 24 hours'       },
-  { label: 'Project Min.', value: 'USD 300'               },
-]
-
 function ContactSection() {
   return (
     <section
@@ -360,7 +352,9 @@ function ContactSection() {
     >
       <div className="max-w-6xl mx-auto">
         <SectionHeading eyebrow="Contact" title="Let's Work Together" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          {/* Left — copy + email fallback */}
           <Reveal>
             <h3
               className="font-display font-bold text-2xl sm:text-3xl leading-snug mb-4"
@@ -368,61 +362,56 @@ function ContactSection() {
             >
               Ready to automate your business?
             </h3>
-            <p className="text-[15px] leading-relaxed mb-8" style={{ color: 'var(--color-muted)' }}>
+            <p className="text-[15px] leading-relaxed mb-6" style={{ color: 'var(--color-muted)' }}>
               I take on 2–3 projects per month. Clear scope, production-ready delivery, clean handoff.
+              Pick a time that works for you — the first call is free, no commitment required.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href="https://calendly.com/joemarbelmonte-automation/30min"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-[15px] transition-opacity hover:opacity-85"
-                style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
-              >
-                Book a Free Call →
-              </a>
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-2 text-[14px]" style={{ color: 'var(--color-muted)' }}>
+                <span style={{ color: 'var(--color-accent)' }}>→</span>
+                30-minute discovery call
+              </div>
+              <div className="flex items-center gap-2 text-[14px]" style={{ color: 'var(--color-muted)' }}>
+                <span style={{ color: 'var(--color-accent)' }}>→</span>
+                PHT (UTC+8) · flexible for any timezone
+              </div>
+              <div className="flex items-center gap-2 text-[14px]" style={{ color: 'var(--color-muted)' }}>
+                <span style={{ color: 'var(--color-accent)' }}>→</span>
+                Response within 24 hours
+              </div>
+            </div>
+            <div className="mt-8 pt-6" style={{ borderTop: '1px solid var(--color-border)' }}>
+              <p className="text-[13px] mb-3" style={{ color: 'var(--color-muted)' }}>
+                Prefer email?
+              </p>
               <a
                 href="mailto:joemarbelmonte.automation@gmail.com"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-[15px] transition-all hover:opacity-85"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-[14px] transition-all hover:opacity-85"
                 style={{
                   background: 'var(--color-surface)',
                   color:      'var(--color-text)',
                   border:     '1px solid var(--color-border)',
                 }}
               >
-                Send an Email
+                joemarbelmonte.automation@gmail.com
               </a>
             </div>
           </Reveal>
 
+          {/* Right — Calendly embed */}
           <Reveal delay={120}>
-            <div className="rounded-xl overflow-hidden" style={{ border: '1px solid var(--color-border)' }}>
-              {INFO_ROWS.map((row, i) => (
-                <div
-                  key={row.label}
-                  className="flex items-center justify-between px-5 py-3.5 text-[14px]"
-                  style={{
-                    background:   i % 2 === 0 ? 'var(--color-surface)' : 'transparent',
-                    borderBottom: '1px solid var(--color-border)',
-                  }}
-                >
-                  <span className="font-mono" style={{ color: 'var(--color-muted)' }}>{row.label}</span>
-                  <span className="font-semibold" style={{ color: 'var(--color-text)' }}>{row.value}</span>
-                </div>
-              ))}
-              <div
-                className="flex items-center justify-between px-5 py-3.5 text-[14px]"
-                style={{ background: 'var(--color-surface)' }}
-              >
-                <span className="font-mono" style={{ color: 'var(--color-muted)' }}>Status</span>
-                <span className="flex items-center gap-2 font-semibold" style={{ color: '#10b981' }}>
-                  <span
-                    className="w-2 h-2 rounded-full"
-                    style={{ background: '#10b981', boxShadow: '0 0 6px #10b98166' }}
-                  />
-                  Open for Work
-                </span>
-              </div>
+            <div
+              className="rounded-2xl overflow-hidden"
+              style={{ border: '1px solid var(--color-border)' }}
+            >
+              <iframe
+                src="https://calendly.com/joemarbelmonte-automation/30min?hide_gdpr_banner=1&background_color=0c0c0c&text_color=efefef&primary_color=00d4ff"
+                width="100%"
+                height="660"
+                frameBorder="0"
+                title="Book a free 30-minute call with Joemar"
+                style={{ display: 'block', minWidth: 280 }}
+              />
             </div>
           </Reveal>
         </div>

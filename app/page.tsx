@@ -268,13 +268,11 @@ function NavBar({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () => v
       {/* Brand */}
       <button
         onClick={() => handleNav('#top')}
-        className="font-display font-bold text-[13px] tracking-wide flex-shrink-0"
+        className="font-mono font-bold text-[13px] tracking-tight flex-shrink-0"
         style={{ color: 'var(--color-text)' }}
       >
-        JB
-        <span className="font-mono font-normal text-[11px] ml-1.5" style={{ color: 'var(--color-accent)' }}>
-          .ai
-        </span>
+        jmrblmnt
+        <span style={{ color: 'var(--color-accent)' }}>.ai</span>
       </button>
 
       {/* Links */}
@@ -347,53 +345,76 @@ function ScrollNav() {
 
   return (
     <div
-      className="fixed right-4 bottom-6 flex flex-col gap-2"
-      style={{ zIndex: 80 }}
+      className="fixed flex flex-col gap-2"
+      style={{
+        right:     16,
+        top:       '50%',
+        transform: 'translateY(-50%)',
+        zIndex:    80,
+      }}
     >
       {!atTop && (
         <motion.div
-          initial={{ opacity: 0, x: 16 }}
+          initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 16 }}
+          exit={{ opacity: 0, x: 20 }}
           transition={{ duration: 0.2 }}
         >
           <button
             onClick={goTop}
             aria-label="Go to top"
-            className="flex flex-col items-center gap-0.5 px-2.5 py-2 rounded-xl transition-all hover:opacity-80"
+            className="flex flex-col items-center gap-1 px-3 py-2.5 rounded-xl transition-all"
             style={{
               background:   'var(--color-surface)',
               border:       '1px solid var(--color-border)',
-              color:        'var(--color-muted)',
-              minWidth:     48,
+              color:        'var(--color-text)',
+              minWidth:     54,
+              boxShadow:    '0 2px 8px rgba(0,0,0,0.15)',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-accent)'
+              ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--color-accent)'
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-border)'
+              ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text)'
             }}
           >
-            <ArrowUp size={14} strokeWidth={2.5} />
-            <span className="font-mono text-[9px] uppercase tracking-wide leading-none">Top</span>
+            <ArrowUp size={15} strokeWidth={2.5} />
+            <span className="font-mono text-[10px] font-semibold uppercase tracking-wider leading-none">Top</span>
           </button>
         </motion.div>
       )}
 
       {!atBottom && (
         <motion.div
-          initial={{ opacity: 0, x: 16 }}
+          initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 16 }}
-          transition={{ duration: 0.2, delay: 0.04 }}
+          exit={{ opacity: 0, x: 20 }}
+          transition={{ duration: 0.2, delay: 0.05 }}
         >
           <button
             onClick={goBottom}
             aria-label="Go to bottom"
-            className="flex flex-col items-center gap-0.5 px-2.5 py-2 rounded-xl transition-all hover:opacity-80"
+            className="flex flex-col items-center gap-1 px-3 py-2.5 rounded-xl transition-all"
             style={{
               background:   'var(--color-surface)',
               border:       '1px solid var(--color-border)',
-              color:        'var(--color-muted)',
-              minWidth:     48,
+              color:        'var(--color-text)',
+              minWidth:     54,
+              boxShadow:    '0 2px 8px rgba(0,0,0,0.15)',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-accent)'
+              ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--color-accent)'
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-border)'
+              ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text)'
             }}
           >
-            <ArrowDown size={14} strokeWidth={2.5} />
-            <span className="font-mono text-[9px] uppercase tracking-wide leading-none">Bottom</span>
+            <ArrowDown size={15} strokeWidth={2.5} />
+            <span className="font-mono text-[10px] font-semibold uppercase tracking-wider leading-none">Bottom</span>
           </button>
         </motion.div>
       )}
@@ -579,7 +600,8 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
                        onChipClick, onChange, onSubmit, onKeyDown }: WelcomeViewProps) {
   return (
     <motion.div
-      className="flex flex-col items-center justify-center h-full overflow-y-auto px-5 py-14 gap-6"
+      className="flex flex-col items-center justify-center h-full overflow-y-auto px-5 pb-14 gap-6"
+      style={{ paddingTop: '72px' }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, y: -28, transition: { duration: 0.25 } }}

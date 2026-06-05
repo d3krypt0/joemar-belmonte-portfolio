@@ -238,3 +238,21 @@
   border-color: var(--color-accent) !important;
   background:   var(--color-surface-2) !important;
 }
+
+/* ── Calendly widget responsive height ────────────────── */
+.calendly-widget-wrap,
+.calendly-widget-wrap .calendly-inline-widget {
+  height: 580px;
+}
+@media (min-width: 640px) {
+  .calendly-widget-wrap,
+  .calendly-widget-wrap .calendly-inline-widget {
+    height: 650px;
+  }
+}
+@media (min-width: 1024px) {
+  .calendly-widget-wrap,
+  .calendly-widget-wrap .calendly-inline-widget {
+    height: 700px;
+  }
+}

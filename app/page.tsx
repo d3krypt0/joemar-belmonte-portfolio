@@ -822,6 +822,10 @@ function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
 
 /* ─── Feature 1: Booking card ─────────────────────────────── */
 function BookingCard() {
+  const scrollToContact = () => {
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -829,9 +833,9 @@ function BookingCard() {
       transition={{ duration: 0.2, ease: 'easeOut' }}
       className="rounded-xl overflow-hidden"
       style={{
-        background:      '#060D14',
-        border:          '1px solid #152330',
-        borderLeft:      '3px solid #00C8FF',
+        background:  '#060D14',
+        border:      '1px solid #152330',
+        borderLeft:  '3px solid #00C8FF',
       }}
     >
       <div className="p-4 sm:p-5">
@@ -839,25 +843,16 @@ function BookingCard() {
           Ready to talk about your project?
         </h3>
         <p className="text-[13px] mt-1" style={{ color: '#5A7A96' }}>
-          Book a free 30-min discovery call — no commitment.
+          Pick a time directly below, no redirects.
         </p>
-        <div className="mt-4 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-          <a
-            href="https://calendly.com/joemarbelmonte-automation/30min"
-            target="_blank"
-            rel="noopener noreferrer"
+        <div className="mt-4">
+          <button
+            onClick={scrollToContact}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-opacity hover:opacity-85"
-            style={{ background: '#00C8FF', color: '#060D14' }}
+            style={{ background: '#00C8FF', color: '#060D14', cursor: 'pointer' }}
           >
-            Book a Call →
-          </a>
-          <a
-            href="mailto:joemarbelmonte.automation@gmail.com"
-            className="text-[13px] transition-opacity hover:opacity-70"
-            style={{ color: '#5A7A96' }}
-          >
-            or email joemarbelmonte.automation@gmail.com
-          </a>
+            See My Calendar →
+          </button>
         </div>
       </div>
     </motion.div>

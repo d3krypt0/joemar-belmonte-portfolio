@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ALL_PROJECTS, type ProjectData, type PipelineNode } from '@/lib/projects'
 import ProjectCard from './ProjectCard'
 import TechMarquee from './TechMarquee'
+import CalendlyWidget from './CalendlyWidget'
 
 /* ─── Intersection-based reveal hook ──────────────────────── */
 function useVisible(threshold = 0.1) {
@@ -345,6 +346,15 @@ function WorkSection() {
 /* ─── Contact section ─────────────────────────────────────── */
 const EMAIL = 'joemarbelmonte.automation@gmail.com'
 
+const INFO_ROWS = [
+  { label: 'Location',     value: 'Philippines'           },
+  { label: 'Timezone',     value: 'PHT (UTC+8)'           },
+  { label: 'Availability', value: 'Part-time · 4 hrs/day' },
+  { label: 'Response',     value: 'Within 24 hours'       },
+  { label: 'Project Min.', value: 'USD 300'               },
+  { label: 'Status',       value: 'Open for Work'         },
+]
+
 function CopyEmailButton() {
   const [copied, setCopied] = useState(false)
 
@@ -354,23 +364,23 @@ function CopyEmailButton() {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
-      // fallback: select a hidden input
+      // clipboard not available
     }
   }
 
   return (
     <button
       onClick={handleCopy}
-      className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-lg font-semibold text-[14px] transition-all"
+      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all w-full"
       style={{
-        background:   'var(--color-surface)',
-        color:        copied ? '#10b981' : 'var(--color-text)',
-        border:       `1px solid ${copied ? '#10b981' : 'var(--color-border)'}`,
-        cursor:       'pointer',
+        background: 'var(--color-surface-2)',
+        color:      copied ? '#10b981' : 'var(--color-text)',
+        border:     `1px solid ${copied ? '#10b981' : 'var(--color-border)'}`,
+        cursor:     'pointer',
       }}
     >
-      <span style={{ fontSize: 15 }}>{copied ? '✓' : '📋'}</span>
-      {copied ? 'Copied!' : EMAIL}
+      <span style={{ fontSize: 14 }}>{copied ? '✓' : '📋'}</span>
+      <span className="truncate">{copied ? 'Copied!' : EMAIL}</span>
     </button>
   )
 }
@@ -383,64 +393,90 @@ function ContactSection() {
       style={{ borderTop: '1px solid var(--color-border)' }}
     >
       <div className="max-w-6xl mx-auto">
-        <SectionHeading eyebrow="Contact" title="Let's Work Together" />
+        {/* Header */}
+        <Reveal className="text-center mb-12 sm:mb-16">
+          <span
+            className="font-mono text-[11px] uppercase tracking-[0.22em]"
+            style={{ color: 'var(--color-accent)' }}
+          >
+            // Contact
+          </span>
+          <h2
+            className="font-display font-bold text-3xl sm:text-4xl mt-2 leading-tight"
+            style={{ color: 'var(--color-text)' }}
+          >
+            Ready to automate your business?
+          </h2>
+          <p
+            className="mx-auto mt-3 text-[15px] leading-relaxed"
+            style={{ color: 'var(--color-muted)', maxWidth: 520 }}
+          >
+            Book a free 30-min discovery call or send a message. No commitment, just a conversation about what you need built.
+          </p>
+        </Reveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          {/* Left — copy + email fallback */}
+        {/* Two-column grid: info (fixed 380px) + Calendly widget */}
+        <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-8 items-start">
+
+          {/* Left — info panel */}
           <Reveal>
-            <h3
-              className="font-display font-bold text-2xl sm:text-3xl leading-snug mb-4"
-              style={{ color: 'var(--color-text)' }}
-            >
-              Ready to automate your business?
-            </h3>
-            <p className="text-[15px] leading-relaxed mb-6" style={{ color: 'var(--color-muted)' }}>
-              I take on 2–3 projects per month. Clear scope, production-ready delivery, clean handoff.
-              Pick a time on the calendar — the first call is free, no commitment required.
-            </p>
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2 text-[14px]" style={{ color: 'var(--color-muted)' }}>
-                <span style={{ color: 'var(--color-accent)' }}>→</span>
-                30-minute discovery call
-              </div>
-              <div className="flex items-center gap-2 text-[14px]" style={{ color: 'var(--color-muted)' }}>
-                <span style={{ color: 'var(--color-accent)' }}>→</span>
-                PHT (UTC+8), flexible for any timezone
-              </div>
-              <div className="flex items-center gap-2 text-[14px]" style={{ color: 'var(--color-muted)' }}>
-                <span style={{ color: 'var(--color-accent)' }}>→</span>
-                Response within 24 hours
-              </div>
-            </div>
-            <div className="mt-8 pt-6" style={{ borderTop: '1px solid var(--color-border)' }}>
-              <p className="text-[13px] mb-3" style={{ color: 'var(--color-muted)' }}>
-                Prefer email?
-              </p>
-              <CopyEmailButton />
-            </div>
-          </Reveal>
-
-          {/* Right — Calendly inline embed */}
-          <Reveal delay={120}>
             <div
-              className="rounded-2xl"
+              className="rounded-xl p-6"
               style={{
-                border:   '1px solid var(--color-border)',
-                overflow: 'hidden',
-                height:   740,
+                background: 'var(--color-surface)',
+                border:     '1px solid var(--color-border)',
               }}
             >
-              <iframe
-                src="https://calendly.com/joemarbelmonte-automation/30min?hide_gdpr_banner=1"
-                width="100%"
-                height="740"
-                frameBorder="0"
-                scrolling="no"
-                title="Book a free 30-minute call with Joemar"
-                style={{ display: 'block', minWidth: 280 }}
-              />
+              {/* Info rows */}
+              <div>
+                {INFO_ROWS.map((row, i) => (
+                  <div
+                    key={row.label}
+                    className="flex items-center justify-between py-3"
+                    style={{
+                      borderBottom: i < INFO_ROWS.length - 1 ? '1px solid var(--color-border)' : 'none',
+                    }}
+                  >
+                    <span
+                      className="font-mono text-[11px] uppercase tracking-[0.12em]"
+                      style={{ color: 'var(--color-muted)' }}
+                    >
+                      {row.label}
+                    </span>
+                    <span
+                      className="text-[13px] font-medium flex items-center gap-1.5 text-right"
+                      style={{ color: 'var(--color-text)' }}
+                    >
+                      {row.label === 'Status' && (
+                        <span
+                          className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0"
+                          style={{ animation: 'pulse 2s ease-in-out infinite' }}
+                        />
+                      )}
+                      {row.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Email fallback */}
+              <div className="mt-5 pt-5" style={{ borderTop: '1px solid var(--color-border)' }}>
+                <p
+                  className="text-[14px] font-semibold mb-3"
+                  style={{ fontFamily: 'var(--font-display, system-ui)', color: 'var(--color-text)' }}
+                >
+                  Prefer email?
+                </p>
+                <CopyEmailButton />
+                <p className="mt-2 text-[12px]" style={{ color: 'var(--color-muted)' }}>
+                  I respond within 24 hours.
+                </p>
+              </div>
             </div>
           </Reveal>
+
+          {/* Right — Calendly inline widget (no Reveal wrapper — avoids opacity-0 init issues) */}
+          <CalendlyWidget />
         </div>
       </div>
     </section>

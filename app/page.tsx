@@ -3,11 +3,13 @@
 import { useChat } from 'ai/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { ArrowUp, ArrowLeft, ArrowRight, Loader2, Sun, Moon, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowUp, ArrowLeft, Loader2, Sun, Moon, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import type { Message } from 'ai'
+import StaticSection from '@/components/StaticSection'
+import { detectProjectsInText, type ProjectData } from '@/lib/projects'
 
 /* ─── Types ───────────────────────────────────────────────── */
 type AvatarState = 'idle' | 'thinking' | 'replying'
@@ -45,17 +47,14 @@ export default function HomePage() {
     onError:    ()  => setAvatarState('idle'),
   })
 
-  // Transition to chat on first message
   useEffect(() => {
     if (messages.length > 0 && !hasStarted) setHasStarted(true)
   }, [messages.length, hasStarted])
 
-  // Avatar reflects streaming state
   useEffect(() => {
     if (isLoading) setAvatarState('thinking')
   }, [isLoading])
 
-  // Auto-scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, isLoading])
@@ -112,7 +111,7 @@ export default function HomePage() {
   return (
     <div
       data-theme={theme}
-      className="min-h-[100dvh] bg-bg text-text flex flex-col"
+      className="bg-bg text-text"
       style={{ position: 'relative', overflowX: 'hidden' }}
     >
       {/* Grid texture */}
@@ -140,15 +139,18 @@ export default function HomePage() {
         }}
       />
 
-      {/* Theme toggle on welcome screen — fixed top-right, only shown when not in chat */}
+      {/* Theme toggle on welcome screen only */}
       {!hasStarted && (
         <div className="fixed top-4 right-4 z-50">
           <ThemeToggle theme={theme} onToggle={toggleTheme} />
         </div>
       )}
 
-      {/* ── Main content ──────────────────────────────── */}
-      <div className="relative flex flex-col flex-1" style={{ zIndex: 1 }}>
+      {/* ── Chat section: sticky, always takes first viewport ── */}
+      <div
+        className="sticky top-0 h-[100dvh] relative"
+        style={{ zIndex: 10 }}
+      >
         <AnimatePresence mode="wait">
           {!hasStarted ? (
             <WelcomeView
@@ -181,12 +183,49 @@ export default function HomePage() {
             />
           )}
         </AnimatePresence>
+
+        {/* Scroll indicator — points to static section below */}
+        <ScrollIndicator targetId="portfolio" />
+      </div>
+
+      {/* ── Static portfolio section ───────────────────────── */}
+      <div id="portfolio" className="relative" style={{ zIndex: 1 }}>
+        <StaticSection />
       </div>
     </div>
   )
 }
 
-/* ─── Theme toggle button (shared) ───────────────────────── */
+/* ─── Scroll indicator ────────────────────────────────────── */
+function ScrollIndicator({ targetId }: { targetId: string }) {
+  const [visible, setVisible] = useState(true)
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY < 60)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const scrollTo = () => {
+    document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  if (!visible) return null
+
+  return (
+    <button
+      onClick={scrollTo}
+      aria-label="Scroll to portfolio"
+      className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-opacity hover:opacity-70"
+      style={{ color: 'var(--color-muted)', opacity: 0.5, zIndex: 20 }}
+    >
+      <span className="font-mono text-[9px] uppercase tracking-[0.2em]">Portfolio</span>
+      <ChevronDown size={14} className="animate-bounce" />
+    </button>
+  )
+}
+
+/* ─── Theme toggle (shared) ───────────────────────────────── */
 function ThemeToggle({ theme, onToggle }: { theme: Theme; onToggle: () => void }) {
   return (
     <button
@@ -210,30 +249,25 @@ function ThemeToggle({ theme, onToggle }: { theme: Theme; onToggle: () => void }
   )
 }
 
-/* ─── Profile photo with state ring ──────────────────────── */
+/* ─── Profile photo ───────────────────────────────────────── */
 function ProfilePhoto({ state = 'idle', size = 160 }: { state?: AvatarState; size?: number }) {
   const inner = size - 10
 
   return (
     <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
-      {/* Ambient glow */}
       <div
         className="absolute inset-0 rounded-full pointer-events-none"
         style={{
           background: 'radial-gradient(circle, var(--glow-color) 0%, transparent 68%)',
-          transform: 'scale(1.5)',
+          transform:  'scale(1.5)',
         }}
       />
-
-      {/* Pulsing outer ring */}
       <motion.div
         className="absolute inset-0 rounded-full pointer-events-none"
         style={{ border: '1px solid var(--color-accent)', opacity: 0.3 }}
         animate={{ opacity: [0.2, 0.55, 0.2] }}
         transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
       />
-
-      {/* Spinning arc when thinking */}
       <AnimatePresence>
         {state === 'thinking' && (
           <motion.div
@@ -258,16 +292,9 @@ function ProfilePhoto({ state = 'idle', size = 160 }: { state?: AvatarState; siz
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Photo with breathing animation */}
       <motion.div
         className="relative rounded-full overflow-hidden"
-        style={{
-          width: inner,
-          height: inner,
-          border: '2px solid var(--color-accent)',
-          opacity: 0.9,
-        }}
+        style={{ width: inner, height: inner, border: '2px solid var(--color-accent)', opacity: 0.9 }}
         animate={{ scale: [1, 1.015, 1] }}
         transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
       >
@@ -280,8 +307,6 @@ function ProfilePhoto({ state = 'idle', size = 160 }: { state?: AvatarState; siz
           priority
         />
       </motion.div>
-
-      {/* Status dot */}
       <AnimatePresence>
         {state !== 'thinking' && (
           <motion.div
@@ -298,75 +323,61 @@ function ProfilePhoto({ state = 'idle', size = 160 }: { state?: AvatarState; siz
   )
 }
 
-/* ─── Scrollable chips row with arrow controls ────────────── */
+/* ─── Scrollable chips row ────────────────────────────────── */
 function ChipsScroller({ chips, onChipClick }: { chips: string[]; onChipClick: (t: string) => void }) {
-  const trackRef  = useRef<HTMLDivElement>(null)
-  const [canLeft,  setCanLeft]  = useState(false)
-  const [canRight, setCanRight] = useState(false)
+  const trackRef             = useRef<HTMLDivElement>(null)
+  const [canLeft,  setLeft]  = useState(false)
+  const [canRight, setRight] = useState(false)
 
-  const checkScroll = useCallback(() => {
+  const check = useCallback(() => {
     const el = trackRef.current
     if (!el) return
-    setCanLeft(el.scrollLeft > 4)
-    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
+    setLeft(el.scrollLeft > 4)
+    setRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
   }, [])
 
   useEffect(() => {
-    checkScroll()
+    check()
     const el = trackRef.current
-    el?.addEventListener('scroll', checkScroll, { passive: true })
-    return () => el?.removeEventListener('scroll', checkScroll)
-  }, [checkScroll])
+    el?.addEventListener('scroll', check, { passive: true })
+    return () => el?.removeEventListener('scroll', check)
+  }, [check])
 
-  const scroll = (dir: 'left' | 'right') => {
+  const scroll = (dir: 'left' | 'right') =>
     trackRef.current?.scrollBy({ left: dir === 'left' ? -180 : 180, behavior: 'smooth' })
-  }
 
   return (
     <div className="relative flex items-center gap-1">
-      {/* Left arrow */}
       <button
         onClick={() => scroll('left')}
         aria-label="Scroll left"
         className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150"
         style={{
-          background: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
-          color: 'var(--color-muted)',
-          opacity: canLeft ? 1 : 0,
+          background:    'var(--color-surface)',
+          border:        '1px solid var(--color-border)',
+          color:         'var(--color-muted)',
+          opacity:       canLeft ? 1 : 0,
           pointerEvents: canLeft ? 'auto' : 'none',
         }}
       >
         <ChevronLeft size={13} />
       </button>
-
-      {/* Chip track */}
-      <div
-        ref={trackRef}
-        className="flex gap-1.5 overflow-x-auto no-scrollbar flex-1"
-        onScroll={checkScroll}
-      >
+      <div ref={trackRef} className="flex gap-1.5 overflow-x-auto no-scrollbar flex-1" onScroll={check}>
         {chips.map(text => (
-          <button
-            key={text}
-            onClick={() => onChipClick(text)}
-            className="chip-sm flex-shrink-0"
-          >
+          <button key={text} onClick={() => onChipClick(text)} className="chip-sm flex-shrink-0">
             {text}
           </button>
         ))}
       </div>
-
-      {/* Right arrow */}
       <button
         onClick={() => scroll('right')}
         aria-label="Scroll right"
         className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150"
         style={{
-          background: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
-          color: 'var(--color-muted)',
-          opacity: canRight ? 1 : 0,
+          background:    'var(--color-surface)',
+          border:        '1px solid var(--color-border)',
+          color:         'var(--color-muted)',
+          opacity:       canRight ? 1 : 0,
           pointerEvents: canRight ? 'auto' : 'none',
         }}
       >
@@ -392,12 +403,11 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
                        onChipClick, onChange, onSubmit, onKeyDown }: WelcomeViewProps) {
   return (
     <motion.div
-      className="flex flex-col items-center justify-center flex-1 min-h-[100dvh] px-5 py-14 gap-6"
+      className="flex flex-col items-center justify-center h-full overflow-y-auto px-5 py-14 gap-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, y: -28, transition: { duration: 0.25 } }}
     >
-      {/* Photo */}
       <motion.div
         initial={{ scale: 0.72, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -406,7 +416,6 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         <ProfilePhoto state={avatarState} size={168} />
       </motion.div>
 
-      {/* Name + title */}
       <motion.div
         className="text-center space-y-2"
         initial={{ y: 18, opacity: 0 }}
@@ -423,14 +432,11 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
             👋
           </motion.span>
         </h1>
-
         <p className="font-mono text-muted text-[0.82rem] tracking-[0.2em] uppercase">
           AI Automation Specialist
           <span className="text-accent/40 mx-2.5">—</span>
-          Quezon City, PH
+          Philippines
         </p>
-
-        {/* Intro hook */}
         <motion.p
           className="text-muted text-base sm:text-[1.05rem] leading-relaxed max-w-[26rem] mx-auto pt-1"
           initial={{ opacity: 0, y: 8 }}
@@ -442,7 +448,6 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         </motion.p>
       </motion.div>
 
-      {/* Suggestion chips */}
       <motion.div
         className="flex flex-wrap justify-center gap-2 max-w-lg"
         initial={{ y: 14, opacity: 0 }}
@@ -466,7 +471,6 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         ))}
       </motion.div>
 
-      {/* Input */}
       <motion.div
         className="w-full max-w-xl"
         initial={{ y: 12, opacity: 0 }}
@@ -517,47 +521,41 @@ interface ChatViewProps {
 function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
                     textareaRef, onChange, onSubmit, onKeyDown, onBack, onChipClick,
                     theme, onToggleTheme }: ChatViewProps) {
+  const userMessageCount = messages.filter(m => m.role === 'user').length
+  const showBookingCard  = userMessageCount >= 3
+
   return (
     <motion.div
-      className="flex flex-col h-[100dvh]"
+      className="flex flex-col h-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.25 }}
     >
-      {/* ── Header ──────────────────────────────────── */}
+      {/* Header */}
       <header
         className="flex items-center gap-3 px-4 sm:px-5 py-2.5 sticky top-0 z-20"
         style={{
           borderBottom: '1px solid var(--color-border)',
-          background: 'color-mix(in srgb, var(--color-bg) 82%, transparent)',
+          background:   'color-mix(in srgb, var(--color-bg) 82%, transparent)',
           backdropFilter: 'blur(12px)',
         }}
       >
-        {/* Back button */}
         <motion.button
           onClick={onBack}
           className="theme-btn flex-shrink-0"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.93 }}
           aria-label="Back to home"
-          title="Back to home"
         >
           <ArrowLeft size={15} />
         </motion.button>
 
-        {/* Avatar thumbnail + name */}
         <div className="flex items-center gap-2.5 min-w-0">
           <div
             className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0"
             style={{ border: '1.5px solid var(--color-accent)', opacity: 0.85 }}
           >
-            <Image
-              src="/avatar.png"
-              alt="Joemar"
-              width={36}
-              height={36}
-              className="object-cover object-top w-full h-full"
-            />
+            <Image src="/avatar.png" alt="Joemar" width={36} height={36} className="object-cover object-top w-full h-full" />
           </div>
           <div className="flex flex-col leading-none gap-0.5 min-w-0">
             <span className="font-display font-semibold text-base truncate" style={{ color: 'var(--color-text)' }}>
@@ -569,9 +567,7 @@ function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
           </div>
         </div>
 
-        {/* Right side: status + theme toggle */}
         <div className="ml-auto flex items-center gap-2 flex-shrink-0">
-          {/* Status */}
           {isLoading ? (
             <span className="text-[12px] font-mono flex items-center gap-1.5" style={{ color: 'var(--color-accent)' }}>
               <Loader2 size={12} className="animate-spin" />
@@ -583,37 +579,36 @@ function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
               online
             </span>
           )}
-
-          {/* Theme toggle — lives here in chat, removed from fixed overlay */}
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         </div>
       </header>
 
-      {/* ── Messages ────────────────────────────────── */}
+      {/* Messages */}
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 py-7 space-y-5">
           {messages.map(m => (
             <MessageRow key={m.id} message={m} />
           ))}
           {isLoading && <TypingBubble />}
+
+          {/* Feature 1: Booking card after 3 user messages */}
+          {showBookingCard && <BookingCard />}
+
           <div ref={messagesEndRef} className="h-1" />
         </div>
       </div>
 
-      {/* ── Input area + persistent chips ───────────── */}
+      {/* Input area */}
       <div
         className="sticky bottom-0 px-4 sm:px-5 pb-4 pt-3"
         style={{
-          borderTop: '1px solid var(--color-border)',
-          background: 'color-mix(in srgb, var(--color-bg) 90%, transparent)',
+          borderTop:      '1px solid var(--color-border)',
+          background:     'color-mix(in srgb, var(--color-bg) 90%, transparent)',
           backdropFilter: 'blur(12px)',
         }}
       >
         <div className="max-w-2xl mx-auto space-y-2.5">
-          {/* Persistent suggestion chips with scroll arrows */}
           <ChipsScroller chips={CHAT_CHIPS} onChipClick={onChipClick} />
-
-          {/* Input */}
           <InputForm
             input={input}
             isLoading={isLoading}
@@ -622,6 +617,106 @@ function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
             onSubmit={onSubmit}
             onKeyDown={onKeyDown}
           />
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+/* ─── Feature 1: Booking card ─────────────────────────────── */
+function BookingCard() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
+      className="rounded-xl overflow-hidden"
+      style={{
+        background:      '#060D14',
+        border:          '1px solid #152330',
+        borderLeft:      '3px solid #00C8FF',
+      }}
+    >
+      <div className="p-4 sm:p-5">
+        <h3 className="font-display font-semibold text-base" style={{ color: '#E8F4FF' }}>
+          Ready to talk about your project?
+        </h3>
+        <p className="text-[13px] mt-1" style={{ color: '#5A7A96' }}>
+          Book a free 30-min discovery call — no commitment.
+        </p>
+        <div className="mt-4 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+          <a
+            href="https://calendly.com/joemarbelmonte-automation/30min"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-opacity hover:opacity-85"
+            style={{ background: '#00C8FF', color: '#060D14' }}
+          >
+            Book a Call →
+          </a>
+          <a
+            href="mailto:joemarbelmonte.automation@gmail.com"
+            className="text-[13px] transition-opacity hover:opacity-70"
+            style={{ color: '#5A7A96' }}
+          >
+            or email joemarbelmonte.automation@gmail.com
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+/* ─── Feature 2: Project card in chat ─────────────────────── */
+function ChatProjectCard({ project }: { project: ProjectData }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25, delay: 0.1, ease: 'easeOut' }}
+      className="rounded-xl mt-2"
+      style={{
+        background:  'var(--color-surface)',
+        border:      '1px solid var(--color-border)',
+        borderLeft:  `3px solid ${project.accent}`,
+        maxWidth:    '480px',
+      }}
+    >
+      <div className="p-4">
+        <span
+          className="font-mono text-[10px] uppercase tracking-widest block"
+          style={{ color: 'var(--color-muted)' }}
+        >
+          {project.type}
+        </span>
+        <h3 className="font-display font-bold text-base mt-0.5 mb-2" style={{ color: 'var(--color-text)' }}>
+          {project.name}
+        </h3>
+        <p className="text-[13px] leading-relaxed mb-3" style={{ color: 'var(--color-muted)' }}>
+          {project.description}
+        </p>
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {project.stack.map(tag => (
+            <span
+              key={tag}
+              className="px-2 py-0.5 rounded-md text-[11px] font-mono"
+              style={{
+                background: 'var(--color-surface-2)',
+                color:      project.accent,
+                border:     `1px solid ${project.accent}30`,
+              }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <div className="flex gap-6 pt-3" style={{ borderTop: '1px solid var(--color-border)' }}>
+          {project.metrics.map(m => (
+            <div key={m.label}>
+              <div className="font-display font-bold text-xl" style={{ color: project.accent }}>{m.value}</div>
+              <div className="text-[10px] font-mono uppercase tracking-wider mt-0.5" style={{ color: 'var(--color-muted)' }}>{m.label}</div>
+            </div>
+          ))}
         </div>
       </div>
     </motion.div>
@@ -671,66 +766,70 @@ function InputForm({ input, isLoading, textareaRef, onChange, onSubmit, onKeyDow
 
 /* ─── Message row ─────────────────────────────────────────── */
 function MessageRow({ message }: { message: Message }) {
-  const isUser = message.role === 'user'
+  const isUser          = message.role === 'user'
+  const detectedProjects = isUser ? [] : detectProjectsInText(message.content)
 
   return (
-    <motion.div
-      className={`flex gap-3 items-end ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-    >
-      {/* Avatar thumbnail for assistant */}
-      {!isUser && (
-        <div
-          className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 mb-0.5"
-          style={{ border: '1.5px solid var(--color-border)' }}
-        >
-          <Image
-            src="/avatar.png"
-            alt="Joemar"
-            width={32}
-            height={32}
-            className="object-cover object-top w-full h-full"
-          />
-        </div>
-      )}
-
-      {isUser ? (
-        <div className="user-bubble">{message.content}</div>
-      ) : (
-        <div className="assistant-bubble">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              pre({ children }) { return <>{children}</> },
-              code({ className, children }) {
-                const isBlock = /language-/.test(className ?? '')
-                if (isBlock) {
-                  return <pre className="code-block"><code className={className}>{children}</code></pre>
-                }
-                return <code className="inline-code">{children}</code>
-              },
-              a({ href, children }) {
-                return (
-                  <a
-                    href={href ?? '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline underline-offset-2 transition-opacity hover:opacity-70"
-                    style={{ color: 'var(--color-accent)' }}
-                  >
-                    {children}
-                  </a>
-                )
-              },
-            }}
+    <div>
+      <motion.div
+        className={`flex gap-3 items-end ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {!isUser && (
+          <div
+            className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 mb-0.5"
+            style={{ border: '1.5px solid var(--color-border)' }}
           >
-            {message.content}
-          </ReactMarkdown>
+            <Image src="/avatar.png" alt="Joemar" width={32} height={32} className="object-cover object-top w-full h-full" />
+          </div>
+        )}
+        {isUser ? (
+          <div className="user-bubble">{message.content}</div>
+        ) : (
+          <div className="assistant-bubble">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                pre({ children }) { return <>{children}</> },
+                code({ className, children }) {
+                  const isBlock = /language-/.test(className ?? '')
+                  if (isBlock) {
+                    return <pre className="code-block"><code className={className}>{children}</code></pre>
+                  }
+                  return <code className="inline-code">{children}</code>
+                },
+                a({ href, children }) {
+                  return (
+                    <a
+                      href={href ?? '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-2 transition-opacity hover:opacity-70"
+                      style={{ color: 'var(--color-accent)' }}
+                    >
+                      {children}
+                    </a>
+                  )
+                },
+              }}
+            >
+              {message.content}
+            </ReactMarkdown>
+          </div>
+        )}
+      </motion.div>
+
+      {/* Feature 2: project cards below assistant message */}
+      {detectedProjects.length > 0 && (
+        <div className="ml-11 flex flex-col gap-2 mt-1">
+          {detectedProjects.map(p => (
+            <ChatProjectCard key={p.name} project={p} />
+          ))}
         </div>
       )}
-    </motion.div>
+    </div>
   )
 }
 

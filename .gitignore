@@ -1,0 +1,34 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+out/
+
+# env files — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# build output
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# build artifacts
+tsconfig.tsbuildinfo
+
+# backups and internal docs
+*.bak
+front-end-design-SKILL.md
+taste-SKILL.md

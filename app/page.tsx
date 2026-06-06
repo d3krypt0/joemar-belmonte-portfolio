@@ -711,23 +711,6 @@ function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
           <ArrowLeft size={15} />
         </motion.button>
 
-        <div className="flex items-center gap-2.5 min-w-0">
-          <div
-            className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0"
-            style={{ border: '1.5px solid var(--color-accent)', opacity: 0.85 }}
-          >
-            <Image src="/avatar.png" alt="Joemar" width={36} height={36} className="object-cover object-top w-full h-full" />
-          </div>
-          <div className="flex flex-col leading-none gap-0.5 min-w-0">
-            <span className="font-display font-semibold text-base truncate" style={{ color: 'var(--color-text)' }}>
-              Joemar Belmonte
-            </span>
-            <span className="font-mono text-[11px] tracking-wider truncate" style={{ color: 'var(--color-muted)' }}>
-              AI Automation Specialist
-            </span>
-          </div>
-        </div>
-
         <div className="ml-auto flex items-center gap-2 flex-shrink-0">
           {isLoading ? (
             <span className="text-[12px] font-mono flex items-center gap-1.5" style={{ color: 'var(--color-accent)' }}>
@@ -747,9 +730,14 @@ function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
       {/* Messages — flex col so mt-auto anchors messages to bottom */}
       <div className="flex-1 overflow-y-auto flex flex-col">
         <div className="max-w-[720px] mx-auto w-full px-5 sm:px-8 py-7 space-y-5 mt-auto">
-          {messages.map(m => (
-            <MessageRow key={m.id} message={m} />
-          ))}
+          {messages.map((m, idx) => {
+            // For assistant messages, find the user question that prompted them.
+            // Project cards are only shown when the user explicitly asked about a project.
+            const triggerText = m.role === 'assistant'
+              ? messages.slice(0, idx).filter(msg => msg.role === 'user').at(-1)?.content
+              : undefined
+            return <MessageRow key={m.id} message={m} triggerText={triggerText} />
+          })}
           {isLoading && <TypingBubble />}
 
           {/* Feature 1: Booking card after 3 user messages */}
@@ -921,9 +909,12 @@ function InputForm({ input, isLoading, textareaRef, onChange, onSubmit, onKeyDow
 }
 
 /* ─── Message row ─────────────────────────────────────────── */
-function MessageRow({ message }: { message: Message }) {
-  const isUser          = message.role === 'user'
-  const detectedProjects = isUser ? [] : detectProjectsInText(message.content)
+function MessageRow({ message, triggerText }: { message: Message; triggerText?: string }) {
+  const isUser = message.role === 'user'
+  // Only inject project cards when the user's own question named a specific project.
+  // Running detection on the AI response caused false positives: the AI mentions project
+  // names as examples when answering pricing/FAQ questions, unrelated to the user's intent.
+  const detectedProjects = (!isUser && triggerText) ? detectProjectsInText(triggerText) : []
 
   return (
     <div>

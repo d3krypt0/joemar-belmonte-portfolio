@@ -109,7 +109,7 @@
 
   /* Theme toggle button */
   .theme-btn {
-    @apply w-9 h-9 rounded-xl flex items-center justify-center;
+    @apply w-9 h-9 rounded-lg flex items-center justify-center;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     color: var(--color-muted);
@@ -117,23 +117,24 @@
     @apply focus:outline-none;
   }
   .theme-btn:hover {
-    color: var(--color-text);
-    background: var(--color-surface-2);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 
-  /* Chat textarea */
+  /* Chat textarea — pill shape */
   .chat-input {
-    @apply w-full rounded-2xl px-4 py-3.5 pr-14 font-sans text-[15px];
+    @apply w-full px-4 py-3.5 pr-14 font-sans text-[15px];
+    border-radius: 24px;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     color: var(--color-text);
     @apply resize-none leading-relaxed min-h-[52px];
     @apply transition-all duration-200 focus:outline-none;
   }
-  .chat-input::placeholder { color: var(--color-muted); }
+  .chat-input::placeholder { color: var(--color-muted); font-size: 14px; }
   .chat-input:focus {
-    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 14%, transparent);
+    border-color: #00C8FF;
+    box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.12);
   }
   .chat-input:disabled { opacity: 0.55; cursor: not-allowed; }
 
@@ -158,14 +159,18 @@
     background: var(--color-surface-2);
     border: 1px solid var(--color-border);
     color: var(--color-text);
-    max-width: min(36rem, 85vw);
+    max-width: min(75%, 540px);
   }
 
   /* Assistant message */
   .assistant-bubble {
     @apply text-[15px] leading-relaxed;
     color: var(--color-text);
-    max-width: min(42rem, 90vw);
+    max-width: min(85%, 612px);
+  }
+
+  @media (max-width: 767px) {
+    .user-bubble, .assistant-bubble { max-width: 92%; }
   }
 
   /* Markdown inside assistant bubble */

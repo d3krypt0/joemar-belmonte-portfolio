@@ -3,7 +3,7 @@
 import { useChat } from 'ai/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { ArrowUp, ArrowLeft, ArrowDown, Loader2, Sun, Moon, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react'
+import { ArrowUp, ArrowLeft, ArrowDown, Loader2, Sun, Moon, ChevronDown } from 'lucide-react'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -252,29 +252,53 @@ function NavBar({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () => v
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 flex items-center justify-between px-5 sm:px-8"
+      className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 sm:px-8"
       style={{
-        height:         52,
+        height:         60,
         zIndex:         100,
         background:     scrolled
-          ? 'color-mix(in srgb, var(--color-bg) 88%, transparent)'
+          ? 'color-mix(in srgb, var(--color-bg) 90%, transparent)'
           : 'transparent',
         backdropFilter: scrolled ? 'blur(12px)' : 'none',
         borderBottom:   scrolled ? '1px solid var(--color-border)' : '1px solid transparent',
         transition:     'background 250ms ease, border-color 250ms ease, backdrop-filter 250ms ease',
       }}
     >
-      {/* Brand */}
+      {/* Brand — avatar + name/title */}
       <button
         onClick={() => handleNav('#top')}
-        className="font-mono font-bold text-[13px] tracking-tight flex-shrink-0"
-        style={{ color: 'var(--color-text)' }}
+        className="flex items-center gap-2.5 flex-shrink-0 min-w-0"
+        style={{ maxWidth: 220 }}
       >
-        jmrblmnt
-        <span style={{ color: 'var(--color-accent)' }}>.ai</span>
+        <div
+          className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0"
+          style={{ border: '1.5px solid var(--color-accent)', opacity: 0.9 }}
+        >
+          <Image
+            src="/avatar.png"
+            alt="Joemar"
+            width={36}
+            height={36}
+            className="object-cover object-top w-full h-full"
+          />
+        </div>
+        <div className="flex flex-col text-left min-w-0" style={{ maxWidth: 160 }}>
+          <span
+            className="font-display font-bold truncate"
+            style={{ fontSize: 14, color: 'var(--color-text)', lineHeight: 1.2 }}
+          >
+            Joemar Belmonte
+          </span>
+          <span
+            className="truncate"
+            style={{ fontSize: 11, color: 'var(--color-muted)', lineHeight: 1.2 }}
+          >
+            AI Automation Specialist
+          </span>
+        </div>
       </button>
 
-      {/* Links */}
+      {/* Links — hidden on mobile */}
       <div className="hidden sm:flex items-center gap-1">
         {NAV_LINKS.map(link => (
           <button
@@ -296,18 +320,19 @@ function NavBar({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () => v
         ))}
       </div>
 
-      {/* Right: theme toggle + CTA */}
-      <div className="flex items-center gap-2">
+      {/* Right: theme toggle + Book a Call */}
+      <div className="flex items-center gap-2 flex-shrink-0">
         <ThemeToggle theme={theme} onToggle={onToggleTheme} />
-        <a
-          href="https://calendly.com/joemarbelmonte-automation/30min"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-[12px] font-semibold transition-opacity hover:opacity-85"
-          style={{ background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+        <button
+          onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          className="inline-flex items-center rounded-[6px] font-semibold transition-colors"
+          style={{ background: '#00A8E8', color: '#060D14' }}
+          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#00C8FF' }}
+          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#00A8E8' }}
         >
-          Book a Call
-        </a>
+          <span className="hidden sm:block" style={{ fontSize: 12, padding: '8px 18px' }}>Book a Call</span>
+          <span className="sm:hidden" style={{ fontSize: 11, padding: '7px 12px' }}>Book Call</span>
+        </button>
       </div>
     </nav>
   )
@@ -342,34 +367,31 @@ function ScrollNav() {
 
   if (atTop && pageH <= viewH) return null
 
+  const btnStyle: React.CSSProperties = {
+    background: 'var(--color-surface)',
+    border:     '1px solid var(--color-border)',
+    color:      'var(--color-text)',
+    boxShadow:  '0 2px 8px rgba(0,0,0,0.2)',
+  }
+
   return (
     <div
       className="fixed flex flex-col gap-2"
-      style={{
-        right:     16,
-        top:       '50%',
-        transform: 'translateY(-50%)',
-        zIndex:    80,
-      }}
+      style={{ right: 20, bottom: 100, zIndex: 50 }}
     >
       {!atTop && (
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 20 }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2 }}
         >
           <button
             onClick={goTop}
             aria-label="Go to top"
-            className="flex flex-col items-center gap-1 px-3 py-2.5 rounded-xl transition-all"
-            style={{
-              background:   'var(--color-surface)',
-              border:       '1px solid var(--color-border)',
-              color:        'var(--color-text)',
-              minWidth:     54,
-              boxShadow:    '0 2px 8px rgba(0,0,0,0.15)',
-            }}
+            title="Go to top"
+            className="w-10 h-10 rounded-full flex items-center justify-center transition-all"
+            style={btnStyle}
             onMouseEnter={e => {
               (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-accent)'
               ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--color-accent)'
@@ -379,30 +401,24 @@ function ScrollNav() {
               ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text)'
             }}
           >
-            <ArrowUp size={15} strokeWidth={2.5} />
-            <span className="font-mono text-[10px] font-semibold uppercase tracking-wider leading-none">Top</span>
+            <ArrowUp size={16} strokeWidth={2.5} />
           </button>
         </motion.div>
       )}
 
       {!atBottom && (
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 20 }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2, delay: 0.05 }}
         >
           <button
             onClick={goBottom}
             aria-label="Go to bottom"
-            className="flex flex-col items-center gap-1 px-3 py-2.5 rounded-xl transition-all"
-            style={{
-              background:   'var(--color-surface)',
-              border:       '1px solid var(--color-border)',
-              color:        'var(--color-text)',
-              minWidth:     54,
-              boxShadow:    '0 2px 8px rgba(0,0,0,0.15)',
-            }}
+            title="Scroll to bottom"
+            className="w-10 h-10 rounded-full flex items-center justify-center transition-all"
+            style={btnStyle}
             onMouseEnter={e => {
               (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--color-accent)'
               ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--color-accent)'
@@ -412,8 +428,7 @@ function ScrollNav() {
               ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text)'
             }}
           >
-            <ArrowDown size={15} strokeWidth={2.5} />
-            <span className="font-mono text-[10px] font-semibold uppercase tracking-wider leading-none">Bottom</span>
+            <ArrowDown size={16} strokeWidth={2.5} />
           </button>
         </motion.div>
       )}
@@ -521,64 +536,13 @@ function ProfilePhoto({ state = 'idle', size = 160 }: { state?: AvatarState; siz
 
 /* ─── Scrollable chips row ────────────────────────────────── */
 function ChipsScroller({ chips, onChipClick }: { chips: string[]; onChipClick: (t: string) => void }) {
-  const trackRef             = useRef<HTMLDivElement>(null)
-  const [canLeft,  setLeft]  = useState(false)
-  const [canRight, setRight] = useState(false)
-
-  const check = useCallback(() => {
-    const el = trackRef.current
-    if (!el) return
-    setLeft(el.scrollLeft > 4)
-    setRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
-  }, [])
-
-  useEffect(() => {
-    check()
-    const el = trackRef.current
-    el?.addEventListener('scroll', check, { passive: true })
-    return () => el?.removeEventListener('scroll', check)
-  }, [check])
-
-  const scroll = (dir: 'left' | 'right') =>
-    trackRef.current?.scrollBy({ left: dir === 'left' ? -180 : 180, behavior: 'smooth' })
-
   return (
-    <div className="relative flex items-center gap-1">
-      <button
-        onClick={() => scroll('left')}
-        aria-label="Scroll left"
-        className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150"
-        style={{
-          background:    'var(--color-surface)',
-          border:        '1px solid var(--color-border)',
-          color:         'var(--color-muted)',
-          opacity:       canLeft ? 1 : 0,
-          pointerEvents: canLeft ? 'auto' : 'none',
-        }}
-      >
-        <ChevronLeft size={13} />
-      </button>
-      <div ref={trackRef} className="flex gap-1.5 overflow-x-auto no-scrollbar flex-1" onScroll={check}>
-        {chips.map(text => (
-          <button key={text} onClick={() => onChipClick(text)} className="chip-sm flex-shrink-0">
-            {text}
-          </button>
-        ))}
-      </div>
-      <button
-        onClick={() => scroll('right')}
-        aria-label="Scroll right"
-        className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150"
-        style={{
-          background:    'var(--color-surface)',
-          border:        '1px solid var(--color-border)',
-          color:         'var(--color-muted)',
-          opacity:       canRight ? 1 : 0,
-          pointerEvents: canRight ? 'auto' : 'none',
-        }}
-      >
-        <ChevronRight size={13} />
-      </button>
+    <div className="flex gap-1.5 overflow-x-auto no-scrollbar" style={{ paddingRight: 8 }}>
+      {chips.map(text => (
+        <button key={text} onClick={() => onChipClick(text)} className="chip-sm flex-shrink-0">
+          {text}
+        </button>
+      ))}
     </div>
   )
 }
@@ -723,14 +687,14 @@ function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
 
   return (
     <motion.div
-      className="flex flex-col h-full"
+      className="flex flex-col h-full pt-[60px]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.25 }}
     >
-      {/* Header */}
+      {/* Header — sits just below the fixed global NavBar */}
       <header
-        className="flex items-center gap-3 px-4 sm:px-5 py-2.5 sticky top-0 z-20"
+        className="flex items-center gap-3 px-4 sm:px-5 py-2.5 sticky top-[60px] z-20"
         style={{
           borderBottom: '1px solid var(--color-border)',
           background:   'color-mix(in srgb, var(--color-bg) 82%, transparent)',
@@ -780,9 +744,9 @@ function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
         </div>
       </header>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-7 space-y-5">
+      {/* Messages — flex col so mt-auto anchors messages to bottom */}
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        <div className="max-w-[720px] mx-auto w-full px-5 sm:px-8 py-7 space-y-5 mt-auto">
           {messages.map(m => (
             <MessageRow key={m.id} message={m} />
           ))}
@@ -797,14 +761,14 @@ function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
 
       {/* Input area */}
       <div
-        className="sticky bottom-0 px-4 sm:px-5 pb-4 pt-3"
+        className="sticky bottom-0 px-5 sm:px-8 pb-4 pt-3"
         style={{
           borderTop:      '1px solid var(--color-border)',
           background:     'color-mix(in srgb, var(--color-bg) 90%, transparent)',
           backdropFilter: 'blur(12px)',
         }}
       >
-        <div className="max-w-2xl mx-auto space-y-2.5">
+        <div className="max-w-[720px] mx-auto space-y-2.5">
           <ChipsScroller chips={CHAT_CHIPS} onChipClick={onChipClick} />
           <InputForm
             input={input}

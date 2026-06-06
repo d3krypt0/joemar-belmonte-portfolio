@@ -245,19 +245,21 @@
 }
 
 /* ── Calendly widget responsive height ────────────────── */
+/* Calendly's full booking view (calendar + time slots + form) needs ~900px.
+   Setting a generous fixed height prevents the iframe's internal scrollbar. */
 .calendly-widget-wrap,
 .calendly-widget-wrap .calendly-inline-widget {
-  height: 580px;
+  height: 750px;
 }
 @media (min-width: 640px) {
   .calendly-widget-wrap,
   .calendly-widget-wrap .calendly-inline-widget {
-    height: 650px;
+    height: 850px;
   }
 }
 @media (min-width: 1024px) {
   .calendly-widget-wrap,
   .calendly-widget-wrap .calendly-inline-widget {
-    height: 700px;
+    height: 900px;
   }
 }

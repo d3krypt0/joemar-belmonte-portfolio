@@ -248,13 +248,106 @@ function ExpandedProjectCard({ project, delay = 0 }: { project: ProjectData; del
   )
 }
 
+/* ─── Pricing table ───────────────────────────────────────── */
+const PRICING_TIERS = [
+  {
+    name:  'Simple Automation',
+    price: '$300 – $800',
+    desc:  'Single-workflow fixes, basic API integrations, or a focused AI chatbot.',
+  },
+  {
+    name:      'Multi-Agent System',
+    price:     '$1,000 – $3,000',
+    desc:      'Autonomous AI pipeline with multiple agents, approval gates, and data flows.',
+    highlight: true,
+  },
+  {
+    name:  'Full eCommerce Build',
+    price: '$2,000+',
+    desc:  'Complete store setup with product research, supplier pipeline, and ad automation.',
+  },
+]
+
+function PricingTable() {
+  return (
+    <Reveal className="mt-14">
+      <div
+        className="rounded-xl overflow-hidden"
+        style={{ border: '1px solid var(--color-border)' }}
+      >
+        {/* Header */}
+        <div
+          className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_200px_1fr] px-5 py-3 gap-4"
+          style={{ background: 'var(--color-surface-2)', borderBottom: '1px solid var(--color-border)' }}
+        >
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em]" style={{ color: 'var(--color-muted)' }}>
+            Service tier
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-right" style={{ color: 'var(--color-muted)' }}>
+            Starting at
+          </span>
+          <span className="hidden sm:block font-mono text-[10px] uppercase tracking-[0.18em] pl-6" style={{ color: 'var(--color-muted)' }}>
+            Scope
+          </span>
+        </div>
+
+        {/* Rows */}
+        {PRICING_TIERS.map((tier, i) => (
+          <div
+            key={tier.name}
+            className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_200px_1fr] gap-4 px-5 py-4 items-center transition-colors"
+            style={{
+              background:   tier.highlight ? 'color-mix(in srgb, var(--color-accent) 4%, var(--color-surface))' : 'var(--color-surface)',
+              borderBottom: i < PRICING_TIERS.length - 1 ? '1px solid var(--color-border)' : 'none',
+              borderLeft:   tier.highlight ? '2px solid var(--color-accent)' : '2px solid transparent',
+            }}
+          >
+            <div>
+              <span
+                className="font-display font-semibold text-[15px] block"
+                style={{ color: 'var(--color-text)' }}
+              >
+                {tier.name}
+              </span>
+              <span className="sm:hidden text-[12px] mt-0.5 block leading-relaxed" style={{ color: 'var(--color-muted)' }}>
+                {tier.desc}
+              </span>
+            </div>
+            <div className="text-right">
+              <span
+                className="font-display font-bold text-[17px] tabular-nums"
+                style={{ color: tier.highlight ? 'var(--color-accent)' : 'var(--color-text)' }}
+              >
+                {tier.price}
+              </span>
+            </div>
+            <p className="hidden sm:block text-[13px] leading-relaxed pl-6" style={{ color: 'var(--color-muted)' }}>
+              {tier.desc}
+            </p>
+          </div>
+        ))}
+
+        {/* Footer note */}
+        <div
+          className="px-5 py-3"
+          style={{ background: 'var(--color-surface-2)', borderTop: '1px solid var(--color-border)' }}
+        >
+          <span className="text-[12px]" style={{ color: 'var(--color-muted)' }}>
+            Final quote depends on scope, integrations, and timeline. Book a free 30-min call to get an accurate estimate.
+          </span>
+        </div>
+      </div>
+    </Reveal>
+  )
+}
+
 /* ─── Services section ────────────────────────────────────── */
 const SERVICES = [
   {
     icon:         '🤖',
     title:        'Multi-Agent AI Systems',
     description:  'Autonomous AI pipelines that handle research, outreach, operations, and customer service — with approval gates so nothing runs without your sign-off.',
-    deliverables: ['Claude API agent design', 'n8n orchestration', 'Telegram approval gates', 'Docker deployment', 'Airtable integration'],
+    deliverables: ['Claude API agent design', 'n8n orchestration', 'Telegram approval gates', 'Docker deployment', 'Airtable integration','Custom AI Chatbot Development'],
   },
   {
     icon:         '⚙️',
@@ -301,6 +394,7 @@ function ServicesSection() {
             </Reveal>
           ))}
         </div>
+        <PricingTable />
       </div>
     </section>
   )

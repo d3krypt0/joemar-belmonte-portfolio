@@ -82,7 +82,7 @@ export default function CalendlyWidget() {
   }, [ready, isDark])
 
   return (
-    <div className="relative rounded-2xl overflow-hidden calendly-widget-wrap">
+    <div className="relative rounded-2xl calendly-widget-wrap" style={{ overflow: 'clip' }}>
       {/* Loading skeleton */}
       {!ready && (
         <div

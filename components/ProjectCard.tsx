@@ -63,14 +63,14 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
           ✕
         </button>
 
-        {/* Workflow image */}
+        {/* Workflow image — no overflow:hidden on a flex child (collapses height in some browsers) */}
         <div
           style={{
-            background: '#050508',
+            background:   '#050508',
             borderBottom: `1px solid ${project.accent}22`,
             borderRadius: '16px 16px 0 0',
-            position: 'relative',
-            overflow: 'hidden',
+            position:     'relative',
+            flexShrink:   0,
           }}
         >
           {project.workflowImage ? (
@@ -78,7 +78,7 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
             <img
               src={project.workflowImage}
               alt={`${project.name} workflow`}
-              style={{ width: '100%', height: 'auto', display: 'block' }}
+              style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '16px 16px 0 0' }}
             />
           ) : (
             <div className="relative flex items-center justify-center" style={{ height: 280 }}>

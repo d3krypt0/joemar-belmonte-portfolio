@@ -65,10 +65,8 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
 
         {/* Workflow image */}
         <div
-          className="flex items-center justify-center flex-shrink-0"
           style={{
-            height: 320,
-            background: '#0d0d1a',
+            background: '#050508',
             borderBottom: `1px solid ${project.accent}22`,
             borderRadius: '16px 16px 0 0',
             position: 'relative',
@@ -80,10 +78,10 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
             <img
               src={project.workflowImage}
               alt={`${project.name} workflow`}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
+              style={{ width: '100%', height: 'auto', display: 'block' }}
             />
           ) : (
-            <>
+            <div className="relative flex items-center justify-center" style={{ height: 280 }}>
               {/* Grid pattern background */}
               <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -106,7 +104,7 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
                 </div>
                 <p style={{ color: '#555', fontSize: 13, fontFamily: 'monospace' }}>Workflow screenshot coming soon</p>
               </div>
-            </>
+            </div>
           )}
 
           {/* Pill tags overlay */}

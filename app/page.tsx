@@ -275,38 +275,19 @@ function NavBar({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () => v
         transition:     'background 250ms ease, border-color 250ms ease, backdrop-filter 250ms ease',
       }}
     >
-      {/* Brand — avatar + name/title */}
+      {/* Brand — terminal logo */}
       <button
         onClick={() => handleNav('#top')}
-        className="flex items-center gap-2.5 flex-shrink-0 min-w-0"
-        style={{ maxWidth: 220 }}
+        className="flex items-center gap-0 flex-shrink-0"
+        style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
       >
-        <div
-          className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0"
-          style={{ border: '1.5px solid var(--color-accent)', opacity: 0.9 }}
-        >
-          <Image
-            src="/avatar.png"
-            alt="Joemar"
-            width={36}
-            height={36}
-            className="object-cover object-top w-full h-full"
-          />
-        </div>
-        <div className="flex flex-col text-left min-w-0" style={{ maxWidth: 160 }}>
-          <span
-            className="font-display font-bold truncate"
-            style={{ fontSize: 14, color: 'var(--color-text)', lineHeight: 1.2 }}
-          >
-            Joemar Belmonte
-          </span>
-          <span
-            className="truncate"
-            style={{ fontSize: 11, color: 'var(--color-muted)', lineHeight: 1.2 }}
-          >
-            AI Automation Specialist
-          </span>
-        </div>
+        <span className="font-mono font-bold" style={{ fontSize: 15, color: 'var(--color-accent)', letterSpacing: '-0.01em' }}>
+          {'>'}&#8203;
+        </span>
+        <span className="font-mono font-bold" style={{ fontSize: 15, color: 'var(--color-text)', letterSpacing: '0.01em' }}>
+          &nbsp;jmrblmnt.ai
+        </span>
+        <span className="nav-cursor" style={{ color: 'var(--color-accent)', fontFamily: 'monospace', fontWeight: 700, fontSize: 15 }}>_</span>
       </button>
 
       {/* Links — hidden on mobile */}

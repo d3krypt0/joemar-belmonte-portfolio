@@ -3,7 +3,7 @@
 import { useChat } from 'ai/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { ArrowUp, ArrowLeft, ArrowDown, Loader2, Sun, Moon, ChevronDown } from 'lucide-react'
+import { ArrowUp, ArrowLeft, ArrowDown, Loader2, Sun, Moon, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -36,8 +36,8 @@ export default function HomePage() {
   const [avatarState, setAvatarState] = useState<AvatarState>('idle')
   const [theme, setTheme]             = useState<Theme>('light')
 
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-  const textareaRef    = useRef<HTMLTextAreaElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
+  const textareaRef          = useRef<HTMLTextAreaElement>(null)
 
   const { messages, input, handleInputChange, handleSubmit,
           isLoading, append, setMessages } = useChat({
@@ -56,11 +56,22 @@ export default function HomePage() {
   }, [isLoading])
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const el = messagesContainerRef.current
+    if (!el) return
+    // Use scrollTop directly — scrollTo with behavior:'smooth' can propagate
+    // to the window on some browsers and reveal the portfolio section below.
+    el.scrollTop = el.scrollHeight
   }, [messages, isLoading])
 
   const handleChipClick = useCallback(
-    (text: string) => append({ role: 'user', content: text }),
+    (text: string) => {
+      append({ role: 'user', content: text })
+      // Defensive guard: focus changes during the WelcomeView→ChatView transition
+      // can trigger a window-level scroll. Reset immediately if it happened.
+      setTimeout(() => {
+        if (window.scrollY > 0) window.scrollTo(0, 0)
+      }, 50)
+    },
     [append],
   )
 
@@ -171,7 +182,7 @@ export default function HomePage() {
               messages={messages}
               input={input}
               isLoading={isLoading}
-              messagesEndRef={messagesEndRef}
+              messagesContainerRef={messagesContainerRef}
               textareaRef={textareaRef}
               onChange={handleTextareaChange}
               onSubmit={onFormSubmit}
@@ -536,13 +547,88 @@ function ProfilePhoto({ state = 'idle', size = 160 }: { state?: AvatarState; siz
 
 /* ─── Scrollable chips row ────────────────────────────────── */
 function ChipsScroller({ chips, onChipClick }: { chips: string[]; onChipClick: (t: string) => void }) {
+  const scrollRef  = useRef<HTMLDivElement>(null)
+  const [canLeft,  setCanLeft]  = useState(false)
+  const [canRight, setCanRight] = useState(true)
+
+  const checkArrows = useCallback(() => {
+    const el = scrollRef.current
+    if (!el) return
+    setCanLeft(el.scrollLeft > 4)
+    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
+  }, [])
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    // Double-RAF: useEffect runs after paint but scrollWidth may still be
+    // unresolved on the first frame. Two frames guarantees layout is settled.
+    let raf1: number, raf2: number
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(checkArrows)
+    })
+    el.addEventListener('scroll', checkArrows, { passive: true })
+    window.addEventListener('resize', checkArrows, { passive: true })
+    const ro = new ResizeObserver(checkArrows)
+    ro.observe(el)
+    return () => {
+      cancelAnimationFrame(raf1)
+      cancelAnimationFrame(raf2)
+      el.removeEventListener('scroll', checkArrows)
+      window.removeEventListener('resize', checkArrows)
+      ro.disconnect()
+    }
+  }, [chips, checkArrows])
+
+  const nudge = (dir: 'left' | 'right') => {
+    scrollRef.current?.scrollBy({ left: dir === 'left' ? -180 : 180, behavior: 'smooth' })
+  }
+
+  const arrowStyle: React.CSSProperties = {
+    background: 'var(--color-surface)',
+    border: '1px solid var(--color-border)',
+    color: 'var(--color-muted)',
+  }
+
   return (
-    <div className="flex gap-1.5 overflow-x-auto no-scrollbar" style={{ paddingRight: 8 }}>
-      {chips.map(text => (
-        <button key={text} onClick={() => onChipClick(text)} className="chip-sm flex-shrink-0">
-          {text}
+    <div className="flex items-center gap-1.5">
+      {canLeft && (
+        <button
+          type="button"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => nudge('left')}
+          aria-label="Scroll left"
+          className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors"
+          style={arrowStyle}
+        >
+          <ChevronLeft size={12} />
         </button>
-      ))}
+      )}
+      <div ref={scrollRef} className="flex gap-1.5 overflow-x-auto no-scrollbar flex-1 min-w-0">
+        {chips.map(text => (
+          <button
+            key={text}
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => onChipClick(text)}
+            className="chip-sm flex-shrink-0"
+          >
+            {text}
+          </button>
+        ))}
+      </div>
+      {canRight && (
+        <button
+          type="button"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => nudge('right')}
+          aria-label="Scroll right"
+          className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors"
+          style={arrowStyle}
+        >
+          <ChevronRight size={12} />
+        </button>
+      )}
     </div>
   )
 }
@@ -618,6 +704,8 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         {WELCOME_CHIPS.map((chip, i) => (
           <motion.button
             key={chip.text}
+            type="button"
+            onMouseDown={(e) => e.preventDefault()}
             onClick={() => onChipClick(chip.text)}
             className="chip"
             initial={{ opacity: 0, scale: 0.88 }}
@@ -668,7 +756,7 @@ interface ChatViewProps {
   messages:       Message[]
   input:          string
   isLoading:      boolean
-  messagesEndRef: React.RefObject<HTMLDivElement>
+  messagesContainerRef: React.RefObject<HTMLDivElement>
   textareaRef:    React.RefObject<HTMLTextAreaElement>
   onChange:       (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   onSubmit:       (e: React.FormEvent<HTMLFormElement>) => void
@@ -679,7 +767,7 @@ interface ChatViewProps {
   onToggleTheme:  () => void
 }
 
-function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
+function ChatView({ avatarState, messages, input, isLoading, messagesContainerRef,
                     textareaRef, onChange, onSubmit, onKeyDown, onBack, onChipClick,
                     theme, onToggleTheme }: ChatViewProps) {
   const userMessageCount = messages.filter(m => m.role === 'user').length
@@ -728,7 +816,7 @@ function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
       </header>
 
       {/* Messages — flex col so mt-auto anchors messages to bottom */}
-      <div className="flex-1 overflow-y-auto flex flex-col">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto flex flex-col">
         <div className="max-w-[720px] mx-auto w-full px-5 sm:px-8 py-7 space-y-5 mt-auto">
           {messages.map((m, idx) => {
             // For assistant messages, find the user question that prompted them.
@@ -743,7 +831,6 @@ function ChatView({ avatarState, messages, input, isLoading, messagesEndRef,
           {/* Feature 1: Booking card after 3 user messages */}
           {showBookingCard && <BookingCard />}
 
-          <div ref={messagesEndRef} className="h-1" />
         </div>
       </div>
 

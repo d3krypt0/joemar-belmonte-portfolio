@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { ALL_PROJECTS, type ProjectData, type PipelineNode } from '@/lib/projects'
+import { ALL_PROJECTS, type ProjectData, type PipelineNode, type ProjectCategory } from '@/lib/projects'
 import ProjectCard from './ProjectCard'
 import TechMarquee from './TechMarquee'
 
@@ -401,11 +401,24 @@ function ServicesSection() {
 }
 
 /* ─── Work section ────────────────────────────────────────── */
+type FilterTab = 'All' | ProjectCategory
+
+const FILTER_TABS: FilterTab[] = ['All', 'n8n', 'Make.com', 'Web Dev', 'Digital Templates']
+
 function WorkSection() {
-  // Projects with new 3-zone card format
-  const cardProjects = ALL_PROJECTS.filter(p => p.pattern && p.problem)
-  // Projects with only pipeline view (no 3-zone card data)
+  const [active, setActive] = useState<FilterTab>('All')
+
+  const allCard     = ALL_PROJECTS.filter(p => p.pattern && p.problem)
   const expandedOnly = ALL_PROJECTS.filter(p => p.pipeline && !p.pattern)
+
+  const visibleCards    = active === 'All' ? allCard     : allCard.filter(p => p.category === active)
+  const visibleExpanded = active === 'All' ? expandedOnly : expandedOnly.filter(p => p.category === active)
+
+  const counts = FILTER_TABS.reduce<Record<FilterTab, number>>((acc, tab) => {
+    const all = [...allCard, ...expandedOnly]
+    acc[tab] = tab === 'All' ? all.length : all.filter(p => p.category === tab).length
+    return acc
+  }, {} as Record<FilterTab, number>)
 
   return (
     <section
@@ -416,22 +429,67 @@ function WorkSection() {
       <div className="max-w-6xl mx-auto">
         <SectionHeading eyebrow="Work" title="Live Systems" />
 
-        {/* 3-column project card grid */}
-        <div
-          className="grid gap-5"
-          style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))' }}
-        >
-          {cardProjects.map((p, i) => (
-            <ProjectCard key={p.name} project={p} delay={i * 80} />
-          ))}
-        </div>
+        {/* Filter tabs */}
+        <Reveal className="mb-8 -mt-4">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+            {FILTER_TABS.map(tab => {
+              const isActive = active === tab
+              const count    = counts[tab]
+              return (
+                <button
+                  key={tab}
+                  onClick={() => setActive(tab)}
+                  className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-mono text-[12px] transition-all duration-150"
+                  style={{
+                    background:  isActive ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'var(--color-surface)',
+                    border:      `1px solid ${isActive ? 'var(--color-accent)' : 'var(--color-border)'}`,
+                    color:       isActive ? 'var(--color-accent)' : 'var(--color-muted)',
+                    cursor:      'pointer',
+                  }}
+                >
+                  {tab}
+                  <span
+                    className="inline-flex items-center justify-center w-[18px] h-[18px] rounded-full text-[9px] font-bold"
+                    style={{
+                      background: isActive ? 'var(--color-accent)' : 'var(--color-surface-2)',
+                      color:      isActive ? '#050505'              : 'var(--color-muted)',
+                    }}
+                  >
+                    {count}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+        </Reveal>
 
-        {/* Expanded pipeline-only cards below */}
-        {expandedOnly.length > 0 && (
-          <div className="mt-5 flex flex-col gap-5">
-            {expandedOnly.map((p, i) => (
+        {/* Project cards grid */}
+        {visibleCards.length > 0 && (
+          <div
+            className="grid gap-5"
+            style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))' }}
+          >
+            {visibleCards.map((p, i) => (
+              <ProjectCard key={p.name} project={p} delay={i * 80} />
+            ))}
+          </div>
+        )}
+
+        {/* Expanded pipeline-only cards */}
+        {visibleExpanded.length > 0 && (
+          <div className={`flex flex-col gap-5 ${visibleCards.length > 0 ? 'mt-5' : ''}`}>
+            {visibleExpanded.map((p, i) => (
               <ExpandedProjectCard key={p.name} project={p} delay={i * 80} />
             ))}
+          </div>
+        )}
+
+        {/* Empty state */}
+        {visibleCards.length === 0 && visibleExpanded.length === 0 && (
+          <div className="py-16 text-center">
+            <p className="font-mono text-[13px]" style={{ color: 'var(--color-muted)' }}>
+              No projects in this category yet.
+            </p>
           </div>
         )}
       </div>

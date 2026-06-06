@@ -10,22 +10,24 @@ export interface PipelineNode {
   desc:        string
 }
 
-export type PatternType = 'pipeline' | 'hub' | 'grid' | 'branch' | 'funnel' | 'launch'
+export type PatternType     = 'pipeline' | 'hub' | 'grid' | 'branch' | 'funnel' | 'launch'
+export type ProjectCategory = 'n8n' | 'Make.com' | 'Web Dev' | 'Digital Templates'
 
 export interface ProjectData {
-  name:          string
-  type:          string
-  description:   string
-  stack:         string[]
-  metrics:       [ProjectMetric, ProjectMetric]
-  accent:        string
-  keywords?:     string[]
-  pipeline?:     PipelineNode[]
-  pills?:        string[]
-  pattern?:      PatternType
-  problem?:      string
-  solution?:     string
-  result?:       string
+  name:           string
+  type:           string
+  description:    string
+  stack:          string[]
+  metrics:        [ProjectMetric, ProjectMetric]
+  accent:         string
+  category?:      ProjectCategory
+  keywords?:      string[]
+  pipeline?:      PipelineNode[]
+  pills?:         string[]
+  pattern?:       PatternType
+  problem?:       string
+  solution?:      string
+  result?:        string
   workflowImage?: string
 }
 
@@ -37,6 +39,7 @@ export const ALL_PROJECTS: ProjectData[] = [
     stack:       ['Make.com', 'Claude API', 'Google Alerts RSS', 'Gmail', 'Notion', 'Telegram Bot'],
     metrics:     [{ value: '6', label: 'Modules' }, { value: '7AM', label: 'Daily Trigger' }],
     accent:      '#7C3AED',
+    category:    'Make.com',
     keywords:    ['media monitoring', 'pr automation', 'make.com', 'google alerts', 'press mentions', 'journalist', 'morning brief', 'media scan'],
     pills:       ['MAKE.COM', 'CLAUDE API', 'NOTION'],
     pattern:     'pipeline',
@@ -60,6 +63,7 @@ export const ALL_PROJECTS: ProjectData[] = [
     stack:       ['n8n', 'Groq API', 'Gmail', 'Airtable', 'Telegram'],
     metrics:     [{ value: '0', label: 'Manual Review' }, { value: 'AI', label: 'Lead Scoring' }],
     accent:      '#EA4B71',
+    category:    'n8n',
     keywords:    ['lead qualifier', 'lead scoring', 'n8n lead', 'groq', 'email automation'],
     pills:       ['N8N', 'GROQ AI', 'GMAIL'],
     pattern:     'branch',
@@ -75,6 +79,7 @@ export const ALL_PROJECTS: ProjectData[] = [
     stack:       ['Claude API', 'n8n', 'Docker', 'Shopify', 'Airtable', 'Telegram'],
     metrics:     [{ value: '6', label: 'AI Agents' }, { value: 'TG', label: 'Approval Gate' }],
     accent:      '#0078B8',
+    category:    'n8n',
     keywords:    ['6-agent', 'multi-agent', 'dropshipping system', 'agent pipeline'],
     pills:       ['N8N', 'AI AGENT', 'CLAUDE API'],
     pattern:     'hub',
@@ -90,6 +95,7 @@ export const ALL_PROJECTS: ProjectData[] = [
     stack:       ['Node.js', 'Docker', 'nginx', 'Meta Ads API', 'Google Trends'],
     metrics:     [{ value: '3', label: 'Live APIs' }, { value: '0', label: 'Mock Data' }],
     accent:      '#0090CC',
+    category:    'Web Dev',
     keywords:    ['dropshipiq', 'dropship intelligence', 'product research platform'],
     pills:       ['NODE.JS', 'DOCKER', 'META ADS API'],
     pattern:     'funnel',
@@ -105,6 +111,7 @@ export const ALL_PROJECTS: ProjectData[] = [
     stack:       ['React', 'Claude API', 'LemonSqueezy', 'Railway'],
     metrics:     [{ value: '2', label: 'Tiers' }, { value: 'AI', label: 'Vision Analysis' }],
     accent:      '#008060',
+    category:    'Web Dev',
     keywords:    ['menucosting', 'menu costing', 'restaurant costing', 'saas'],
     pills:       ['REACT', 'CLAUDE API', 'SAAS'],
     pattern:     'branch',
@@ -120,9 +127,11 @@ export const ALL_PROJECTS: ProjectData[] = [
     stack:       ['Python', 'openpyxl', 'Excel'],
     metrics:     [{ value: '299', label: 'Formulas' }, { value: '₱249', label: 'Sold' }],
     accent:      '#B45309',
+    category:    'Digital Templates',
     keywords:    ['f&b', 'costing calculator', 'excel', 'openpyxl'],
     pills:       ['PYTHON', 'OPENPYXL', 'EXCEL'],
     pattern:     'grid',
+    workflowImage: '/workflows/food-costing-calculator-screenshot.png',
     problem:     'Small food businesses had no affordable, structured tool for recipe costing, margin calculation, and P&L simulation.',
     solution:    'Built a 5-sheet Excel tool programmatically with Python/openpyxl — Ingredient Library, Recipe Builder, Menu Simulator, P&L, and Settings. 299 live formulas throughout.',
     result:      'Sold commercially at ₱249. Market-validated digital product with zero manual formula entry required by the buyer.',
@@ -134,6 +143,7 @@ export const ALL_PROJECTS: ProjectData[] = [
     stack:       ['n8n', 'Shopify', 'AliExpress API', 'Meta Ads API', 'Airtable'],
     metrics:     [{ value: '4h', label: 'Run Interval' }, { value: '0', label: 'Manual Steps' }],
     accent:      '#7C3AED',
+    category:    'n8n',
     keywords:    ['dropsignal', 'trend-to-store', 'dropshipping autopilot', 'shopify automation'],
     pills:         ['N8N', 'SHOPIFY', 'META ADS API'],
     pattern:       'launch',

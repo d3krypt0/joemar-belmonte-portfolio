@@ -190,7 +190,7 @@ function GridPattern({ accent }: { accent: string }) {
   )
 }
 
-/* ── Pattern: branch (n8n Lead Qualifier / MenuCostingAI) ── */
+/* ── Pattern: branch (LeadPulse: AI Qualifier / MenuCostingAI) ── */
 function BranchPattern({ accent }: { accent: string }) {
   const Y = 86, H = 26
 

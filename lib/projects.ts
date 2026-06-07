@@ -45,7 +45,7 @@ export const ALL_PROJECTS: ProjectData[] = [
     pattern:     'pipeline',
     workflowImage: '/workflows/pr-pulse-workflow.png',
     problem:     'PR teams were manually googling client mentions daily, missing follow-up windows, and spending hours on media monitoring with no structured logging.',
-    solution:    "Built a Make.com automation that scans Google Alerts RSS at 7AM, runs mentions through Claude for sentiment analysis and draft replies in the founder's voice, queues Gmail drafts, logs to Notion, and sends a Telegram brief.",
+    solution:    "Every morning at 7AM, your Google Alerts feed gets scanned automatically. Each mention is analyzed for sentiment, a draft reply written in your voice, and queued in Gmail for your approval. Your team gets a full briefing before the workday starts — zero manual searching.",
     result:      'Zero manual media scanning. Follow-up drafts auto-queued for human review. Team briefed before 8AM every day.',
     pipeline: [
       { num: '01', integration: 'MAKE.COM -> SCHEDULE',          title: 'Daily 7AM Trigger',        desc: 'Pulls active client list from Notion — name, keywords, tone, pending pitches.' },
@@ -57,19 +57,19 @@ export const ALL_PROJECTS: ProjectData[] = [
     ],
   },
   {
-    name:        'n8n Lead Qualifier',
+    name:        'LeadPulse: AI Qualifier',
     type:        'CRM Automation Pipeline',
     description: 'Gmail-triggered workflow that scores inbound leads with Groq AI and routes them to Airtable with Telegram alerts for hot leads.',
     stack:       ['n8n', 'Groq API', 'Gmail', 'Airtable', 'Telegram'],
     metrics:     [{ value: '0', label: 'Manual Review' }, { value: 'AI', label: 'Lead Scoring' }],
     accent:      '#EA4B71',
     category:    'n8n',
-    keywords:    ['lead qualifier', 'lead scoring', 'n8n lead', 'groq', 'email automation'],
+    keywords:    ['leadpulse', 'lead qualifier', 'lead scoring', 'n8n lead', 'groq', 'email automation', 'lead pulse'],
     pills:       ['N8N', 'GROQ AI', 'GMAIL'],
     pattern:     'branch',
     workflowImage: '/workflows/n8n-lead-qualifier-workflow.png',
     problem:     'Inbound leads arriving via email were being reviewed manually — no scoring, no prioritization, and hot leads were sitting unanswered for hours or getting lost entirely.',
-    solution:    'Built an n8n workflow triggered by Gmail that extracts email data, scores the lead using Groq AI (Llama), parses the AI response, then branches — PASS leads log to Airtable silently, while hot leads log to Airtable AND fire an instant Telegram alert.',
+    solution:    'Every inbound email gets scored the moment it lands. Hot leads trigger an instant Telegram alert so you respond first — cold leads get quietly logged without wasting your attention. Your inbox becomes a prioritized pipeline, not a to-do list.',
     result:      'Every inbound lead scored and routed in seconds. Hot leads get a Telegram alert before the email client even refreshes — zero manual triage required.',
   },
   {
@@ -85,7 +85,7 @@ export const ALL_PROJECTS: ProjectData[] = [
     pattern:     'hub',
     workflowImage: '/workflows/ai-dropshipping-agent-workflow.png',
     problem:     'Running a dropshipping store required constant manual research, supplier checks, and ad monitoring — consuming hours daily with no consistency.',
-    solution:    'Built a 6-agent Claude API + n8n pipeline covering product research, supplier sourcing, ad creative, analytics, store ops, and customer service. Telegram approval gates ensure no financial action fires without human sign-off.',
+    solution:    'Six specialized AI agents run your store in parallel — researching products, vetting suppliers, writing ad creative, tracking analytics, managing operations, and handling customer messages. Every action that touches money requires your Telegram approval before it fires.',
     result:      'Fully automated research-to-launch pipeline running 24/7. Manual research time reduced from hours to minutes per day.',
   },
   {
@@ -101,7 +101,7 @@ export const ALL_PROJECTS: ProjectData[] = [
     pattern:     'funnel',
     workflowImage: '/workflows/dropshipiq-screenshot.png',
     problem:     'Product research required manually checking multiple platforms — CJDropshipping, Meta Ads, Google Trends — with no unified view and constant risk of stale data.',
-    solution:    'Built a full-stack platform integrating all three APIs via Docker Compose and nginx. Live dashboards with real data — Research, Winning Products, Compare, and Watchlist tabs.',
+    solution:    'Three live data sources — CJDropshipping, Meta Ads Library, and Google Trends — feed into one unified dashboard in real time. Spot winning products, validate trends, and compare options without switching between tabs or working with stale screenshots.',
     result:      'Zero mock data. 3 live APIs. Product scoring and trend validation in one place — research time cut by 80%.',
   },
   {
@@ -117,7 +117,7 @@ export const ALL_PROJECTS: ProjectData[] = [
     pattern:     'branch',
     workflowImage: '/workflows/menucosting-ai-screenshot.png',
     problem:     'Food business owners were calculating recipe costs manually in spreadsheets — error-prone, slow, and with no AI-assisted analysis.',
-    solution:    'Built a freemium SaaS with React frontend, Express backend on Railway, and Claude Vision API for AI-powered recipe analysis. Pro tier gated via LemonSqueezy license key.',
+    solution:    'Upload a recipe or describe your dish — Claude Vision reads the ingredients and calculates your cost, margin, and suggested price in seconds. No spreadsheets, no manual entry. Pro users get AI analysis across their full menu.',
     result:      'Two-tier product live with automated licensing. AI analysis replaces manual costing — margin calculations in seconds, not hours.',
   },
   {
@@ -133,7 +133,7 @@ export const ALL_PROJECTS: ProjectData[] = [
     pattern:     'grid',
     workflowImage: '/workflows/food-costing-calculator-screenshot.png',
     problem:     'Small food businesses had no affordable, structured tool for recipe costing, margin calculation, and P&L simulation.',
-    solution:    'Built a 5-sheet Excel tool programmatically with Python/openpyxl — Ingredient Library, Recipe Builder, Menu Simulator, P&L, and Settings. 299 live formulas throughout.',
+    solution:    'A fully structured Excel system with 299 live formulas across 5 sheets: Ingredient Library, Recipe Builder, Menu Simulator, P&L Dashboard, and Settings. Price your menu, simulate margins, and run what-if scenarios without touching a single formula.',
     result:      'Sold commercially at ₱249. Market-validated digital product with zero manual formula entry required by the buyer.',
   },
   {
@@ -149,7 +149,7 @@ export const ALL_PROJECTS: ProjectData[] = [
     pattern:       'launch',
     workflowImage: '/workflows/dropsignal-workflow.png',
     problem:       'Manually tracking viral product trends across Reddit and AliExpress was a full-time job — by the time a product was spotted, sourced, and listed, the trend window had closed.',
-    solution:      'Built a fully automated n8n pipeline running every 4 hours. Fetches market signals, scores virality with AI, sources AliExpress suppliers, generates product content, creates Shopify listings, and launches Facebook campaigns for qualifying products — zero manual input.',
+    solution:      'Every 4 hours, the system scans for viral product signals, scores them with AI, finds a supplier, writes the product copy, creates the Shopify listing, and launches a Facebook campaign — all without you touching anything. By the time you check in, trending products are already live in your store.',
     result:        'Complete trend-to-live-store automation in a single unattended sequence. Hot products go from signal detection to live Shopify listing and active Facebook campaign in under one cycle.',
   },
 ]

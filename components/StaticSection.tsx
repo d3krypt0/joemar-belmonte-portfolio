@@ -252,19 +252,24 @@ function ExpandedProjectCard({ project, delay = 0 }: { project: ProjectData; del
 const PRICING_TIERS = [
   {
     name:  'Simple Automation',
-    price: '$300 – $800',
-    desc:  'Single-workflow fixes, basic API integrations, or a focused AI chatbot.',
+    price: '$500 – $1,500',
+    desc:  'Single-workflow builds, basic API integrations, or a focused AI chatbot.',
   },
   {
     name:      'Multi-Agent System',
-    price:     '$1,000 – $3,000',
-    desc:      'Autonomous AI pipeline with multiple agents, approval gates, and data flows.',
+    price:     '$3,000 – $8,000',
+    desc:      'Autonomous AI pipeline with multiple agents, approval gates, and full data flows.',
     highlight: true,
   },
   {
     name:  'Full eCommerce Build',
-    price: '$2,000+',
-    desc:  'Complete store setup with product research, supplier pipeline, and ad automation.',
+    price: '$3,500 – $7,000',
+    desc:  'Complete Shopify store, brand identity, supplier setup, and Meta Ads infrastructure.',
+  },
+  {
+    name:  'Retainer / Ongoing',
+    price: '$800 – $1,500/mo',
+    desc:  'Monthly workflow maintenance, improvements, monitoring, and priority support.',
   },
 ]
 
@@ -333,7 +338,7 @@ function PricingTable() {
           style={{ background: 'var(--color-surface-2)', borderTop: '1px solid var(--color-border)' }}
         >
           <span className="text-[12px]" style={{ color: 'var(--color-muted)' }}>
-            Final quote depends on scope, integrations, and timeline. Book a free 30-min call to get an accurate estimate.
+            All prices are starting points. Final quote depends on scope, integrations, and timeline. Multi-agent systems priced on complexity — most fall between $3,000 and $8,000. Book a free 30-min call.
           </span>
         </div>
       </div>
@@ -505,7 +510,7 @@ const INFO_ROWS = [
   { label: 'Timezone',     value: 'PHT (UTC+8)'           },
   { label: 'Availability', value: 'Part-time · 4 hrs/day' },
   { label: 'Response',     value: 'Within 24 hours'       },
-  { label: 'Project Min.', value: 'USD 300'               },
+  { label: 'Project Min.', value: 'USD 500'               },
   { label: 'Status',       value: 'Open for Work'         },
 ]
 
@@ -620,6 +625,9 @@ function ContactSection() {
                   style={{ fontFamily: 'var(--font-display, system-ui)', color: 'var(--color-text)' }}
                 >
                   Prefer email?
+                </p>
+                <p className="mb-2 text-[12px]" style={{ color: 'var(--color-muted)' }}>
+                  Click to copy my email address.
                 </p>
                 <CopyEmailButton />
                 <p className="mt-2 text-[12px]" style={{ color: 'var(--color-muted)' }}>

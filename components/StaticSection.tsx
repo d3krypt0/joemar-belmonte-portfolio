@@ -349,22 +349,22 @@ function PricingTable() {
 /* ─── Services section ────────────────────────────────────── */
 const SERVICES = [
   {
+    icon:         '⚙️',
+    title:        'n8n & Make.com Automation',
+    description:  'Custom workflows that connect your tools, trigger on real events, and handle the repetitive work automatically — lead scoring, security audits, media monitoring, and more.',
+    deliverables: ['n8n workflow builds', 'Make.com scenarios', 'Groq / Claude AI analysis', 'Automated email & Telegram reports', 'CRM routing & Airtable logging'],
+  },
+  {
     icon:         '🤖',
     title:        'Multi-Agent AI Systems',
-    description:  'Autonomous AI pipelines that handle research, outreach, operations, and customer service — with approval gates so nothing runs without your sign-off.',
-    deliverables: ['Claude API agent design', 'n8n orchestration', 'Telegram approval gates', 'Docker deployment', 'Airtable integration','Custom AI Chatbot Development'],
+    description:  'Autonomous AI pipelines where multiple specialized agents work in sequence — researching, deciding, and acting — with Telegram approval gates before any money moves.',
+    deliverables: ['Multi-agent Claude API architecture', 'n8n orchestration layer', 'Telegram approval gates', 'Airtable & Shopify integration', 'Docker self-hosted deployment'],
   },
   {
-    icon:         '⚙️',
-    title:        'Business Process Automation',
-    description:  'Replace manual workflows with reliable n8n automations connected to your existing tools — CRMs, email, Slack, Shopify, and more.',
-    deliverables: ['n8n workflow builds', 'API integrations', 'Data pipelines', 'Internal dashboards', 'Full documentation'],
-  },
-  {
-    icon:         '🛒',
-    title:        'eCommerce & Shopify Automation',
-    description:  'End-to-end eCommerce infrastructure — store setup, product research systems, supplier pipelines, and Meta Ads integration.',
-    deliverables: ['Shopify store build', 'Product research platform', 'Supplier automation', 'Meta Ads API setup', 'Brand launch'],
+    icon:         '🛠️',
+    title:        'Platforms & Digital Products',
+    description:  'Production web platforms and commercial digital tools — intelligence dashboards with live APIs, freemium SaaS with licensing, or structured Excel systems built to sell.',
+    deliverables: ['React / Next.js platforms', 'Live API integrations (Meta Ads, Trends)', 'Railway / Docker deployment', 'Commercial Excel tools', 'Python automation (openpyxl)'],
   },
 ]
 

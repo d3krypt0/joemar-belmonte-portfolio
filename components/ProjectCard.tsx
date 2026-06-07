@@ -50,24 +50,24 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
     >
       <div
         className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl flex flex-col"
-        style={{ background: 'var(--card-bg)', border: `1px solid ${project.accent}44` }}
+        style={{ background: '#12121c', border: `1px solid ${project.accent}55` }}
         onClick={e => e.stopPropagation()}
       >
         {/* Close button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 flex items-center justify-center w-8 h-8 rounded-full"
-          style={{ background: '#ffffff18', color: '#aaa', fontSize: 18 }}
+          style={{ background: '#ffffff22', color: '#d0d0e0', fontSize: 16, fontWeight: 600 }}
           aria-label="Close modal"
         >
           ✕
         </button>
 
-        {/* Workflow image — no overflow:hidden on a flex child (collapses height in some browsers) */}
+        {/* Workflow image */}
         <div
           style={{
-            background:   '#050508',
-            borderBottom: `1px solid ${project.accent}22`,
+            background:   '#08080f',
+            borderBottom: `1px solid ${project.accent}30`,
             borderRadius: '16px 16px 0 0',
             position:     'relative',
             flexShrink:   0,
@@ -82,7 +82,6 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
             />
           ) : (
             <div className="relative flex items-center justify-center" style={{ height: 280 }}>
-              {/* Grid pattern background */}
               <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <pattern id={`modal-grid-${project.name}`} width="32" height="32" patternUnits="userSpaceOnUse">
@@ -102,45 +101,20 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
                     </div>
                   ))}
                 </div>
-                <p style={{ color: '#555', fontSize: 13, fontFamily: 'monospace' }}>Workflow screenshot coming soon</p>
+                <p style={{ color: '#666688', fontSize: 13, fontFamily: 'monospace' }}>Workflow screenshot coming soon</p>
               </div>
-            </div>
-          )}
-
-          {/* Pill tags overlay */}
-          {project.pills && (
-            <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10">
-              {project.pills.map(pill => (
-                <span
-                  key={pill}
-                  style={{
-                    background:    `${project.accent}33`,
-                    border:        `1px solid ${project.accent}66`,
-                    color:         project.accent,
-                    borderRadius:  999,
-                    padding:       '2px 8px',
-                    fontSize:      10,
-                    fontFamily:    'monospace',
-                    letterSpacing: '0.06em',
-                    fontWeight:    600,
-                    lineHeight:    '1.6',
-                  }}
-                >
-                  {pill}
-                </span>
-              ))}
             </div>
           )}
         </div>
 
         {/* Modal body */}
-        <div className="px-7 py-6 flex flex-col gap-5">
+        <div className="px-7 py-6 flex flex-col gap-6">
           <h2
             style={{
               fontFamily: 'var(--font-display, system-ui)',
               fontWeight: 700,
               fontSize:   22,
-              color:      'var(--color-text)',
+              color:      '#f0f0f8',
               lineHeight: 1.2,
             }}
           >
@@ -153,16 +127,16 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
               style={{
                 fontFamily:    'monospace',
                 fontSize:      10,
-                fontWeight:    600,
-                letterSpacing: '0.12em',
+                fontWeight:    700,
+                letterSpacing: '0.14em',
                 color:         project.accent,
                 textTransform: 'uppercase',
-                marginBottom:  8,
+                marginBottom:  10,
               }}
             >
               How it works
             </p>
-            <p style={{ fontSize: 14, color: 'var(--color-muted)', lineHeight: 1.7 }}>
+            <p style={{ fontSize: 14, color: '#b8b8cc', lineHeight: 1.75 }}>
               {project.solution ?? project.description}
             </p>
           </div>
@@ -174,35 +148,36 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
                 style={{
                   fontFamily:    'monospace',
                   fontSize:      10,
-                  fontWeight:    600,
-                  letterSpacing: '0.12em',
+                  fontWeight:    700,
+                  letterSpacing: '0.14em',
                   color:         project.accent,
                   textTransform: 'uppercase',
-                  marginBottom:  10,
+                  marginBottom:  12,
                 }}
               >
                 Workflow steps
               </p>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-4">
                 {project.pipeline.map(step => (
-                  <div key={step.num} className="flex gap-3">
+                  <div key={step.num} className="flex gap-4">
                     <span
                       style={{
                         fontFamily:  'monospace',
-                        fontSize:    11,
+                        fontSize:    12,
                         color:       project.accent,
-                        opacity:     0.6,
+                        opacity:     0.75,
                         flexShrink:  0,
-                        paddingTop:  2,
+                        paddingTop:  1,
+                        minWidth:    24,
                       }}
                     >
                       {step.num}
                     </span>
                     <div>
-                      <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text)', margin: 0, lineHeight: 1.4 }}>
+                      <p style={{ fontSize: 13, fontWeight: 600, color: '#e0e0f0', margin: 0, lineHeight: 1.4 }}>
                         {step.title}
                       </p>
-                      <p style={{ fontSize: 12, color: 'var(--color-muted)', margin: 0, lineHeight: 1.6 }}>
+                      <p style={{ fontSize: 12, color: '#9090a8', margin: '3px 0 0', lineHeight: 1.65 }}>
                         {step.desc}
                       </p>
                     </div>
@@ -218,11 +193,11 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
               style={{
                 fontFamily:    'monospace',
                 fontSize:      10,
-                fontWeight:    600,
-                letterSpacing: '0.12em',
+                fontWeight:    700,
+                letterSpacing: '0.14em',
                 color:         project.accent,
                 textTransform: 'uppercase',
-                marginBottom:  10,
+                marginBottom:  12,
               }}
             >
               Systems &amp; integrations
@@ -232,11 +207,11 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
                 <span
                   key={s}
                   style={{
-                    background:    `${project.accent}18`,
-                    border:        `1px solid ${project.accent}44`,
-                    color:         project.accent,
+                    background:    `${project.accent}20`,
+                    border:        `1px solid ${project.accent}55`,
+                    color:         '#e8e8f8',
                     borderRadius:  6,
-                    padding:       '4px 10px',
+                    padding:       '5px 12px',
                     fontSize:      12,
                     fontFamily:    'monospace',
                     letterSpacing: '0.04em',

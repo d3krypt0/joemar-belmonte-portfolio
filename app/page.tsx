@@ -20,14 +20,14 @@ const WELCOME_CHIPS = [
   { text: "I'm wasting hours on manual tasks — where do I start?", icon: '⚡' },
   { text: 'What would you automate in my business?',               icon: '🤖' },
   { text: 'Show me a project similar to my industry',              icon: '📂' },
-  { text: 'Book a free 30-min strategy call',                      icon: '📞' },
+  { text: 'What makes you different from other developers?',       icon: '🎯' },
 ]
 
 const CHAT_CHIPS = [
   'How much does a project cost?',
   'How long does it take?',
   'Can you connect my existing tools?',
-  'Book a free strategy call',
+  'What tools do you specialize in?',
 ]
 
 /* ─── Page ────────────────────────────────────────────────── */

@@ -671,8 +671,8 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
 
   return (
     <motion.div
-      className="flex flex-col items-center h-full overflow-y-auto px-5 pb-16 gap-6"
-      style={{ paddingTop: '80px' }}
+      className="flex flex-col items-center h-full overflow-y-auto px-5 pb-6 gap-4"
+      style={{ paddingTop: '70px' }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, y: -28, transition: { duration: 0.25 } }}
@@ -682,16 +682,16 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.58, ease: [0.16, 1, 0.3, 1] }}
       >
-        <ProfilePhoto state={avatarState} size={168} />
+        <ProfilePhoto state={avatarState} size={120} />
       </motion.div>
 
       <motion.div
-        className="text-center space-y-2"
+        className="text-center space-y-1"
         initial={{ y: 18, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.14, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <h1 className="font-display text-[2.6rem] sm:text-[3.2rem] font-bold tracking-tight leading-none">
+        <h1 className="font-display text-[2.2rem] sm:text-[2.8rem] font-bold tracking-tight leading-none">
           Hey, I&apos;m{' '}
           <span style={{ whiteSpace: 'nowrap' }}>
             {typedName}
@@ -730,7 +730,7 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
           Philippines
         </p>
         <motion.p
-          className="text-muted text-base sm:text-[1.05rem] leading-relaxed max-w-[26rem] mx-auto pt-1"
+          className="text-muted text-[0.9rem] leading-relaxed max-w-[28rem] mx-auto"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.28, duration: 0.5 }}
@@ -755,7 +755,7 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
           style={{
             background:  'var(--color-accent)',
             color:       '#060D14',
-            padding:     '14px 32px',
+            padding:     '11px 28px',
             fontSize:    15,
             letterSpacing: '0.01em',
           }}

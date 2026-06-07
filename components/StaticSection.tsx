@@ -248,100 +248,143 @@ function ExpandedProjectCard({ project, delay = 0 }: { project: ProjectData; del
   )
 }
 
-/* ─── Pricing table ───────────────────────────────────────── */
+/* ─── Pricing table (Shopify-style cards) ────────────────── */
 const PRICING_TIERS = [
   {
-    name:  'Simple Automation',
-    price: '$500 – $1,500',
-    desc:  'Single-workflow builds, basic API integrations, or a focused AI chatbot.',
+    name:      'AUTOMATION STARTER',
+    priceFrom: '$500',
+    priceTo:   '$1,500',
+    tagline:   'Targeted automation for a single process or workflow.',
+    items:     ['CRM automation', 'Lead routing', 'Email workflows', 'Internal process automation'],
+    highlight: false,
   },
   {
-    name:      'Multi-Agent System',
-    price:     '$3,000 – $8,000',
-    desc:      'Autonomous AI pipeline with multiple agents, approval gates, and full data flows.',
+    name:      'GROWTH AUTOMATION SYSTEM',
+    priceFrom: '$3,000',
+    priceTo:   '$8,000',
+    tagline:   'Autonomous AI pipelines that connect your entire stack and run without supervision.',
+    items:     ['Multi-step AI workflows', 'AI lead qualification', 'CRM + Email + Slack integration', 'Reporting & monitoring systems'],
     highlight: true,
   },
   {
-    name:  'Full eCommerce Build',
-    price: '$3,500 – $7,000',
-    desc:  'Complete Shopify store, brand identity, supplier setup, and Meta Ads infrastructure.',
+    name:      'ECOMMERCE AUTOMATION',
+    priceFrom: '$2,000',
+    priceTo:   '$5,000',
+    tagline:   'Shopify store automation and eCommerce infrastructure built to run your store with minimal manual work.',
+    items:     ['Shopify store setup & automation', 'Supplier & inventory automation', 'Meta Ads integration', 'Brand launch infrastructure'],
+    highlight: false,
   },
   {
-    name:  'Retainer / Ongoing',
-    price: '$800 – $1,500/mo',
-    desc:  'Monthly workflow maintenance, improvements, monitoring, and priority support.',
+    name:      'RETAINER / ONGOING',
+    priceFrom: '$800',
+    priceTo:   '$1,500/mo',
+    tagline:   'Monthly maintenance, improvements, and priority support for existing systems.',
+    items:     ['Workflow monitoring & fixes', 'New automation additions', 'Priority response', 'Monthly performance reports'],
+    highlight: false,
   },
 ]
 
 function PricingTable() {
   return (
-    <Reveal className="mt-14">
-      <div
-        className="rounded-xl overflow-hidden"
-        style={{ border: '1px solid var(--color-border)' }}
-      >
-        {/* Header */}
-        <div
-          className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_200px_1fr] px-5 py-3 gap-4"
-          style={{ background: 'var(--color-surface-2)', borderBottom: '1px solid var(--color-border)' }}
+    <Reveal className="mt-20">
+      <div className="text-center mb-12">
+        <span
+          className="font-mono text-[11px] uppercase tracking-[0.22em]"
+          style={{ color: 'var(--color-accent)' }}
         >
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em]" style={{ color: 'var(--color-muted)' }}>
-            Service tier
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-right" style={{ color: 'var(--color-muted)' }}>
-            Starting at
-          </span>
-          <span className="hidden sm:block font-mono text-[10px] uppercase tracking-[0.18em] pl-6" style={{ color: 'var(--color-muted)' }}>
-            Scope
-          </span>
-        </div>
-
-        {/* Rows */}
-        {PRICING_TIERS.map((tier, i) => (
+          Pricing
+        </span>
+        <h2
+          className="font-display font-bold text-3xl sm:text-4xl mt-2 leading-tight"
+          style={{ color: 'var(--color-text)' }}
+        >
+          Simple, Transparent Rates
+        </h2>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {PRICING_TIERS.map(tier => (
           <div
             key={tier.name}
-            className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_200px_1fr] gap-4 px-5 py-4 items-center transition-colors"
+            className="relative rounded-xl p-6 flex flex-col"
             style={{
-              background:   tier.highlight ? 'color-mix(in srgb, var(--color-accent) 4%, var(--color-surface))' : 'var(--color-surface)',
-              borderBottom: i < PRICING_TIERS.length - 1 ? '1px solid var(--color-border)' : 'none',
-              borderLeft:   tier.highlight ? '2px solid var(--color-accent)' : '2px solid transparent',
+              background: tier.highlight
+                ? 'color-mix(in srgb, var(--color-accent) 5%, var(--color-surface))'
+                : 'var(--color-surface)',
+              border: tier.highlight
+                ? '2px solid var(--color-accent)'
+                : '1px solid var(--color-border)',
             }}
           >
-            <div>
+            {tier.highlight && (
               <span
-                className="font-display font-semibold text-[15px] block"
-                style={{ color: 'var(--color-text)' }}
+                className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase whitespace-nowrap"
+                style={{ background: 'var(--color-accent)', color: '#050505' }}
               >
-                {tier.name}
+                Most Popular
               </span>
-              <span className="sm:hidden text-[12px] mt-0.5 block leading-relaxed" style={{ color: 'var(--color-muted)' }}>
-                {tier.desc}
-              </span>
-            </div>
-            <div className="text-right">
-              <span
-                className="font-display font-bold text-[17px] tabular-nums"
-                style={{ color: tier.highlight ? 'var(--color-accent)' : 'var(--color-text)' }}
-              >
-                {tier.price}
-              </span>
-            </div>
-            <p className="hidden sm:block text-[13px] leading-relaxed pl-6" style={{ color: 'var(--color-muted)' }}>
-              {tier.desc}
+            )}
+
+            {/* Plan name */}
+            <p
+              className="font-mono text-[10px] font-bold tracking-[0.18em] uppercase mb-4"
+              style={{ color: 'var(--color-accent)' }}
+            >
+              {tier.name}
             </p>
+
+            {/* Price */}
+            <div className="mb-1 flex items-baseline gap-1.5 flex-wrap">
+              <span
+                className="font-display font-bold tabular-nums"
+                style={{ fontSize: 30, lineHeight: 1, color: 'var(--color-text)' }}
+              >
+                {tier.priceFrom}
+              </span>
+              <span
+                className="font-display font-semibold"
+                style={{ fontSize: 18, color: 'var(--color-muted)' }}
+              >
+                – {tier.priceTo}
+              </span>
+            </div>
+            <p className="text-[11px] mb-5" style={{ color: 'var(--color-muted)' }}>
+              Starting price. Final quote after scoping.
+            </p>
+
+            {/* Tagline */}
+            <p
+              className="text-[13.5px] leading-relaxed mb-5"
+              style={{ color: 'var(--color-text)', opacity: 0.8 }}
+            >
+              {tier.tagline}
+            </p>
+
+            {/* Divider */}
+            <div className="mb-4" style={{ borderTop: '1px solid var(--color-border)' }} />
+
+            {/* Perfect for */}
+            <p
+              className="font-mono text-[10px] font-bold tracking-[0.14em] uppercase mb-3"
+              style={{ color: 'var(--color-muted)' }}
+            >
+              Perfect for
+            </p>
+            <ul className="flex flex-col gap-2.5 mt-auto">
+              {tier.items.map(item => (
+                <li key={item} className="flex items-start gap-2.5 text-[13px]" style={{ color: 'var(--color-muted)' }}>
+                  <span style={{ color: 'var(--color-accent)', flexShrink: 0, marginTop: 1 }}>✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
-
-        {/* Footer note */}
-        <div
-          className="px-5 py-3"
-          style={{ background: 'var(--color-surface-2)', borderTop: '1px solid var(--color-border)' }}
-        >
-          <span className="text-[12px]" style={{ color: 'var(--color-muted)' }}>
-            All prices are starting points. Final quote depends on scope, integrations, and timeline. Multi-agent systems priced on complexity — most fall between $3,000 and $8,000. Book a free 30-min call.
-          </span>
-        </div>
       </div>
+
+      {/* Footer note */}
+      <p className="mt-5 text-[12px] text-center" style={{ color: 'var(--color-muted)' }}>
+        All prices are starting points. Final quote depends on scope, integrations, and timeline. Book a free 30-min call to get an accurate estimate.
+      </p>
     </Reveal>
   )
 }
@@ -350,9 +393,9 @@ function PricingTable() {
 const SERVICES = [
   {
     icon:         '⚙️',
-    title:        'n8n & Make.com Automation',
-    description:  'Custom workflows that connect your tools, trigger on real events, and handle the repetitive work automatically — lead scoring, security audits, media monitoring, and more.',
-    deliverables: ['n8n workflow builds', 'Make.com scenarios', 'Groq / Claude AI analysis', 'Automated email & Telegram reports', 'CRM routing & Airtable logging'],
+    title:        'Business Process Automation',
+    description:  'Custom workflows that connect your tools, trigger on real events, and eliminate repetitive work automatically — lead scoring, CRM routing, media monitoring, and more.',
+    deliverables: ['n8n workflow builds', 'Make.com scenarios', 'AI-powered lead scoring & triage', 'Automated email & Telegram reports', 'CRM routing & Airtable logging'],
   },
   {
     icon:         '🤖',
@@ -362,8 +405,8 @@ const SERVICES = [
   },
   {
     icon:         '🛠️',
-    title:        'Platforms & Digital Products',
-    description:  'Production web platforms and commercial digital tools — intelligence dashboards with live APIs, freemium SaaS with licensing, or structured Excel systems built to sell.',
+    title:        'Custom Tools & Dashboards',
+    description:  'Custom-built tools your team actually uses — live API dashboards, AI-powered SaaS products, and Excel systems built to sell commercially.',
     deliverables: ['React / Next.js platforms', 'Live API integrations (Meta Ads, Trends)', 'Railway / Docker deployment', 'Commercial Excel tools', 'Python automation (openpyxl)'],
   },
 ]
@@ -432,7 +475,7 @@ function WorkSection() {
       style={{ borderTop: '1px solid var(--color-border)' }}
     >
       <div className="max-w-6xl mx-auto">
-        <SectionHeading eyebrow="Work" title="Live Systems" />
+        <SectionHeading eyebrow="Work" title="Automation Solutions I've Built" />
 
         {/* Filter tabs */}
         <Reveal className="mb-8 -mt-4">

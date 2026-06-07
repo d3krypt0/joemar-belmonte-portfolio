@@ -130,11 +130,15 @@ Living snapshot of the Joemar Belmonte AI Automation Portfolio. Auto-updated by 
 
 ## Pricing Tiers (PricingTable in ServicesSection)
 
-| Tier | Price | Highlight |
+Shopify-style 3-card grid (`grid-cols-1 md:grid-cols-3`). Middle card highlighted with accent border + "Most Popular" badge.
+
+| Tier | Price Range | Highlight |
 |---|---|---|
-| Simple Automation | $300 – $800 | no |
-| Multi-Agent System | $1,000 – $3,000 | yes (accent border + tinted bg) |
-| Full eCommerce Build | $2,000+ | no |
+| Automation Starter | $500–$1,500 | no |
+| Growth Automation System | $1,500–$3,500 | yes — accent border + tinted bg + "Most Popular" badge |
+| AI Workforce Package | $3,500–$8,000 | no |
+
+Footer note: retainer available at $800–$1,500/mo. No table headers — pure card layout with checkmark lists.
 
 ---
 
@@ -147,13 +151,13 @@ Living snapshot of the Joemar Belmonte AI Automation Portfolio. Auto-updated by 
 
 ## Recent Changes
 
-- 2026-06-08 00:39 — ProjectCard.tsx: Edit via Claude Code
-- 2026-06-08 00:38 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-08 00:32 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-08 00:13 — prompt.ts: Edit via Claude Code
-- 2026-06-08 00:13 — projects.ts: Edit via Claude Code
-- 2026-06-08 00:13 — projects.ts: Edit via Claude Code
-- 2026-06-08 00:02 — projects.ts: Edit via Claude Code
-- 2026-06-07 00:08 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-07 00:08 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-06 23:57 — prompt.ts: Edit via Claude Code
+- 2026-06-08 02:00 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-08 01:55 — prompt.ts: Edit via Claude Code
+- 2026-06-08 01:55 — prompt.ts: Edit via Claude Code
+- 2026-06-08 01:55 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-08 01:54 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-08 01:54 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-08 01:40 — prompt.ts: Edit via Claude Code
+- 2026-06-08 01:40 — prompt.ts: Edit via Claude Code
+- 2026-06-08 01:39 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-08 01:39 — StaticSection.tsx: Edit via Claude Code

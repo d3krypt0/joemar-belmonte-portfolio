@@ -671,8 +671,8 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.28, duration: 0.5 }}
         >
-          I build AI workflows that eliminate repetitive work — from n8n pipelines and Make.com automations
-          to custom AI agents that run 24/7. If it can be automated, I&apos;ll build it.
+          I turn manual business operations into AI-powered systems that run 24/7 — without adding headcount.
+          I build n8n pipelines, Make.com workflows, and AI agents that eliminate repetitive work — security-tested, documented, and built to last.
         </motion.p>
       </motion.div>
 

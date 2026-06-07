@@ -49,6 +49,9 @@ Unlike pure AI developers, I bring 10+ years of enterprise security engineering 
 
 ## PROJECTS
 
+**WebSecScan — AI-Powered Website Security Auditor**
+n8n workflow that performs automated security reconnaissance on any URL. Accepts a URL via webhook, runs multi-point checks (SSL certificate validation, HTTP security header analysis, technology fingerprinting, exposed endpoint enumeration), passes all findings to Groq AI for risk scoring, and delivers a plain-English remediation report via Telegram — prioritized by severity. Built on my 10+ years of application security experience. **Full-scope security audit on any site in minutes, zero manual analysis required.**
+
 **AI Dropshipping Agent**
 Scheduled n8n workflow running every 48 hours — uses Claude API to research and score 5 dropshipping product candidates per cycle, parses structured results into Airtable, and sends a formatted Telegram report. No action executes without operator approval via Telegram trigger. **Human-in-the-loop by design: zero autonomous spend.**
 

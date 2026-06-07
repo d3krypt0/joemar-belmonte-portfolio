@@ -33,6 +33,22 @@ export interface ProjectData {
 
 export const ALL_PROJECTS: ProjectData[] = [
   {
+    name:        'WebSecScan',
+    type:        'AI-Powered Website Security Auditor',
+    description: 'n8n workflow that performs automated security reconnaissance on any URL — checks SSL certificates, HTTP security headers, exposed endpoints, and technology stack, then runs findings through AI for risk-scored remediation recommendations.',
+    stack:       ['n8n', 'Groq API', 'HTTP Request', 'Telegram Bot', 'SSL Labs API'],
+    metrics:     [{ value: 'AI', label: 'Risk Scoring' }, { value: '0', label: 'Manual Checks' }],
+    accent:      '#C53030',
+    category:    'n8n',
+    keywords:    ['websecscan', 'web security', 'security audit', 'website scanner', 'security auditor', 'vulnerability scan', 'security scan', 'web sec'],
+    pills:       ['N8N', 'GROQ AI', 'SECURITY'],
+    pattern:     'pipeline',
+    workflowImage: '/workflows/websecscan-workflow.png',
+    problem:     'Running a web security audit manually means juggling multiple tools — SSL checkers, header analyzers, CMS detectors — across multiple tabs, then spending hours interpreting raw technical output with no prioritization.',
+    solution:    'Built an n8n workflow that accepts any URL via webhook, runs multi-point security reconnaissance (SSL certificate validation, HTTP security header checks, technology fingerprinting, exposed endpoint enumeration), passes all findings to Groq AI for risk scoring, and delivers a plain-English remediation report via Telegram.',
+    result:      'Full-scope security audit on any website in minutes. AI-generated remediation roadmap prioritized by risk severity — accessible to clients without a security background.',
+  },
+  {
     name:        'AI Media Monitoring & PR System',
     type:        'Make.com Automation',
     description: 'Automated PR pipeline that scans Google Alerts every morning, runs each mention through Claude AI for sentiment analysis and draft replies, queues Gmail drafts for journalist follow-ups, logs everything to Notion, and sends the team a Telegram briefing.',

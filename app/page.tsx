@@ -17,17 +17,15 @@ type Theme       = 'dark' | 'light'
 
 /* ─── Static data ─────────────────────────────────────────── */
 const WELCOME_CHIPS = [
-  { text: "I'm wasting hours on manual tasks — where do I start?", icon: '⚡' },
-  { text: 'What would you automate in my business?',               icon: '🤖' },
-  { text: 'Show me a project similar to my industry',              icon: '📂' },
-  { text: 'What makes you different from other developers?',       icon: '🎯' },
+  { text: "I'm losing hours to repetitive work — what can you automate for me?", icon: '⚡' },
+  { text: 'How much does an automation project cost?',                            icon: '💰' },
+  { text: 'Can you work with the tools my business already uses?',                icon: '🔗' },
 ]
 
 const CHAT_CHIPS = [
-  'How much does a project cost?',
-  'How long does it take?',
-  'Can you connect my existing tools?',
-  'What tools do you specialize in?',
+  'How fast can we get started?',
+  'Do I need technical knowledge to use it?',
+  'What results have your clients seen?',
 ]
 
 /* ─── Page ────────────────────────────────────────────────── */

@@ -614,6 +614,25 @@ function ChipsScroller({ chips, onChipClick }: { chips: string[]; onChipClick: (
   )
 }
 
+/* ─── Typewriter hook ─────────────────────────────────────── */
+function useTypewriter(text: string, speed = 65, startDelay = 350) {
+  const [displayed, setDisplayed] = useState('')
+  useEffect(() => {
+    setDisplayed('')
+    let i = 0
+    const t = setTimeout(() => {
+      const iv = setInterval(() => {
+        i++
+        setDisplayed(text.slice(0, i))
+        if (i >= text.length) clearInterval(iv)
+      }, speed)
+      return () => clearInterval(iv)
+    }, startDelay)
+    return () => clearTimeout(t)
+  }, [text, speed, startDelay])
+  return displayed
+}
+
 /* ─── Welcome screen ──────────────────────────────────────── */
 interface WelcomeViewProps {
   avatarState: AvatarState
@@ -628,6 +647,10 @@ interface WelcomeViewProps {
 
 function WelcomeView({ avatarState, input, isLoading, textareaRef,
                        onChipClick, onChange, onSubmit, onKeyDown }: WelcomeViewProps) {
+  const NAME     = 'Joemar Belmonte'
+  const typedName = useTypewriter(NAME, 65, 400)
+  const nameDone  = typedName.length === NAME.length
+
   return (
     <motion.div
       className="flex flex-col items-center h-full overflow-y-auto px-5 pb-16 gap-6"
@@ -651,14 +674,37 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         transition={{ delay: 0.14, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
         <h1 className="font-display text-[2.6rem] sm:text-[3.2rem] font-bold tracking-tight leading-none">
-          Hey, I&apos;m Joemar Belmonte{' '}
-          <motion.span
-            style={{ display: 'inline-block', originX: 0.7, originY: 0.7 }}
-            animate={{ rotate: [0, 22, -12, 22, 0] }}
-            transition={{ delay: 0.85, duration: 0.75 }}
-          >
-            👋
-          </motion.span>
+          Hey, I&apos;m{' '}
+          <span style={{ whiteSpace: 'nowrap' }}>
+            {typedName}
+            {!nameDone && (
+              <motion.span
+                style={{
+                  display:       'inline-block',
+                  width:         3,
+                  height:        '0.8em',
+                  background:    'var(--color-accent)',
+                  marginLeft:    2,
+                  verticalAlign: 'middle',
+                  borderRadius:  1,
+                }}
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.5, repeat: Infinity, repeatType: 'reverse', ease: 'steps(1)' }}
+              />
+            )}
+          </span>
+          {nameDone && (
+            <>
+              {' '}
+              <motion.span
+                style={{ display: 'inline-block', originX: 0.7, originY: 0.8 }}
+                animate={{ rotate: [0, 24, -12, 24, -8, 0] }}
+                transition={{ delay: 0.15, duration: 1.1, repeat: 1, repeatDelay: 1.5 }}
+              >
+                👋
+              </motion.span>
+            </>
+          )}
         </h1>
         <p className="font-mono text-muted text-[0.82rem] tracking-[0.2em] uppercase">
           AI Automation Specialist

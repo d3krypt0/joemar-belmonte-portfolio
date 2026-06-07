@@ -613,27 +613,41 @@ function ChipsScroller({ chips, onChipClick }: { chips: string[]; onChipClick: (
 }
 
 /* ─── Typewriter hook ─────────────────────────────────────── */
-function useTypewriter(text: string, speed = 65, startDelay = 350) {
+function useTypewriter(text: string, speed = 65, startDelay = 400, loopDelay = 3000) {
   const [displayed, setDisplayed] = useState('')
+
   useEffect(() => {
-    setDisplayed('')
-    let i = 0
+    let cancelled = false
     let iv: ReturnType<typeof setInterval> | null = null
-    const t = setTimeout(() => {
-      iv = setInterval(() => {
-        i++
-        setDisplayed(text.slice(0, i))
-        if (i >= text.length && iv) {
-          clearInterval(iv)
-          iv = null
-        }
-      }, speed)
-    }, startDelay)
+    let t:  ReturnType<typeof setTimeout>  | null = null
+
+    function startTyping(delay: number) {
+      t = setTimeout(() => {
+        if (cancelled) return
+        setDisplayed('')
+        let i = 0
+        iv = setInterval(() => {
+          if (cancelled) { clearInterval(iv!); return }
+          i++
+          setDisplayed(text.slice(0, i))
+          if (i >= text.length) {
+            clearInterval(iv!)
+            iv = null
+            t = setTimeout(() => { if (!cancelled) startTyping(0) }, loopDelay)
+          }
+        }, speed)
+      }, delay)
+    }
+
+    startTyping(startDelay)
+
     return () => {
-      clearTimeout(t)
+      cancelled = true
+      if (t  !== null) clearTimeout(t)
       if (iv !== null) clearInterval(iv)
     }
-  }, [text, speed, startDelay])
+  }, [text, speed, startDelay, loopDelay])
+
   return displayed
 }
 

@@ -287,6 +287,7 @@ const PRICING_TIERS = [
 function PricingTable() {
   return (
     <Reveal className="mt-20">
+      <div style={{ borderTop: '1px solid var(--color-border)', marginBottom: 64 }} />
       <div className="text-center mb-12">
         <span
           className="font-mono text-[11px] uppercase tracking-[0.22em]"

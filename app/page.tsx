@@ -620,15 +620,21 @@ function useTypewriter(text: string, speed = 65, startDelay = 350) {
   useEffect(() => {
     setDisplayed('')
     let i = 0
+    let iv: ReturnType<typeof setInterval> | null = null
     const t = setTimeout(() => {
-      const iv = setInterval(() => {
+      iv = setInterval(() => {
         i++
         setDisplayed(text.slice(0, i))
-        if (i >= text.length) clearInterval(iv)
+        if (i >= text.length && iv) {
+          clearInterval(iv)
+          iv = null
+        }
       }, speed)
-      return () => clearInterval(iv)
     }, startDelay)
-    return () => clearTimeout(t)
+    return () => {
+      clearTimeout(t)
+      if (iv !== null) clearInterval(iv)
+    }
   }, [text, speed, startDelay])
   return displayed
 }
@@ -688,8 +694,8 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
                   verticalAlign: 'middle',
                   borderRadius:  1,
                 }}
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.5, repeat: Infinity, repeatType: 'reverse', ease: 'steps(1)' }}
+                animate={{ opacity: [1, 0, 1] }}
+                transition={{ duration: 0.9, repeat: Infinity, ease: 'linear' }}
               />
             )}
           </span>

@@ -33,6 +33,29 @@ export interface ProjectData {
 
 export const ALL_PROJECTS: ProjectData[] = [
   {
+    name:        'WebSecScan: AI Security Auditor',
+    type:        'n8n Automation',
+    description: 'Automated website security audit pipeline. Submit a URL, get a full AI-analyzed threat report — SSL, headers, vulnerabilities, and actionable fixes — delivered straight to your inbox.',
+    stack:       ['n8n', 'Groq API', 'HTTP Request', 'OWASP Checks', 'Gmail'],
+    metrics:     [{ value: 'AI', label: 'Risk Analysis' }, { value: '5', label: 'Audit Stages' }],
+    accent:      '#EF4444',
+    category:    'n8n',
+    keywords:    ['websecsan', 'websec scan', 'security audit', 'website security', 'security scanner', 'ai security', 'vulnerability scan', 'groq security'],
+    pills:       ['N8N', 'GROQ API', 'SECURITY'],
+    pattern:     'pipeline',
+    workflowImage: '/workflows/websecscan-workflow.png',
+    problem:     'Website owners have no quick way to assess their security posture — manual checks across SSL tools, header scanners, and vulnerability databases take hours and require technical expertise.',
+    solution:    'Submit a URL and the workflow runs automated security checks across SSL, HTTP headers, and known vulnerability patterns. Groq AI analyzes every finding, assigns risk levels, and writes plain-English remediation steps. A formatted report lands in your inbox within minutes.',
+    result:      'Full security audit — findings, risk scores, and fix instructions — delivered automatically. No consultant fees, no tool-hopping, no technical knowledge required.',
+    pipeline: [
+      { num: '01', integration: 'N8N -> WEBHOOK',      title: 'URL Submission',        desc: 'Receives the target website URL via webhook or form trigger. Validates and queues the scan.' },
+      { num: '02', integration: 'N8N -> HTTP REQUEST',  title: 'Deep Security Analysis', desc: 'Runs automated checks: SSL certificate validity, HTTP security headers, open ports, and known CVE patterns.' },
+      { num: '03', integration: 'N8N -> CLAUDE API',   title: 'AI Risk Assessment',     desc: 'Claude analyzes all findings, assigns severity levels, and generates plain-English remediation steps for each issue.' },
+      { num: '04', integration: 'N8N -> CODE',         title: 'Report Formatting',      desc: 'Structures findings into a clean, scannable security report with executive summary and prioritized action items.' },
+      { num: '05', integration: 'N8N -> GMAIL',        title: 'Report Delivery',        desc: 'Sends the completed audit report to the specified recipient. Ready to share with clients or dev teams.' },
+    ],
+  },
+  {
     name:        'AI Media Monitoring & PR System',
     type:        'Make.com Automation',
     description: 'Automated PR pipeline that scans Google Alerts every morning, runs each mention through Claude AI for sentiment analysis and draft replies, queues Gmail drafts for journalist follow-ups, logs everything to Notion, and sends the team a Telegram briefing.',

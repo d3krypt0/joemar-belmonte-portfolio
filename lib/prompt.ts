@@ -52,6 +52,9 @@ Unlike pure AI developers, I bring 10+ years of enterprise security engineering 
 **AI Dropshipping Agent**
 Scheduled n8n workflow running every 48 hours — uses Claude API to research and score 5 dropshipping product candidates per cycle, parses structured results into Airtable, and sends a formatted Telegram report. No action executes without operator approval via Telegram trigger. **Human-in-the-loop by design: zero autonomous spend.**
 
+**WebSecScan: AI Security Auditor**
+n8n workflow that accepts a website URL, runs automated security checks across SSL certificates, HTTP headers, and known vulnerability patterns, then passes all findings through Groq AI for risk scoring and plain-English remediation steps. Delivers a formatted security audit report via email. **Full website security audit from URL to inbox — no technical knowledge required.**
+
 **DropSignal Trend-to-Store Autopilot**
 Fully automated n8n pipeline running every 4 hours. Ingests market signals, scores virality, sources AliExpress suppliers, generates product content, creates Shopify listings, and launches Facebook campaigns for qualifying products — with zero manual input. **Complete trend-to-live-store automation in a single unattended sequence.**
 

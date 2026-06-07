@@ -383,7 +383,7 @@ function PricingTable() {
 
       {/* Footer note */}
       <p className="mt-5 text-[12px] text-center" style={{ color: 'var(--color-muted)' }}>
-        All prices are starting points. Final quote depends on scope, integrations, and timeline. Book a free 30-min call to get an accurate estimate.
+        Final quote depends on integrations and timeline — book a free scoping call.
       </p>
     </Reveal>
   )
@@ -400,7 +400,7 @@ const SERVICES = [
   {
     icon:         '🤖',
     title:        'Multi-Agent AI Systems',
-    description:  'Autonomous AI pipelines where multiple specialized agents work in sequence — researching, deciding, and acting — with Telegram approval gates before any money moves.',
+    description:  'Autonomous AI pipelines where multiple specialized agents work in sequence — researching, deciding, and acting. Agents propose actions; you approve via Telegram before execution.',
     deliverables: ['Multi-agent Claude API architecture', 'n8n orchestration layer', 'Telegram approval gates', 'Airtable & Shopify integration', 'Docker self-hosted deployment'],
   },
   {
@@ -443,6 +443,67 @@ function ServicesSection() {
           ))}
         </div>
         <PricingTable />
+      </div>
+    </section>
+  )
+}
+
+/* ─── Why Work With Me section ───────────────────────────── */
+const WHY_BULLETS = [
+  {
+    icon:  '🔒',
+    title: '10+ Years Cybersecurity Background',
+    desc:  'Every system I build is security-reviewed from the start — auditable data flows, least-privilege API access, and no silent failure points. You get automation that your security team can actually sign off on.',
+  },
+  {
+    icon:  '🤖',
+    title: 'Multi-Agent Architecture Expertise',
+    desc:  'I design and deploy systems where multiple AI agents coordinate — each specialized, each accountable. Not chatbots. Actual agent pipelines with human approval gates on every consequential action.',
+  },
+  {
+    icon:  '🚀',
+    title: 'Production Deployments, Not Demos',
+    desc:  'The workflows I showcase are live and running — self-hosted on Docker, connected to real APIs, handling real data. I don\'t build prototypes for portfolios. I build systems that run at 2am without me.',
+  },
+]
+
+function WhySection() {
+  return (
+    <section
+      id="why"
+      className="py-20 sm:py-28 px-5"
+      style={{ borderTop: '1px solid var(--color-border)' }}
+    >
+      <div className="max-w-6xl mx-auto">
+        <SectionHeading eyebrow="Differentiators" title="Why Work With Me" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {WHY_BULLETS.map((b, i) => (
+            <Reveal key={b.title} delay={i * 80} className="h-full">
+              <div
+                className="h-full rounded-xl p-6 flex flex-col gap-4"
+                style={{
+                  background:  'var(--color-surface)',
+                  border:      '1px solid var(--color-border)',
+                  borderLeft:  '3px solid var(--color-accent)',
+                }}
+              >
+                <span className="text-3xl">{b.icon}</span>
+                <h3
+                  className="font-display font-bold text-[17px] leading-snug"
+                  style={{ color: 'var(--color-text)' }}
+                >
+                  {b.title}
+                </h3>
+                <p
+                  className="text-[14px] leading-relaxed"
+                  style={{ color: 'var(--color-muted)' }}
+                >
+                  {b.desc}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -712,6 +773,7 @@ export default function StaticSection() {
     <div style={{ background: 'var(--color-bg)' }}>
       <SectionDivider />
       <ServicesSection />
+      <WhySection />
       <TechMarquee />
       <WorkSection />
       <ContactSection />

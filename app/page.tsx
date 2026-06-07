@@ -676,6 +676,35 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         </motion.p>
       </motion.div>
 
+      {/* Primary CTA */}
+      <motion.div
+        className="flex flex-col items-center gap-1.5"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.36, duration: 0.45 }}
+      >
+        <a
+          href="https://calendly.com/joemarbelmonte-automation/30min"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 font-semibold rounded-lg transition-colors"
+          style={{
+            background:  'var(--color-accent)',
+            color:       '#060D14',
+            padding:     '14px 32px',
+            fontSize:    15,
+            letterSpacing: '0.01em',
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '0.88' }}
+          onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '1' }}
+        >
+          📅 Book a Free Call
+        </a>
+        <span className="font-mono text-[11px]" style={{ color: 'var(--color-muted)', opacity: 0.65 }}>
+          Free 30-min scoping call — no obligation.
+        </span>
+      </motion.div>
+
       <motion.div
         className="flex flex-wrap justify-center gap-2 max-w-lg"
         initial={{ y: 14, opacity: 0 }}

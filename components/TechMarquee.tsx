@@ -10,29 +10,29 @@ interface Tile {
   bgColor:   string
 }
 
+// ROW1 — Automation & AI
 const ROW1: Tile[] = [
   { name: 'n8n',       iconUrl: 'https://cdn.simpleicons.org/n8n/EA4B71',      initColor: '#EA4B71', bgColor: '' },
-  { name: 'Claude AI', initials: 'A', initColor: '#D97706',                    bgColor: 'rgba(217,119,6,0.12)' },
-  { name: 'Docker',    iconUrl: 'https://cdn.simpleicons.org/docker/2496ED',   initColor: '#2496ED', bgColor: '' },
-  { name: 'Node.js',   iconUrl: 'https://cdn.simpleicons.org/nodedotjs/339933',initColor: '#339933', bgColor: '' },
-  { name: 'React',     iconUrl: 'https://cdn.simpleicons.org/react/61DAFB',    initColor: '#61DAFB', bgColor: '' },
-  { name: 'Next.js',   iconUrl: 'https://cdn.simpleicons.org/nextdotjs/888888',initColor: '#888888', bgColor: '' },
-  { name: 'Shopify',   iconUrl: 'https://cdn.simpleicons.org/shopify/96BF48',  initColor: '#96BF48', bgColor: '' },
-  { name: 'Airtable',  iconUrl: 'https://cdn.simpleicons.org/airtable/18BFFF', initColor: '#18BFFF', bgColor: '' },
   { name: 'Make.com',  iconUrl: 'https://cdn.simpleicons.org/make/6D00CC',     initColor: '#6D00CC', bgColor: '' },
+  { name: 'Claude AI', initials: 'A', initColor: '#D97706',                    bgColor: 'rgba(217,119,6,0.12)' },
+  { name: 'Groq',      initials: 'G', initColor: '#F55036',                    bgColor: 'rgba(245,80,54,0.10)' },
+  { name: 'Airtable',  iconUrl: 'https://cdn.simpleicons.org/airtable/18BFFF', initColor: '#18BFFF', bgColor: '' },
+  { name: 'Notion',    iconUrl: 'https://cdn.simpleicons.org/notion/888888',   initColor: '#888888', bgColor: '' },
+  { name: 'Gmail',     iconUrl: 'https://cdn.simpleicons.org/gmail/EA4335',    initColor: '#EA4335', bgColor: '' },
+  { name: 'Telegram',  iconUrl: 'https://cdn.simpleicons.org/telegram/26A5E4', initColor: '#26A5E4', bgColor: '' },
 ]
 
+// ROW2 — Web, eCommerce & Deployment
 const ROW2: Tile[] = [
+  { name: 'React',     iconUrl: 'https://cdn.simpleicons.org/react/61DAFB',    initColor: '#61DAFB', bgColor: '' },
+  { name: 'Next.js',   iconUrl: 'https://cdn.simpleicons.org/nextdotjs/888888',initColor: '#888888', bgColor: '' },
+  { name: 'Node.js',   iconUrl: 'https://cdn.simpleicons.org/nodedotjs/339933',initColor: '#339933', bgColor: '' },
   { name: 'Python',    iconUrl: 'https://cdn.simpleicons.org/python/3776AB',   initColor: '#3776AB', bgColor: '' },
-  { name: 'Notion',    iconUrl: 'https://cdn.simpleicons.org/notion/888888',   initColor: '#888888', bgColor: '' },
-  { name: 'Telegram',  iconUrl: 'https://cdn.simpleicons.org/telegram/26A5E4', initColor: '#26A5E4', bgColor: '' },
-  { name: 'Gmail',     iconUrl: 'https://cdn.simpleicons.org/gmail/EA4335',    initColor: '#EA4335', bgColor: '' },
+  { name: 'Docker',    iconUrl: 'https://cdn.simpleicons.org/docker/2496ED',   initColor: '#2496ED', bgColor: '' },
   { name: 'Vercel',    iconUrl: 'https://cdn.simpleicons.org/vercel/888888',   initColor: '#888888', bgColor: '' },
   { name: 'Railway',   iconUrl: 'https://cdn.simpleicons.org/railway/888888',  initColor: '#888888', bgColor: '' },
-  { name: 'Meta',      iconUrl: 'https://cdn.simpleicons.org/meta/0082FB',     initColor: '#0082FB', bgColor: '' },
-  { name: 'Google',    iconUrl: 'https://cdn.simpleicons.org/google/4285F4',   initColor: '#4285F4', bgColor: '' },
-  { name: 'Nginx',     iconUrl: 'https://cdn.simpleicons.org/nginx/009639',    initColor: '#009639', bgColor: '' },
-  { name: 'GitHub',    iconUrl: 'https://cdn.simpleicons.org/github/888888',   initColor: '#888888', bgColor: '' },
+  { name: 'Shopify',   iconUrl: 'https://cdn.simpleicons.org/shopify/96BF48',  initColor: '#96BF48', bgColor: '' },
+  { name: 'Meta Ads',  iconUrl: 'https://cdn.simpleicons.org/meta/0082FB',     initColor: '#0082FB', bgColor: '' },
 ]
 
 function TileIcon({ tile }: { tile: Tile }) {

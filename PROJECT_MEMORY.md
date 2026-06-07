@@ -147,13 +147,13 @@ Living snapshot of the Joemar Belmonte AI Automation Portfolio. Auto-updated by 
 
 ## Recent Changes
 
-- 2026-06-06 23:01 — projects.ts: Edit via Claude Code
-- 2026-06-06 22:52 — projects.ts: Edit via Claude Code
-- 2026-06-06 22:24 — ProjectCard.tsx: Edit via Claude Code
-- 2026-06-06 22:23 — ProjectCard.tsx: Edit via Claude Code
-- 2026-06-06 22:23 — projects.ts: Edit via Claude Code
-- 2026-06-06 22:23 — projects.ts: Edit via Claude Code
-- 2026-06-06 22:23 — projects.ts: Edit via Claude Code
-- 2026-06-06 22:23 — projects.ts: Edit via Claude Code
-- 2026-06-06 22:23 — projects.ts: Edit via Claude Code
-- 2026-06-06 22:22 — projects.ts: Edit via Claude Code
+- 2026-06-08 00:13 — prompt.ts: Edit via Claude Code
+- 2026-06-08 00:13 — projects.ts: Edit via Claude Code
+- 2026-06-08 00:13 — projects.ts: Edit via Claude Code
+- 2026-06-08 00:02 — projects.ts: Edit via Claude Code
+- 2026-06-07 00:08 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-07 00:08 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-06 23:57 — prompt.ts: Edit via Claude Code
+- 2026-06-06 23:56 — prompt.ts: Edit via Claude Code
+- 2026-06-06 23:56 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-06 23:56 — StaticSection.tsx: Edit via Claude Code

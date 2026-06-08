@@ -8,10 +8,11 @@ import ErrorBoundary from '@/components/ErrorBoundary'
 const syne = Syne({
   subsets: ['latin'],
   variable: '--font-display',
-  weight: ['400', '600', '700', '800'],
+  weight: ['600', '700', '800'],
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://joemar-belmonte-portfolio.vercel.app'),
   title: 'Joemar Belmonte — AI Automation Specialist',
   description:
     "Chat with Joemar's AI avatar to learn about his projects, skills, and how he can automate your business with n8n, Make.com, and custom AI workflows.",
@@ -21,11 +22,13 @@ export const metadata: Metadata = {
       'Ask me anything about AI automation, n8n, Make.com, or how I can help your business run on autopilot.',
     type: 'website',
     locale: 'en_US',
+    images: [{ url: '/avatar.png', width: 400, height: 400, alt: 'Joemar Belmonte — AI Automation Specialist' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Joemar Belmonte — AI Automation Specialist',
     description: 'Interactive AI portfolio. Ask me anything.',
+    images: ['/avatar.png'],
   },
   icons: {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>",

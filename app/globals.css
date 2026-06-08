@@ -60,7 +60,7 @@
   }
 
   ::selection {
-    background-color: rgba(0, 212, 255, 0.18);
+    background-color: color-mix(in srgb, var(--color-accent) 18%, transparent);
     color: var(--color-accent);
   }
 
@@ -133,8 +133,8 @@
   }
   .chat-input::placeholder { color: var(--color-muted); font-size: 14px; }
   .chat-input:focus {
-    border-color: #00C8FF;
-    box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.12);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 18%, transparent);
   }
   .chat-input:disabled { opacity: 0.55; cursor: not-allowed; }
 

@@ -1,29 +1,16 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { type ProjectData } from '@/lib/projects'
+import { useVisible } from '@/lib/hooks'
 
 interface Props {
   project: ProjectData
   delay?:  number
 }
 
-function useVisible(threshold = 0.1) {
-  const ref           = useRef<HTMLDivElement>(null)
-  const [vis, setVis] = useState(false)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVis(true); obs.disconnect() } },
-      { threshold }
-    )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [threshold])
-  return { ref, vis }
-}
+const slugId = (name: string) => name.replace(/[^a-z0-9]/gi, '-').toLowerCase()
 
 const ZONE_LABELS = {
   problem:  { dot: '#EF4444', text: '#EF4444', word: 'PROBLEM'  },
@@ -35,10 +22,11 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', onKey)
+    const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
+      document.body.style.overflow = prevOverflow
     }
   }, [onClose])
 
@@ -84,11 +72,11 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
             <div className="relative flex items-center justify-center" style={{ height: 280 }}>
               <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                  <pattern id={`modal-grid-${project.name}`} width="32" height="32" patternUnits="userSpaceOnUse">
+                  <pattern id={`modal-grid-${slugId(project.name)}`} width="32" height="32" patternUnits="userSpaceOnUse">
                     <path d="M 32 0 L 0 0 0 32" fill="none" stroke={project.accent} strokeWidth="0.5" />
                   </pattern>
                 </defs>
-                <rect width="100%" height="100%" fill={`url(#modal-grid-${project.name})`} />
+                <rect width="100%" height="100%" fill={`url(#modal-grid-${slugId(project.name)})`} />
               </svg>
               <div className="relative z-10 flex flex-col items-center gap-3 text-center px-8">
                 <div className="flex items-center gap-2 opacity-40">
@@ -270,11 +258,11 @@ export default function ProjectCard({ project, delay = 0 }: Props) {
             {/* Subtle grid */}
             <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <pattern id={`grid-${project.name}`} width="28" height="28" patternUnits="userSpaceOnUse">
+                <pattern id={`grid-${slugId(project.name)}`} width="28" height="28" patternUnits="userSpaceOnUse">
                   <path d="M 28 0 L 0 0 0 28" fill="none" stroke={project.accent} strokeWidth="0.5" />
                 </pattern>
               </defs>
-              <rect width="100%" height="100%" fill={`url(#grid-${project.name})`} />
+              <rect width="100%" height="100%" fill={`url(#grid-${slugId(project.name)})`} />
             </svg>
 
             {project.workflowImage ? (

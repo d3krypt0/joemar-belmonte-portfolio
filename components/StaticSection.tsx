@@ -233,7 +233,19 @@ function ExpandedProjectCard({ project, delay = 0 }: { project: ProjectData; del
 }
 
 /* ─── Pricing table (Shopify-style cards) ────────────────── */
-const PRICING_TIERS = [
+interface PricingTier {
+  name:            string
+  priceFrom:       string
+  priceTo?:        string
+  tagline:         string
+  items:           string[]
+  highlight:       boolean
+  limited?:        boolean
+  accentOverride?: string
+  cta?:            { label: string; url: string }
+}
+
+const PRICING_TIERS: PricingTier[] = [
   {
     name:      'AUTOMATION STARTER',
     priceFrom: '$500',
@@ -241,6 +253,22 @@ const PRICING_TIERS = [
     tagline:   'Targeted automation for a single process or workflow.',
     items:     ['CRM automation', 'Lead routing', 'Email workflows', 'Internal process automation'],
     highlight: false,
+  },
+  {
+    name:           'FOUNDING CLIENT',
+    priceFrom:      'From $750',
+    tagline:        'New to freelancing. Not new to building systems.',
+    items:          [
+      'Free Automation Audit (30 min)',
+      'Project build from $750',
+      '30 days post-launch support',
+      'Case study — you approve before publish',
+      '5 slots only — closing June 2026',
+    ],
+    highlight:      false,
+    limited:        true,
+    accentOverride: '#F59E0B',
+    cta:            { label: 'Book Free Audit', url: 'https://calendly.com/joemarbelmonte-automation/30min' },
   },
   {
     name:      'GROWTH AUTOMATION SYSTEM',
@@ -286,84 +314,119 @@ function PricingTable() {
           Simple, Transparent Rates
         </h2>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {PRICING_TIERS.map(tier => (
-          <div
-            key={tier.name}
-            className="relative rounded-xl p-6 flex flex-col"
-            style={{
-              background: tier.highlight
-                ? 'color-mix(in srgb, var(--color-accent) 5%, var(--color-surface))'
-                : 'var(--color-surface)',
-              border: tier.highlight
-                ? '2px solid var(--color-accent)'
-                : '1px solid var(--color-border)',
-            }}
-          >
-            {tier.highlight && (
-              <span
-                className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase whitespace-nowrap"
-                style={{ background: 'var(--color-accent)', color: '#050505' }}
-              >
-                Most Popular
-              </span>
-            )}
-
-            {/* Plan name */}
-            <p
-              className="font-mono text-[10px] font-bold tracking-[0.18em] uppercase mb-4"
-              style={{ color: 'var(--color-accent)' }}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        {PRICING_TIERS.map(tier => {
+          const accent = tier.accentOverride ?? 'var(--color-accent)'
+          return (
+            <div
+              key={tier.name}
+              className="relative rounded-xl p-3.5 flex flex-col"
+              style={{
+                background: tier.highlight
+                  ? 'color-mix(in srgb, var(--color-accent) 5%, var(--color-surface))'
+                  : tier.limited
+                  ? `color-mix(in srgb, ${tier.accentOverride} 6%, var(--color-surface))`
+                  : 'var(--color-surface)',
+                border: tier.highlight
+                  ? '2px solid var(--color-accent)'
+                  : tier.limited
+                  ? `2px solid ${tier.accentOverride}99`
+                  : '1px solid var(--color-border)',
+              }}
             >
-              {tier.name}
-            </p>
+              {/* Badges */}
+              {tier.highlight && (
+                <span
+                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase whitespace-nowrap"
+                  style={{ background: 'var(--color-accent)', color: '#050505' }}
+                >
+                  Recommended
+                </span>
+              )}
+              {tier.limited && (
+                <span
+                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase whitespace-nowrap"
+                  style={{ background: tier.accentOverride, color: '#1a0800' }}
+                >
+                  Limited
+                </span>
+              )}
 
-            {/* Price */}
-            <div className="mb-1 flex items-baseline gap-1.5 flex-wrap">
-              <span
-                className="font-display font-bold tabular-nums"
-                style={{ fontSize: 30, lineHeight: 1, color: 'var(--color-text)' }}
+              {/* Plan name */}
+              <p
+                className="font-mono text-[9px] font-bold tracking-[0.18em] uppercase mb-3"
+                style={{ color: accent }}
               >
-                {tier.priceFrom}
-              </span>
-              <span
-                className="font-display font-semibold"
-                style={{ fontSize: 18, color: 'var(--color-muted)' }}
+                {tier.name}
+              </p>
+
+              {/* Price */}
+              <div className="mb-1 flex items-baseline gap-1 flex-wrap">
+                <span
+                  className="font-display font-bold tabular-nums"
+                  style={{ fontSize: 22, lineHeight: 1, color: 'var(--color-text)' }}
+                >
+                  {tier.priceFrom}
+                </span>
+                {tier.priceTo && (
+                  <span
+                    className="font-display font-semibold"
+                    style={{ fontSize: 14, color: 'var(--color-muted)' }}
+                  >
+                    – {tier.priceTo}
+                  </span>
+                )}
+              </div>
+              <p className="text-[10px] mb-3" style={{ color: 'var(--color-muted)' }}>
+                {tier.limited ? 'Below-market rate — 5 slots only.' : 'Starting price. Final quote after scoping.'}
+              </p>
+
+              {/* Tagline */}
+              <p
+                className="text-[12px] leading-relaxed mb-3"
+                style={{ color: 'var(--color-text)', opacity: 0.8 }}
               >
-                – {tier.priceTo}
-              </span>
+                {tier.tagline}
+              </p>
+
+              {/* Divider */}
+              <div className="mb-3" style={{ borderTop: '1px solid var(--color-border)' }} />
+
+              {/* Label */}
+              <p
+                className="font-mono text-[9px] font-bold tracking-[0.14em] uppercase mb-2"
+                style={{ color: 'var(--color-muted)' }}
+              >
+                {tier.limited ? "What's included" : 'Perfect for'}
+              </p>
+              <ul className="flex flex-col gap-2 flex-1">
+                {tier.items.map(item => (
+                  <li key={item} className="flex items-start gap-2 text-[12px]" style={{ color: 'var(--color-muted)' }}>
+                    <span style={{ color: accent, flexShrink: 0, marginTop: 1 }}>✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+
+              {/* CTA (Founding Client only) */}
+              {tier.cta && (
+                <a
+                  href={tier.cta.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 w-full inline-flex items-center justify-center gap-1.5 rounded-lg font-semibold text-[12px] transition-opacity hover:opacity-85"
+                  style={{
+                    background: tier.accentOverride,
+                    color:      '#1a0800',
+                    padding:    '9px 12px',
+                  }}
+                >
+                  → {tier.cta.label}
+                </a>
+              )}
             </div>
-            <p className="text-[11px] mb-5" style={{ color: 'var(--color-muted)' }}>
-              Starting price. Final quote after scoping.
-            </p>
-
-            {/* Tagline */}
-            <p
-              className="text-[13.5px] leading-relaxed mb-5"
-              style={{ color: 'var(--color-text)', opacity: 0.8 }}
-            >
-              {tier.tagline}
-            </p>
-
-            {/* Divider */}
-            <div className="mb-4" style={{ borderTop: '1px solid var(--color-border)' }} />
-
-            {/* Perfect for */}
-            <p
-              className="font-mono text-[10px] font-bold tracking-[0.14em] uppercase mb-3"
-              style={{ color: 'var(--color-muted)' }}
-            >
-              Perfect for
-            </p>
-            <ul className="flex flex-col gap-2.5 mt-auto">
-              {tier.items.map(item => (
-                <li key={item} className="flex items-start gap-2.5 text-[13px]" style={{ color: 'var(--color-muted)' }}>
-                  <span style={{ color: 'var(--color-accent)', flexShrink: 0, marginTop: 1 }}>✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       {/* Footer note */}

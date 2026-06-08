@@ -151,13 +151,13 @@ Footer note: retainer available at $800–$1,500/mo. No table headers — pure c
 
 ## Recent Changes
 
-- 2026-06-08 02:00 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-08 01:55 — prompt.ts: Edit via Claude Code
-- 2026-06-08 01:55 — prompt.ts: Edit via Claude Code
-- 2026-06-08 01:55 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-08 01:54 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-08 01:54 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-08 01:40 — prompt.ts: Edit via Claude Code
-- 2026-06-08 01:40 — prompt.ts: Edit via Claude Code
-- 2026-06-08 01:39 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-08 01:39 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-08 14:12 — next.config.ts: Edit via Claude Code
+- 2026-06-08 14:12 — TechMarquee.tsx: Edit via Claude Code
+- 2026-06-08 14:11 — next.config.ts: Edit via Claude Code
+- 2026-06-08 14:07 — TechMarquee.tsx: Edit via Claude Code
+- 2026-06-08 14:07 — TechMarquee.tsx: Edit via Claude Code
+- 2026-06-08 14:07 — TechMarquee.tsx: Write via Claude Code
+- 2026-06-08 14:05 — next.config.ts: Edit via Claude Code
+- 2026-06-08 14:05 — TechMarquee.tsx: Write via Claude Code
+- 2026-06-08 13:57 — TechMarquee.tsx: Edit via Claude Code
+- 2026-06-08 13:55 — TechMarquee.tsx: Edit via Claude Code

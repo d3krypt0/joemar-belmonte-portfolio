@@ -56,16 +56,14 @@ export default function CalendlyWidget() {
 
   /* ── Watch data-theme changes ─────────────────────────── */
   useEffect(() => {
-    const read = () => {
-      const el = document.querySelector('[data-theme]')
-      return el?.getAttribute('data-theme') === 'dark'
-    }
+    const root = document.documentElement
+    const read = () => root.getAttribute('data-theme') === 'dark'
     setIsDark(read())
     const obs = new MutationObserver(() => setIsDark(read()))
-    obs.observe(document.body, {
+    obs.observe(root, {
       attributes:      true,
       attributeFilter: ['data-theme'],
-      subtree:         true,
+      subtree:         false,
     })
     return () => obs.disconnect()
   }, [])

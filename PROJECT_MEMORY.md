@@ -151,13 +151,13 @@ Footer note: retainer available at $800–$1,500/mo. No table headers — pure c
 
 ## Recent Changes
 
-- 2026-06-08 14:12 — next.config.ts: Edit via Claude Code
-- 2026-06-08 14:12 — TechMarquee.tsx: Edit via Claude Code
-- 2026-06-08 14:11 — next.config.ts: Edit via Claude Code
-- 2026-06-08 14:07 — TechMarquee.tsx: Edit via Claude Code
-- 2026-06-08 14:07 — TechMarquee.tsx: Edit via Claude Code
-- 2026-06-08 14:07 — TechMarquee.tsx: Write via Claude Code
-- 2026-06-08 14:05 — next.config.ts: Edit via Claude Code
-- 2026-06-08 14:05 — TechMarquee.tsx: Write via Claude Code
-- 2026-06-08 13:57 — TechMarquee.tsx: Edit via Claude Code
-- 2026-06-08 13:55 — TechMarquee.tsx: Edit via Claude Code
+- 2026-06-11 12:38 — CalendlyWidget.tsx: Edit via Claude Code
+- 2026-06-11 12:38 — ChatApp.tsx: Edit via Claude Code
+- 2026-06-11 12:38 — ChatApp.tsx: Edit via Claude Code
+- 2026-06-11 12:38 — ChatApp.tsx: Edit via Claude Code
+- 2026-06-11 12:38 — ChatApp.tsx: Edit via Claude Code
+- 2026-06-11 12:38 — next.config.ts: Edit via Claude Code
+- 2026-06-11 12:37 — debug-this-whole-project-refactored-stearns.md: Write via Claude Code
+- 2026-06-11 11:32 — next.config.ts: Edit via Claude Code
+- 2026-06-11 11:31 — next.config.ts: Edit via Claude Code
+- 2026-06-08 14:16 — .npmrc: Write via Claude Code

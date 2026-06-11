@@ -32,3 +32,5 @@ tsconfig.tsbuildinfo
 *.bak
 front-end-design-SKILL.md
 taste-SKILL.md
+
+.vercel

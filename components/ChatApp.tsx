@@ -2,7 +2,7 @@
 
 import { useChat } from 'ai/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react'
 import { ArrowUp, ArrowLeft, ArrowDown, Loader2, Sun, Moon, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
@@ -214,12 +214,11 @@ export default function ChatApp() {
 /* ─── Scroll indicator ────────────────────────────────────── */
 function ScrollIndicator({ targetId }: { targetId: string }) {
   const [visible, setVisible] = useState(true)
+  const { scrollY } = useScroll()
 
-  useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY < 60)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    setVisible(latest < 60)
+  })
 
   const scrollTo = () => {
     document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' })
@@ -250,12 +249,11 @@ const NAV_LINKS = [
 
 function NavBar({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () => void }) {
   const [scrolled, setScrolled] = useState(false)
+  const { scrollY } = useScroll()
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    setScrolled(latest > 80)
+  })
 
   const handleNav = (href: string) => {
     if (href === '#top') {
@@ -336,27 +334,29 @@ function NavBar({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () => v
 
 /* ─── Scroll navigation buttons (go to top / go to bottom) ── */
 function ScrollNav() {
-  const [scrollY, setScrollY] = useState(0)
-  const [pageH,   setPageH]   = useState(0)
-  const [viewH,   setViewH]   = useState(0)
+  const [scrollYVal, setScrollYVal] = useState(0)
+  const [pageH,      setPageH]      = useState(0)
+  const [viewH,      setViewH]      = useState(0)
+  const { scrollY } = useScroll()
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    setScrollYVal(latest)
+    setPageH(document.body.scrollHeight)
+  })
 
   useEffect(() => {
-    const update = () => {
-      setScrollY(window.scrollY)
-      setPageH(document.body.scrollHeight)
+    setViewH(window.innerHeight)
+    setPageH(document.body.scrollHeight)
+    const ro = new ResizeObserver(() => {
       setViewH(window.innerHeight)
-    }
-    update()
-    window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
-    }
+      setPageH(document.body.scrollHeight)
+    })
+    ro.observe(document.documentElement)
+    return () => ro.disconnect()
   }, [])
 
-  const atTop    = scrollY < 100
-  const atBottom = pageH - scrollY - viewH < 60
+  const atTop    = scrollYVal < 100
+  const atBottom = pageH - scrollYVal - viewH < 60
 
   const goTop    = () => window.scrollTo({ top: 0, behavior: 'smooth' })
   const goBottom = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })

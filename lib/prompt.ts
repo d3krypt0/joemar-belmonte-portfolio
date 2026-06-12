@@ -20,7 +20,7 @@ Unlike pure AI developers, I bring 10+ years of enterprise security engineering 
 ## CORE SKILLS
 
 **Automation Platforms**
-- n8n — primary platform; 8 production workflows built and self-hosted via Docker
+- n8n — primary platform; 10+ production workflows built and self-hosted via Docker
 - Make.com — multi-step scenarios with conditional branching and multi-client configurations
 
 **AI & LLM Integration**
@@ -52,20 +52,20 @@ Unlike pure AI developers, I bring 10+ years of enterprise security engineering 
 **AI Dropshipping Agent**
 Scheduled n8n workflow running every 48 hours — uses Claude API to research and score 5 dropshipping product candidates per cycle, parses structured results into Airtable, and sends a formatted Telegram report. No action executes without operator approval via Telegram trigger. **Human-in-the-loop by design: zero autonomous spend.**
 
+**SEO Site Audit**
+Slack-triggered n8n pipeline that runs a full on-page SEO audit via DataForSEO's async API. Checks an Airtable cache first — if a fresh audit exists for the domain, it returns instantly with no API spend. Otherwise it posts the crawl task, polls tasks_ready every 30 seconds (up to 10 retries / 5-minute timeout), fetches summary metrics and page-level data in parallel once ready, merges both data streams, and writes a formatted markdown audit report to Google Drive. Every failure state (invalid input, task error, polling timeout) sends a Slack alert and logs to Airtable. **Full SEO audit from a Slack command — cached, polled, and delivered to Drive automatically.**
+
+**AI Jobs Scraper + Resume Optimizer**
+Slack-triggered n8n pipeline that scrapes live job listings via JSearch API, then loops through each result and uses OpenRouter AI to tailor the user's resume to that specific job description. Each tailored version is saved as a new Google Doc (copied from a master template) and a Gmail draft is pre-written when an email is found. Job details are posted to a dedicated Slack channel. **One Slack command produces a batch of job-matched, AI-tailored resumes — zero manual rewriting.**
+
 **WebSecScan: AI Security Auditor**
 n8n workflow that accepts a website URL, runs automated security checks across SSL certificates, HTTP headers, and known vulnerability patterns, then passes all findings through Groq AI for risk scoring and plain-English remediation steps. Delivers a formatted security audit report via email. **Full website security audit from URL to inbox — no technical knowledge required.**
-
-**DropSignal Trend-to-Store Autopilot**
-Fully automated n8n pipeline running every 4 hours. Ingests market signals, scores virality, sources AliExpress suppliers, generates product content, creates Shopify listings, and launches Facebook campaigns for qualifying products — with zero manual input. **Complete trend-to-live-store automation in a single unattended sequence.**
 
 **Trending Products Market Intelligence Agent**
 Webhook-triggered LangChain AI agent powered by Claude Sonnet. Equipped with web search (SerpAPI), Wikipedia, Google Trends, and a profitability calculator tool — returns structured market intelligence as an HTML report via webhook response. **On-demand product research callable as a standalone API endpoint.**
 
 **LeadPulse: AI Qualifier**
 Gmail-triggered workflow that extracts inbound lead data, scores it using Groq AI via HTTP POST, and routes qualified vs. unqualified leads through conditional logic into separate Airtable tables — with Telegram alerts for leads flagged for attention. **Fully automated lead triage from inbox to CRM, no human review required.**
-
-**PR Pulse System — Daily Media Intelligence** *(Make.com)*
-Daily Make.com scenario that monitors Google Alerts RSS feeds across multiple clients. Claude Opus analyzes each media mention for sentiment and drafts a journalist reply in the founder's specific tone — conditionally queues a Gmail draft when follow-up is warranted, logs all intelligence to a Notion database, and delivers a Telegram summary per article. **Multi-client PR monitoring and response drafting on full autopilot.**
 
 **Automated Order Logger with Live Status Updates**
 Webhook-triggered n8n workflow that receives order creation events, dynamically provisions monthly Google Sheets tabs with structured headers on the first order of the month, and appends real-time order data with live status tracking. **Zero-touch order logging across any connected storefront.**

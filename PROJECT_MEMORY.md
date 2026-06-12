@@ -61,7 +61,7 @@ Living snapshot of the Joemar Belmonte AI Automation Portfolio. Auto-updated by 
 ### Data & config
 | File | Purpose |
 |---|---|
-| `lib/projects.ts` | `ALL_PROJECTS` array (7 projects), shared types (`ProjectData`, `PipelineNode`, `PatternType`), `detectProjectsInText()` keyword matcher |
+| `lib/projects.ts` | `ALL_PROJECTS` array (8 projects), shared types (`ProjectData`, `PipelineNode`, `PatternType`), `detectProjectsInText()` keyword matcher |
 | `lib/prompt.ts` | `SYSTEM_PROMPT` constant — Joemar's full AI persona, skills, projects, experience, and response guidelines |
 | `.claude/settings.json` | PostToolUse hook config: runs `update_memory.ps1` after every Edit or Write tool call |
 | `.claude/update_memory.ps1` | PS5.1-compatible hook script; appends timestamped entry to `## Recent Changes`; caps at 10 entries; skips PROJECT_MEMORY.md and itself |
@@ -116,15 +116,16 @@ Living snapshot of the Joemar Belmonte AI Automation Portfolio. Auto-updated by 
 
 ## Projects (ALL_PROJECTS)
 
-| Name | Type | Pattern | Accent |
-|---|---|---|---|
-| AI Media Monitoring & PR System | Make.com Automation | pipeline | `#7C3AED` |
-| n8n Lead Qualifier | CRM Automation Pipeline | branch | `#EA4B71` |
-| 6-Agent AI Dropshipping System | AI Automation Architecture | hub | `#0078B8` |
-| DropshipIQ: Product Intelligence Platform | Full-Stack Intelligence Platform | funnel | `#0090CC` |
-| MenuCostingAI | SaaS Product — Freemium | branch | `#008060` |
-| Food & Business Costing Calculator | Commercial Digital Product | grid | `#B45309` |
-| DropSignal Trend-to-Store Autopilot | End-to-End eCommerce Automation | (pipeline-only) | `#7C3AED` |
+| Name | Type | Category | Pattern | Accent |
+|---|---|---|---|---|
+| SEO Site Audit | n8n Automation | n8n | pipeline | `#F97316` |
+| AI Jobs Scraper + Resume Optimizer | n8n Automation | n8n | pipeline | `#6366F1` |
+| WebSecScan: AI Security Auditor | n8n Automation | n8n | pipeline | `#EF4444` |
+| AI Media Monitoring & PR System | Make.com Automation | Make.com | pipeline | `#7C3AED` |
+| LeadPulse: AI Qualifier | CRM Automation Pipeline | n8n | branch | `#EA4B71` |
+| 6-Agent AI Dropshipping System | AI Automation Architecture | n8n | hub | `#0078B8` |
+| DropshipIQ: Product Intelligence Platform | Full-Stack Intelligence Platform | Web Dev | funnel | `#0090CC` |
+| MenuCostingAI | SaaS Product — Freemium | Web Dev | branch | `#008060` |
 
 ---
 
@@ -151,13 +152,13 @@ Footer note: retainer available at $800–$1,500/mo. No table headers — pure c
 
 ## Recent Changes
 
-- 2026-06-11 12:38 — CalendlyWidget.tsx: Edit via Claude Code
-- 2026-06-11 12:38 — ChatApp.tsx: Edit via Claude Code
-- 2026-06-11 12:38 — ChatApp.tsx: Edit via Claude Code
-- 2026-06-11 12:38 — ChatApp.tsx: Edit via Claude Code
-- 2026-06-11 12:38 — ChatApp.tsx: Edit via Claude Code
-- 2026-06-11 12:38 — next.config.ts: Edit via Claude Code
-- 2026-06-11 12:37 — debug-this-whole-project-refactored-stearns.md: Write via Claude Code
-- 2026-06-11 11:32 — next.config.ts: Edit via Claude Code
-- 2026-06-11 11:31 — next.config.ts: Edit via Claude Code
-- 2026-06-08 14:16 — .npmrc: Write via Claude Code
+- 2026-06-12 13:15 — prompt.ts: Edit via Claude Code
+- 2026-06-12 13:14 — prompt.ts: Edit via Claude Code
+- 2026-06-12 13:02 — prompt.ts: Edit via Claude Code
+- 2026-06-12 13:01 — projects.ts: Edit via Claude Code
+- 2026-06-12 09:19 — prompt.ts: Edit via Claude Code
+- 2026-06-12 09:19 — projects.ts: Edit via Claude Code
+- 2026-06-12 09:10 — prompt.ts: Edit via Claude Code
+- 2026-06-12 09:10 — prompt.ts: Edit via Claude Code
+- 2026-06-12 09:10 — prompt.ts: Edit via Claude Code
+- 2026-06-12 09:10 — projects.ts: Edit via Claude Code

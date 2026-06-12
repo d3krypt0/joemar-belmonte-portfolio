@@ -732,8 +732,8 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         </h1>
         <p className="font-mono text-muted text-[0.82rem] tracking-[0.2em] uppercase">
           AI Automation Specialist
-          <span className="text-accent/40 mx-2.5">—</span>
-          Philippines
+          <span className="text-accent/40 mx-2.5">·</span>
+          Ex-Cybersecurity · Philippines
         </p>
         <motion.p
           className="text-muted text-[0.9rem] leading-relaxed max-w-[28rem] mx-auto"
@@ -741,8 +741,8 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.28, duration: 0.5 }}
         >
-          I turn manual business operations into AI-powered systems that run 24/7 — without adding headcount.
-          I build n8n pipelines, Make.com workflows, and AI agents that eliminate repetitive work — security-tested, documented, and built to last.
+          10+ years in cybersecurity — now building AI automation systems that run without you.
+          n8n, Make.com, multi-agent architectures, and custom tools built security-first from day one.
         </motion.p>
       </motion.div>
 

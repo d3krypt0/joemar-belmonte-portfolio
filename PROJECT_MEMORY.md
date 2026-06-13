@@ -152,13 +152,13 @@ Footer note: retainer available at $800–$1,500/mo. No table headers — pure c
 
 ## Recent Changes
 
+- 2026-06-13 19:04 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-13 18:52 — prompt.ts: Edit via Claude Code
+- 2026-06-13 18:51 — prompt.ts: Edit via Claude Code
+- 2026-06-13 18:51 — projects.ts: Edit via Claude Code
+- 2026-06-13 18:51 — projects.ts: Edit via Claude Code
 - 2026-06-12 13:15 — prompt.ts: Edit via Claude Code
 - 2026-06-12 13:14 — prompt.ts: Edit via Claude Code
 - 2026-06-12 13:02 — prompt.ts: Edit via Claude Code
 - 2026-06-12 13:01 — projects.ts: Edit via Claude Code
 - 2026-06-12 09:19 — prompt.ts: Edit via Claude Code
-- 2026-06-12 09:19 — projects.ts: Edit via Claude Code
-- 2026-06-12 09:10 — prompt.ts: Edit via Claude Code
-- 2026-06-12 09:10 — prompt.ts: Edit via Claude Code
-- 2026-06-12 09:10 — prompt.ts: Edit via Claude Code
-- 2026-06-12 09:10 — projects.ts: Edit via Claude Code

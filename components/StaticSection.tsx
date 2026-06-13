@@ -818,8 +818,8 @@ function SectionDivider() {
 /* ─── Credibility strip ───────────────────────────────────── */
 const CRED_STATS = [
   { value: '10+',  label: 'Years in Cybersecurity' },
-  { value: '8',    label: 'Production Systems Built' },
-  { value: '6',    label: 'Live API Integrations' },
+  { value: '9',    label: 'Production Systems Built' },
+  { value: '19',   label: 'Live API Integrations' },
   { value: '24/7', label: 'Autonomous Uptime' },
 ]
 

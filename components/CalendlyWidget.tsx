@@ -14,7 +14,7 @@ export default function CalendlyWidget() {
   return (
     <div
       className="calendly-inline-widget calendly-widget-wrap"
-      data-url="https://calendly.com/joemarbelmonte-automation/30min"
+      data-url="https://calendly.com/joemarbelmonte-automation/discovery-call"
       style={{ minWidth: 320, height: 700 }}
     />
   )

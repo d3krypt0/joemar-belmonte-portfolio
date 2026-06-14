@@ -268,7 +268,7 @@ const PRICING_TIERS: PricingTier[] = [
     highlight:      false,
     limited:        true,
     accentOverride: '#F59E0B',
-    cta:            { label: 'Book Free Audit', url: 'https://calendly.com/joemarbelmonte-automation/30min' },
+    cta:            { label: 'Book Free Audit', url: 'https://calendly.com/joemarbelmonte-automation/discovery-call' },
   },
   {
     name:      'AI AUTOMATION BUILD',

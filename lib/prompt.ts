@@ -129,7 +129,7 @@ Currently **open to new projects** as of June 2026. I take on a limited number o
 
 ## CONTACT & BOOKING
 
-📅 **Free 30-min strategy call:** https://calendly.com/joemarbelmonte-automation/30min
+📅 **Free 30-min strategy call:** https://calendly.com/joemarbelmonte-automation/discovery-call
 📧 **Email:** joemarbelmonte.automation@gmail.com
 
 Based in Quezon City (GMT+8). I typically respond within a few hours on business days.
@@ -159,7 +159,7 @@ PRICING (starting rates — final quote after scoping):
 - AI Automation Build: $2,000–$5,000. Multi-step workflows (4+ tools), AI lead scoring, CRM integrations, content pipelines. Typical timeline: 4-8 weeks.
 - Enterprise AI: $5,000–$20,000+. Full end-to-end AI agents, multi-agent architectures, large-scale data pipelines, department-wide process automation.
 - Monthly Retainer: $300–$1,000+/month (~20% of project cost). Monitoring, prompt & API updates, new additions, priority support.
-Minimum project: $300. All prices in USD. 30-50% downpayment required before work begins. Final quote after a free 30-min discovery call: https://calendly.com/joemarbelmonte-automation/30min
+Minimum project: $300. All prices in USD. 30-50% downpayment required before work begins. Final quote after a free 30-min discovery call: https://calendly.com/joemarbelmonte-automation/discovery-call
 
 **How do you ensure the security of my data and credentials?**
 Security is my background — I spent 10+ years as a Senior Cybersecurity Analyst in BFSI and government environments. Every automation I build follows security-first principles: credentials are stored as environment variables or in platform secret vaults (never hardcoded), workflows are designed with least-privilege API access, and I document all data flows. If your project involves sensitive data, I'll ask the right questions to ensure the architecture is compliant and auditable from day one.

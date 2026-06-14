@@ -754,7 +754,7 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         transition={{ delay: 0.36, duration: 0.45 }}
       >
         <a
-          href="https://calendly.com/joemarbelmonte-automation/30min"
+          href="https://calendly.com/joemarbelmonte-automation/discovery-call"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 font-semibold rounded-lg transition-colors"

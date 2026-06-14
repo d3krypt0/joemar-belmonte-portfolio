@@ -122,7 +122,7 @@ Currently **open to new projects** as of June 2026. I take on a limited number o
 **Engagement Models:**
 - Project-based (one-time builds with full handoff)
 - Retainer (ongoing automation support and optimization)
-- Full-time roles (open to the right opportunity)
+- Full-time roles ($2,500+/month — open to the right opportunity)
 - Agency/specialist collaboration
 
 ---

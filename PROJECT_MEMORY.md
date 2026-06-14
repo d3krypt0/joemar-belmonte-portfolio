@@ -131,15 +131,17 @@ Living snapshot of the Joemar Belmonte AI Automation Portfolio. Auto-updated by 
 
 ## Pricing Tiers (PricingTable in ServicesSection)
 
-Shopify-style 3-card grid (`grid-cols-1 md:grid-cols-3`). Middle card highlighted with accent border + "Most Popular" badge.
+5-card grid (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-5`). AI Automation Build highlighted with accent border + "Recommended" badge. Founding Client has amber border + "Limited" badge.
 
 | Tier | Price Range | Highlight |
 |---|---|---|
-| Automation Starter | $500–$1,500 | no |
-| Growth Automation System | $1,500–$3,500 | yes — accent border + tinted bg + "Most Popular" badge |
-| AI Workforce Package | $3,500–$8,000 | no |
+| Simple Automation | $300–$1,500 | no |
+| Founding Client | From $750 | amber border + "Limited" badge |
+| AI Automation Build | $2,000–$5,000 | yes — accent border + tinted bg + "Recommended" badge |
+| Enterprise AI | $5,000–$20,000+ | no |
+| Monthly Retainer | $300–$1,000+/mo | no |
 
-Footer note: retainer available at $800–$1,500/mo. No table headers — pure card layout with checkmark lists.
+Footer note: retainer ~20% of project cost, 30-50% downpayment required. No table headers — pure card layout with checkmark lists.
 
 ---
 
@@ -152,13 +154,13 @@ Footer note: retainer available at $800–$1,500/mo. No table headers — pure c
 
 ## Recent Changes
 
-- 2026-06-13 19:04 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-13 18:52 — prompt.ts: Edit via Claude Code
-- 2026-06-13 18:51 — prompt.ts: Edit via Claude Code
-- 2026-06-13 18:51 — projects.ts: Edit via Claude Code
-- 2026-06-13 18:51 — projects.ts: Edit via Claude Code
-- 2026-06-12 13:15 — prompt.ts: Edit via Claude Code
-- 2026-06-12 13:14 — prompt.ts: Edit via Claude Code
-- 2026-06-12 13:02 — prompt.ts: Edit via Claude Code
-- 2026-06-12 13:01 — projects.ts: Edit via Claude Code
-- 2026-06-12 09:19 — prompt.ts: Edit via Claude Code
+- 2026-06-14 14:06 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-14 14:02 — prompt.ts: Edit via Claude Code
+- 2026-06-14 14:02 — prompt.ts: Edit via Claude Code
+- 2026-06-14 14:02 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-14 14:01 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-14 14:01 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-14 14:01 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-14 13:44 — prompt.ts: Edit via Claude Code
+- 2026-06-14 13:43 — prompt.ts: Edit via Claude Code
+- 2026-06-14 13:43 — StaticSection.tsx: Edit via Claude Code

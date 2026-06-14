@@ -247,11 +247,11 @@ interface PricingTier {
 
 const PRICING_TIERS: PricingTier[] = [
   {
-    name:      'AUTOMATION STARTER',
-    priceFrom: '$500',
+    name:      'SIMPLE AUTOMATION',
+    priceFrom: '$300',
     priceTo:   '$1,500',
-    tagline:   'Targeted automation for a single process or workflow.',
-    items:     ['CRM automation', 'Lead routing', 'Email workflows', 'Internal process automation'],
+    tagline:   'Single-process workflows connecting 2-3 tools. Includes AI audit and strategy sessions.',
+    items:     ['Basic chatbot setup', '2-3 tool workflow builds', 'Lead capture & notifications', 'AI audit + roadmap ($500-$1,000)'],
     highlight: false,
   },
   {
@@ -271,27 +271,27 @@ const PRICING_TIERS: PricingTier[] = [
     cta:            { label: 'Book Free Audit', url: 'https://calendly.com/joemarbelmonte-automation/30min' },
   },
   {
-    name:      'GROWTH AUTOMATION SYSTEM',
-    priceFrom: '$3,000',
-    priceTo:   '$8,000',
-    tagline:   'Autonomous AI pipelines that connect your entire stack and run without supervision.',
-    items:     ['Multi-step AI workflows', 'AI lead qualification', 'CRM + Email + Slack integration', 'Reporting & monitoring systems'],
+    name:      'AI AUTOMATION BUILD',
+    priceFrom: '$2,000',
+    priceTo:   '$5,000',
+    tagline:   'Multi-step AI pipelines with 4+ tool integrations built to run without you.',
+    items:     ['Multi-step n8n workflows (4+ tools)', 'AI lead qualification & scoring', 'CRM + Slack + email integration', 'Monitoring, alerting & reporting'],
     highlight: true,
   },
   {
-    name:      'ECOMMERCE AUTOMATION',
-    priceFrom: '$2,000',
-    priceTo:   '$5,000',
-    tagline:   'Shopify store automation and eCommerce infrastructure built to run your store with minimal manual work.',
-    items:     ['Shopify store setup & automation', 'Supplier & inventory automation', 'Meta Ads integration', 'Brand launch infrastructure'],
+    name:      'ENTERPRISE AI',
+    priceFrom: '$5,000',
+    priceTo:   '$20,000+',
+    tagline:   'Full end-to-end AI agents and large-scale automation across entire business operations.',
+    items:     ['End-to-end AI agent systems', 'Multi-agent architectures', 'Large-scale data pipelines', 'Department-wide process automation'],
     highlight: false,
   },
   {
-    name:      'RETAINER / ONGOING',
-    priceFrom: '$800',
-    priceTo:   '$1,500/mo',
-    tagline:   'Monthly maintenance, improvements, and priority support for existing systems.',
-    items:     ['Workflow monitoring & fixes', 'New automation additions', 'Priority response', 'Monthly performance reports'],
+    name:      'MONTHLY RETAINER',
+    priceFrom: '$300',
+    priceTo:   '$1,000+/mo',
+    tagline:   'Ongoing maintenance, prompt updates, API changes, and new feature additions.',
+    items:     ['Workflow monitoring & fixes', 'Prompt updates & API changes', 'New automation additions', 'Priority response'],
     highlight: false,
   },
 ]
@@ -311,7 +311,7 @@ function PricingTable() {
           className="font-display font-bold text-3xl sm:text-4xl mt-2 leading-tight"
           style={{ color: 'var(--color-text)' }}
         >
-          Simple, Transparent Rates
+          Transparent, Value-Based Rates
         </h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
@@ -431,7 +431,7 @@ function PricingTable() {
 
       {/* Footer note */}
       <p className="mt-5 text-[12px] text-center" style={{ color: 'var(--color-muted)' }}>
-        Final quote depends on integrations and timeline — book a free scoping call.
+        Retainer priced at ~20% of project cost. 30-50% downpayment required to start. Final quote after a free scoping call.
       </p>
     </Reveal>
   )
@@ -511,7 +511,7 @@ const WHY_BULLETS = [
   {
     icon:  '🚀',
     title: 'Production Deployments, Not Demos',
-    desc:  'The workflows I showcase are live and running — self-hosted on Docker, connected to real APIs, handling real data. I don\'t build prototypes for portfolios. I build systems that run at 2am without me.',
+    desc:  'The workflows I showcase are live and running — connected to real APIs, processing real data, triggered by real events. I don\'t build prototypes for portfolios. I build systems that run at 2am without me.',
   },
 ]
 

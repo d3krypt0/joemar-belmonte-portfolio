@@ -49,6 +49,9 @@ Unlike pure AI developers, I bring 10+ years of enterprise security engineering 
 
 ## PROJECTS
 
+**Dropshipping AI Content Hub**
+Form-triggered n8n workflow with five AI content branches — each routed by task type. Research branch generates market trends, competitor analysis, pricing strategy, and SEO keywords. Description branch fetches live Shopify product data and writes a full SEO-optimized copy block (headline, paragraphs, features, meta). Ad Copy branch produces three platform-ready variants (Facebook, Instagram, Google) in one run. Support branch drafts empathetic customer replies. Analysis branch pulls 30 days of Shopify order history, summarizes revenue/refunds/top products, and generates actionable sales insights. All five branches run through a local Ollama LLM (zero cloud AI cost) and save output to an Airtable Content Review Queue marked Pending Review. **One form. Five AI pipelines. Results in Airtable in 1–2 minutes.**
+
 **AI Dropshipping Agent**
 Scheduled n8n workflow running every 48 hours — uses Claude API to research and score 5 dropshipping product candidates per cycle, parses structured results into Airtable, and sends a formatted Telegram report. No action executes without operator approval via Telegram trigger. **Human-in-the-loop by design: zero autonomous spend.**
 
@@ -76,14 +79,11 @@ Webhook-triggered n8n workflow that receives order creation events, dynamically 
 **3D Product Video Generator**
 Form-triggered n8n pipeline that accepts a product image, removes background via external API, uploads assets to Google Drive, submits to a 3D video generation API, polls render status until complete, logs the final video URL to Google Sheets, and sends an email notification on delivery. **Hands-free product video creation from a single image upload.**
 
-**6-Agent AI Dropshipping System**
-Production-ready multi-agent platform using Claude API and self-hosted n8n. Agents cover Product Research, Supplier Research, Ad Creative, Analytics, Store Operations, and Customer Service — with Telegram approval gates on all money-impacting decisions. **Enterprise-grade agent architecture with zero autonomous spend.**
-
 **MenuCostingAI**
 AI SaaS for restaurant costing and profitability analysis. Built with Claude Vision API for menu parsing and cost extraction. Currently in beta with pilot restaurant users in the Philippines. **Claude reads the menu; the system does the math.**
 
 **AI Media Monitoring & PR System** *(Make.com)*
-A 6-module Make.com automation that runs daily at 7AM. It scans Google Alerts RSS feeds for client mentions in the last 24 hours, passes each mention to Claude API for sentiment analysis and draft reply generation in the founder's voice, queues Gmail drafts for journalist follow-ups (human-reviewed before sending), logs everything to a Notion Publications database, and sends a Telegram morning brief to the team. Integrations: Make.com, Claude API, Google Alerts RSS, Gmail, Notion, Telegram Bot. The system eliminates manual media monitoring entirely. **6 modules. Zero missed mentions.**
+A 6-module Make.com automation that runs daily at 7AM. It scans Google Alerts RSS feeds for client mentions in the last 24 hours, passes each mention to Groq API for sentiment analysis and draft reply generation in the founder's voice, queues Gmail drafts for journalist follow-ups (human-reviewed before sending), logs everything to a Notion Publications database, and sends a Telegram morning brief to the team. Integrations: Make.com, Groq API, Google Alerts RSS, Gmail, Notion, Telegram Bot. The system eliminates manual media monitoring entirely. **6 modules. Zero missed mentions.**
 
 ---
 

@@ -33,19 +33,19 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
   return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(6px)' }}
+      style={{ background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(8px)' }}
       onClick={onClose}
     >
       <div
         className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl flex flex-col"
-        style={{ background: '#12121c', border: `1px solid ${project.accent}55` }}
+        style={{ background: '#ffffff', border: `1px solid ${project.accent}44`, boxShadow: '0 24px 64px rgba(0,0,0,0.35)' }}
         onClick={e => e.stopPropagation()}
       >
         {/* Close button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 flex items-center justify-center w-8 h-8 rounded-full"
-          style={{ background: '#ffffff22', color: '#d0d0e0', fontSize: 16, fontWeight: 600 }}
+          style={{ background: '#00000012', color: '#444444', fontSize: 16, fontWeight: 600 }}
           aria-label="Close modal"
         >
           ✕
@@ -54,8 +54,8 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
         {/* Workflow image */}
         <div
           style={{
-            background:   '#08080f',
-            borderBottom: `1px solid ${project.accent}30`,
+            background:   '#f4f4f4',
+            borderBottom: `1px solid ${project.accent}22`,
             borderRadius: '16px 16px 0 0',
             position:     'relative',
             flexShrink:   0,
@@ -69,8 +69,8 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
               style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '16px 16px 0 0' }}
             />
           ) : (
-            <div className="relative flex items-center justify-center" style={{ height: 280 }}>
-              <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+            <div className="relative flex items-center justify-center" style={{ height: 220 }}>
+              <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <pattern id={`modal-grid-${slugId(project.name)}`} width="32" height="32" patternUnits="userSpaceOnUse">
                     <path d="M 32 0 L 0 0 0 32" fill="none" stroke={project.accent} strokeWidth="0.5" />
@@ -79,30 +79,30 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
                 <rect width="100%" height="100%" fill={`url(#modal-grid-${slugId(project.name)})`} />
               </svg>
               <div className="relative z-10 flex flex-col items-center gap-3 text-center px-8">
-                <div className="flex items-center gap-2 opacity-40">
+                <div className="flex items-center gap-2 opacity-50">
                   {(project.pills ?? ['—']).slice(0, 3).map((p, i) => (
                     <div key={p} className="flex items-center gap-2">
-                      <div className="px-3 py-1 rounded text-xs font-mono" style={{ border: `1px solid ${project.accent}66`, color: project.accent }}>{p}</div>
+                      <div className="px-3 py-1 rounded text-xs font-mono" style={{ border: `1px solid ${project.accent}88`, color: project.accent }}>{p}</div>
                       {i < (project.pills ?? []).slice(0, 3).length - 1 && (
                         <svg width="24" height="2" viewBox="0 0 24 2"><line x1="0" y1="1" x2="24" y2="1" stroke={project.accent} strokeWidth="1" strokeDasharray="4 2" /></svg>
                       )}
                     </div>
                   ))}
                 </div>
-                <p style={{ color: '#666688', fontSize: 13, fontFamily: 'monospace' }}>Workflow screenshot coming soon</p>
+                <p style={{ color: '#888888', fontSize: 13, fontFamily: 'monospace' }}>Workflow screenshot coming soon</p>
               </div>
             </div>
           )}
         </div>
 
         {/* Modal body */}
-        <div className="px-7 py-6 flex flex-col gap-6">
+        <div className="px-7 py-6 flex flex-col gap-6" style={{ background: '#ffffff' }}>
           <h2
             style={{
               fontFamily: 'var(--font-display, system-ui)',
               fontWeight: 700,
               fontSize:   22,
-              color:      '#f0f0f8',
+              color:      '#0f0f0f',
               lineHeight: 1.2,
             }}
           >
@@ -124,7 +124,7 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
             >
               How it works
             </p>
-            <p style={{ fontSize: 14, color: '#b8b8cc', lineHeight: 1.75 }}>
+            <p style={{ fontSize: 14, color: '#444444', lineHeight: 1.8 }}>
               {project.solution ?? project.description}
             </p>
           </div>
@@ -150,22 +150,31 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
                   <div key={step.num} className="flex gap-4">
                     <span
                       style={{
-                        fontFamily:  'monospace',
-                        fontSize:    12,
-                        color:       project.accent,
-                        opacity:     0.75,
-                        flexShrink:  0,
-                        paddingTop:  1,
-                        minWidth:    24,
+                        display:      'inline-flex',
+                        alignItems:   'center',
+                        justifyContent: 'center',
+                        width:        28,
+                        height:       28,
+                        borderRadius: '50%',
+                        background:   `${project.accent}18`,
+                        border:       `1px solid ${project.accent}55`,
+                        fontFamily:   'monospace',
+                        fontSize:     11,
+                        fontWeight:   700,
+                        color:        project.accent,
+                        flexShrink:   0,
                       }}
                     >
                       {step.num}
                     </span>
-                    <div>
-                      <p style={{ fontSize: 13, fontWeight: 600, color: '#e0e0f0', margin: 0, lineHeight: 1.4 }}>
+                    <div style={{ paddingTop: 2 }}>
+                      <p style={{ fontSize: 13, fontWeight: 600, color: '#111111', margin: 0, lineHeight: 1.4 }}>
                         {step.title}
                       </p>
-                      <p style={{ fontSize: 12, color: '#9090a8', margin: '3px 0 0', lineHeight: 1.65 }}>
+                      <p style={{ fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.04em', color: project.accent, margin: '2px 0 3px', opacity: 0.8 }}>
+                        {step.integration}
+                      </p>
+                      <p style={{ fontSize: 12, color: '#555555', margin: 0, lineHeight: 1.65 }}>
                         {step.desc}
                       </p>
                     </div>
@@ -176,7 +185,7 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
           )}
 
           {/* Systems / integrations */}
-          <div>
+          <div style={{ borderTop: `1px solid #ebebeb`, paddingTop: 20 }}>
             <p
               style={{
                 fontFamily:    'monospace',
@@ -195,9 +204,9 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
                 <span
                   key={s}
                   style={{
-                    background:    `${project.accent}20`,
-                    border:        `1px solid ${project.accent}55`,
-                    color:         '#e8e8f8',
+                    background:    `${project.accent}12`,
+                    border:        `1px solid ${project.accent}44`,
+                    color:         '#222222',
                     borderRadius:  6,
                     padding:       '5px 12px',
                     fontSize:      12,

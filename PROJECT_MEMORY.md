@@ -154,13 +154,13 @@ Footer note: retainer ~20% of project cost, 30-50% downpayment required. No tabl
 
 ## Recent Changes
 
-- 2026-06-14 14:19 — PRICING_STRATEGY.md: Write via Claude Code
-- 2026-06-14 14:10 — prompt.ts: Edit via Claude Code
-- 2026-06-14 14:06 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-14 14:02 — prompt.ts: Edit via Claude Code
-- 2026-06-14 14:02 — prompt.ts: Edit via Claude Code
-- 2026-06-14 14:02 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-14 14:01 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-14 14:01 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-14 14:01 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-14 13:44 — prompt.ts: Edit via Claude Code
+- 2026-06-15 23:16 — code-review.md: Write via Claude Code
+- 2026-06-15 23:13 — next.config.ts: Edit via Claude Code
+- 2026-06-15 23:12 — route.ts: Edit via Claude Code
+- 2026-06-15 23:10 — perform-a-security-check-curried-frost.md: Write via Claude Code
+- 2026-06-15 19:42 — localhost.md: Write via Claude Code
+- 2026-06-15 18:46 — push.md: Write via Claude Code
+- 2026-06-15 18:37 — TechMarquee.tsx: Edit via Claude Code
+- 2026-06-15 18:37 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-15 18:35 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-15 18:35 — StaticSection.tsx: Edit via Claude Code

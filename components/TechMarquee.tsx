@@ -145,7 +145,7 @@ export default function TechMarquee() {
   return (
     <section
       id="tech"
-      className="py-20 sm:py-24 px-5"
+      className="py-20 sm:py-28 px-5"
       style={{ borderTop: '1px solid var(--color-border)' }}
     >
       <div className="max-w-6xl mx-auto">

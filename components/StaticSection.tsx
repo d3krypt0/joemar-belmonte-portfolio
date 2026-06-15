@@ -298,8 +298,7 @@ const PRICING_TIERS: PricingTier[] = [
 
 function PricingTable() {
   return (
-    <Reveal className="mt-20">
-      <div style={{ borderTop: '1px solid var(--color-border)', marginBottom: 64 }} />
+    <Reveal>
       <div className="text-center mb-12">
         <span
           className="font-mono text-[11px] uppercase tracking-[0.22em]"
@@ -461,7 +460,7 @@ const SERVICES = [
 
 function ServicesSection() {
   return (
-    <section id="services" className="py-20 sm:py-28 px-5">
+    <section id="services" className="py-20 sm:py-28 px-5" style={{ borderTop: '1px solid var(--color-border)' }}>
       <div className="max-w-6xl mx-auto">
         <SectionHeading eyebrow="Services" title="What I Build" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -490,6 +489,19 @@ function ServicesSection() {
             </Reveal>
           ))}
         </div>
+      </div>
+    </section>
+  )
+}
+
+function PricingSection() {
+  return (
+    <section
+      id="pricing"
+      className="py-20 sm:py-28 px-5"
+      style={{ borderTop: '1px solid var(--color-border)' }}
+    >
+      <div className="max-w-6xl mx-auto">
         <PricingTable />
       </div>
     </section>
@@ -797,78 +809,16 @@ function ContactSection() {
   )
 }
 
-/* ─── Divider between chat and portfolio ──────────────────── */
-function SectionDivider() {
-  return (
-    <div
-      className="flex flex-col items-center py-8 gap-2"
-      style={{ borderTop: '1px solid var(--color-border)' }}
-    >
-      <span
-        className="font-mono text-[10px] uppercase tracking-[0.22em]"
-        style={{ color: 'var(--color-muted)', opacity: 0.5 }}
-      >
-        Portfolio
-      </span>
-      <div className="w-px h-8" style={{ background: 'var(--color-border)' }} />
-    </div>
-  )
-}
-
-/* ─── Credibility strip ───────────────────────────────────── */
-const CRED_STATS = [
-  { value: '10+',  label: 'Years in Cybersecurity' },
-  { value: '9',    label: 'Production Systems Built' },
-  { value: '19',   label: 'Live API Integrations' },
-  { value: '24/7', label: 'Autonomous Uptime' },
-]
-
-function CredibilityStrip() {
-  return (
-    <Reveal>
-      <div
-        className="max-w-6xl mx-auto px-5 py-8"
-        style={{ borderBottom: '1px solid var(--color-border)' }}
-      >
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-0 sm:divide-x"
-          style={{ '--tw-divide-opacity': 1, borderColor: 'var(--color-border)' } as React.CSSProperties}
-        >
-          {CRED_STATS.map((s, i) => (
-            <div
-              key={s.label}
-              className="flex flex-col items-center text-center px-4"
-              style={i > 0 ? { borderLeft: '1px solid var(--color-border)' } : {}}
-            >
-              <span
-                className="font-display font-bold text-3xl tabular-nums"
-                style={{ color: 'var(--color-accent)' }}
-              >
-                {s.value}
-              </span>
-              <span
-                className="font-mono text-[10px] uppercase tracking-[0.16em] mt-1"
-                style={{ color: 'var(--color-muted)' }}
-              >
-                {s.label}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </Reveal>
-  )
-}
 
 /* ─── Export ──────────────────────────────────────────────── */
 export default function StaticSection() {
   return (
     <div style={{ background: 'var(--color-bg)' }}>
-      <SectionDivider />
-      <CredibilityStrip />
       <ServicesSection />
-      <WhySection />
       <TechMarquee />
       <WorkSection />
+      <WhySection />
+      <PricingSection />
       <ContactSection />
       <footer
         className="py-8 px-5 text-center"

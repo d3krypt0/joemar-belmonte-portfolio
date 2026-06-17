@@ -13,20 +13,20 @@ const syne = Syne({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://joemar-belmonte-portfolio.vercel.app'),
-  title: 'Joemar Belmonte — AI Automation Specialist',
+  title: 'Joemar Belmonte - AI Automation Specialist',
   description:
     "Chat with Joemar's AI avatar to learn about his projects, skills, and how he can automate your business with n8n, Make.com, and custom AI workflows.",
   openGraph: {
-    title: 'Joemar Belmonte — AI Automation Specialist',
+    title: 'Joemar Belmonte - AI Automation Specialist',
     description:
       'Ask me anything about AI automation, n8n, Make.com, or how I can help your business run on autopilot.',
     type: 'website',
     locale: 'en_US',
-    images: [{ url: '/avatar.png', width: 400, height: 400, alt: 'Joemar Belmonte — AI Automation Specialist' }],
+    images: [{ url: '/avatar.png', width: 400, height: 400, alt: 'Joemar Belmonte - AI Automation Specialist' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Joemar Belmonte — AI Automation Specialist',
+    title: 'Joemar Belmonte - AI Automation Specialist',
     description: 'Interactive AI portfolio. Ask me anything.',
     images: ['/avatar.png'],
   },

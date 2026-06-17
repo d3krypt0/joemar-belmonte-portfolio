@@ -6,8 +6,9 @@ import { type ProjectData } from '@/lib/projects'
 import { useVisible } from '@/lib/hooks'
 
 interface Props {
-  project: ProjectData
-  delay?:  number
+  project:      ProjectData
+  delay?:       number
+  skipReveal?:  boolean
 }
 
 const slugId = (name: string) => name.replace(/[^a-z0-9]/gi, '-').toLowerCase()
@@ -80,7 +81,7 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
               </svg>
               <div className="relative z-10 flex flex-col items-center gap-3 text-center px-8">
                 <div className="flex items-center gap-2 opacity-50">
-                  {(project.pills ?? ['—']).slice(0, 3).map((p, i) => (
+                  {(project.pills ?? ['-']).slice(0, 3).map((p, i) => (
                     <div key={p} className="flex items-center gap-2">
                       <div className="px-3 py-1 rounded text-xs font-mono" style={{ border: `1px solid ${project.accent}88`, color: project.accent }}>{p}</div>
                       {i < (project.pills ?? []).slice(0, 3).length - 1 && (
@@ -226,8 +227,9 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
   )
 }
 
-export default function ProjectCard({ project, delay = 0 }: Props) {
-  const { ref, vis } = useVisible(0.08)
+export default function ProjectCard({ project, delay = 0, skipReveal = false }: Props) {
+  const { ref, vis: rawVis } = useVisible(0.08)
+  const vis = skipReveal ? true : rawVis
   const [hovered, setHovered]   = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
 
@@ -284,7 +286,7 @@ export default function ProjectCard({ project, delay = 0 }: Props) {
             ) : (
               <div className="relative z-10 flex flex-col items-center gap-2 opacity-30">
                 <div className="flex items-center gap-2">
-                  {(project.pills ?? ['—']).slice(0, 3).map((p, i) => (
+                  {(project.pills ?? ['-']).slice(0, 3).map((p, i) => (
                     <div key={p} className="flex items-center gap-2">
                       <div className="px-2 py-0.5 rounded text-xs font-mono" style={{ border: `1px solid ${project.accent}66`, color: project.accent }}>{p}</div>
                       {i < (project.pills ?? []).slice(0, 3).length - 1 && (

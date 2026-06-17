@@ -1,9 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { motion } from 'motion/react'
 import dynamic from 'next/dynamic'
+import { GearSix, Robot, Wrench, Lock, Rocket, Copy, Check, CaretLeft, CaretRight, type Icon } from '@phosphor-icons/react'
 import { ALL_PROJECTS, type ProjectData, type PipelineNode, type ProjectCategory } from '@/lib/projects'
-import { useVisible } from '@/lib/hooks'
+import { useVisible, useReducedMotionSafe } from '@/lib/hooks'
 import ProjectCard from './ProjectCard'
 import TechMarquee from './TechMarquee'
 
@@ -20,14 +22,15 @@ function Reveal({
   delay?: number
 }) {
   const { ref, vis } = useVisible(0.08)
+  const reduce = useReducedMotionSafe()
   return (
     <div
       ref={ref}
       className={className}
       style={{
-        opacity:    vis ? 1 : 0,
-        transform:  vis ? 'translateY(0)' : 'translateY(16px)',
-        transition: `opacity 500ms ease-out ${delay}ms, transform 500ms ease-out ${delay}ms`,
+        opacity:    reduce ? 1 : vis ? 1 : 0,
+        transform:  reduce ? 'none' : vis ? 'translateY(0)' : 'translateY(16px)',
+        transition: reduce ? 'none' : `opacity 500ms ease-out ${delay}ms, transform 500ms ease-out ${delay}ms`,
       }}
     >
       {children}
@@ -36,15 +39,17 @@ function Reveal({
 }
 
 /* ─── Section heading ─────────────────────────────────────── */
-function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
+function SectionHeading({ eyebrow, title }: { eyebrow?: string; title: string }) {
   return (
     <Reveal className="text-center mb-12 sm:mb-16">
-      <span
-        className="font-mono text-[11px] uppercase tracking-[0.22em]"
-        style={{ color: 'var(--color-accent)' }}
-      >
-        {eyebrow}
-      </span>
+      {eyebrow && (
+        <span
+          className="font-mono text-[11px] uppercase tracking-[0.22em]"
+          style={{ color: 'var(--color-accent)' }}
+        >
+          {eyebrow}
+        </span>
+      )}
       <h2
         className="font-display font-bold text-3xl sm:text-4xl mt-2 leading-tight"
         style={{ color: 'var(--color-text)' }}
@@ -234,15 +239,12 @@ function ExpandedProjectCard({ project, delay = 0 }: { project: ProjectData; del
 
 /* ─── Pricing table (Shopify-style cards) ────────────────── */
 interface PricingTier {
-  name:            string
-  priceFrom:       string
-  priceTo?:        string
-  tagline:         string
-  items:           string[]
-  highlight:       boolean
-  limited?:        boolean
-  accentOverride?: string
-  cta?:            { label: string; url: string }
+  name:      string
+  priceFrom: string
+  priceTo?:  string
+  tagline:   string
+  items:     string[]
+  highlight: boolean
 }
 
 const PRICING_TIERS: PricingTier[] = [
@@ -255,20 +257,12 @@ const PRICING_TIERS: PricingTier[] = [
     highlight: false,
   },
   {
-    name:           'FOUNDING CLIENT',
-    priceFrom:      'From $750',
-    tagline:        '10+ years of security engineering, now applied to business automation. Founding clients get direct access and below-market rates.',
-    items:          [
-      'Free Automation Audit (30 min)',
-      'Project build from $750',
-      '30 days post-launch support',
-      'Case study — you approve before publish',
-      '5 slots only — limited intake',
-    ],
-    highlight:      false,
-    limited:        true,
-    accentOverride: '#F59E0B',
-    cta:            { label: 'Book Free Audit', url: 'https://calendly.com/joemarbelmonte-automation/discovery-call' },
+    name:      'HOURLY PART-TIME / FULL-TIME',
+    priceFrom: '$10',
+    priceTo:   '$15/hr',
+    tagline:   'Flexible part-time or full-time engagement billed hourly. Ideal for ongoing builds, embedded team work, or dedicated automation support.',
+    items:     ['Part-time or full-time hours', 'Dedicated async collaboration', 'Workflow builds & iterations', 'Weekly progress reporting'],
+    highlight: false,
   },
   {
     name:      'AI AUTOMATION BUILD',
@@ -314,26 +308,20 @@ function PricingTable() {
         </h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-        {PRICING_TIERS.map(tier => {
-          const accent = tier.accentOverride ?? 'var(--color-accent)'
-          return (
+        {PRICING_TIERS.map(tier => (
             <div
               key={tier.name}
               className="relative rounded-xl p-3.5 flex flex-col"
               style={{
                 background: tier.highlight
                   ? 'color-mix(in srgb, var(--color-accent) 5%, var(--color-surface))'
-                  : tier.limited
-                  ? `color-mix(in srgb, ${tier.accentOverride} 6%, var(--color-surface))`
                   : 'var(--color-surface)',
                 border: tier.highlight
                   ? '2px solid var(--color-accent)'
-                  : tier.limited
-                  ? `2px solid ${tier.accentOverride}99`
                   : '1px solid var(--color-border)',
               }}
             >
-              {/* Badges */}
+              {/* Recommended badge */}
               {tier.highlight && (
                 <span
                   className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase whitespace-nowrap"
@@ -342,19 +330,11 @@ function PricingTable() {
                   Recommended
                 </span>
               )}
-              {tier.limited && (
-                <span
-                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase whitespace-nowrap"
-                  style={{ background: tier.accentOverride, color: '#1a0800' }}
-                >
-                  Limited
-                </span>
-              )}
 
               {/* Plan name */}
               <p
                 className="font-mono text-[9px] font-bold tracking-[0.18em] uppercase mb-3"
-                style={{ color: accent }}
+                style={{ color: 'var(--color-accent)' }}
               >
                 {tier.name}
               </p>
@@ -372,12 +352,12 @@ function PricingTable() {
                     className="font-display font-semibold"
                     style={{ fontSize: 14, color: 'var(--color-muted)' }}
                   >
-                    – {tier.priceTo}
+                    - {tier.priceTo}
                   </span>
                 )}
               </div>
               <p className="text-[10px] mb-3" style={{ color: 'var(--color-muted)' }}>
-                {tier.limited ? 'Below-market rate — 5 slots only.' : 'Starting price. Final quote after scoping.'}
+                Starting price. Final quote after scoping.
               </p>
 
               {/* Tagline */}
@@ -396,36 +376,18 @@ function PricingTable() {
                 className="font-mono text-[9px] font-bold tracking-[0.14em] uppercase mb-2"
                 style={{ color: 'var(--color-muted)' }}
               >
-                {tier.limited ? "What's included" : 'Perfect for'}
+                Perfect for
               </p>
               <ul className="flex flex-col gap-2 flex-1">
                 {tier.items.map(item => (
                   <li key={item} className="flex items-start gap-2 text-[12px]" style={{ color: 'var(--color-muted)' }}>
-                    <span style={{ color: accent, flexShrink: 0, marginTop: 1 }}>✓</span>
+                    <span style={{ color: 'var(--color-accent)', flexShrink: 0, marginTop: 1 }}>✓</span>
                     {item}
                   </li>
                 ))}
               </ul>
-
-              {/* CTA (Founding Client only) */}
-              {tier.cta && (
-                <a
-                  href={tier.cta.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 w-full inline-flex items-center justify-center gap-1.5 rounded-lg font-semibold text-[12px] transition-opacity hover:opacity-85"
-                  style={{
-                    background: tier.accentOverride,
-                    color:      '#1a0800',
-                    padding:    '9px 12px',
-                  }}
-                >
-                  → {tier.cta.label}
-                </a>
-              )}
             </div>
-          )
-        })}
+        ))}
       </div>
 
       {/* Footer note */}
@@ -437,23 +399,23 @@ function PricingTable() {
 }
 
 /* ─── Services section ────────────────────────────────────── */
-const SERVICES = [
+const SERVICES: { icon: Icon; title: string; description: string; deliverables: string[] }[] = [
   {
-    icon:         '⚙️',
+    icon:         GearSix,
     title:        'Business Process Automation',
-    description:  'Custom workflows that connect your tools, trigger on real events, and eliminate repetitive work automatically — lead scoring, CRM routing, media monitoring, and more.',
+    description:  'Custom workflows that connect your tools, trigger on real events, and eliminate repetitive work automatically - lead scoring, CRM routing, media monitoring, and more.',
     deliverables: ['n8n workflow builds', 'Make.com scenarios', 'AI-powered lead scoring & triage', 'Automated email & Telegram reports', 'CRM routing & Airtable logging'],
   },
   {
-    icon:         '🤖',
+    icon:         Robot,
     title:        'Multi-Agent AI Systems',
-    description:  'Autonomous AI pipelines where multiple specialized agents work in sequence — researching, deciding, and acting. Agents propose actions; you approve via Telegram before execution.',
+    description:  'Autonomous AI pipelines where multiple specialized agents work in sequence - researching, deciding, and acting. Agents propose actions; you approve via Telegram before execution.',
     deliverables: ['Multi-agent Claude API architecture', 'n8n orchestration layer', 'Telegram approval gates', 'Airtable & Shopify integration', 'Docker self-hosted deployment'],
   },
   {
-    icon:         '🛠️',
+    icon:         Wrench,
     title:        'Custom Tools & Dashboards',
-    description:  'Custom-built tools your team actually uses — live API dashboards, AI-powered SaaS products, and Excel systems built to sell commercially.',
+    description:  'Custom-built tools your team actually uses - live API dashboards, AI-powered SaaS products, and Excel systems built to sell commercially.',
     deliverables: ['React / Next.js platforms', 'Live API integrations (Meta Ads, Trends)', 'Railway / Docker deployment', 'Commercial Excel tools', 'Python automation (openpyxl)'],
   },
 ]
@@ -470,7 +432,9 @@ function ServicesSection() {
                 className="h-full rounded-xl p-6 flex flex-col"
                 style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
               >
-                <div className="text-3xl mb-4">{s.icon}</div>
+                <div className="mb-4" style={{ color: 'var(--color-accent)' }}>
+                  <s.icon size={30} weight="duotone" />
+                </div>
                 <h3 className="font-display font-bold text-lg mb-2" style={{ color: 'var(--color-text)' }}>
                   {s.title}
                 </h3>
@@ -509,21 +473,21 @@ function PricingSection() {
 }
 
 /* ─── Why Work With Me section ───────────────────────────── */
-const WHY_BULLETS = [
+const WHY_BULLETS: { icon: Icon; title: string; desc: string }[] = [
   {
-    icon:  '🔒',
+    icon:  Lock,
     title: '10+ Years Cybersecurity Background',
-    desc:  'Every system I build is security-reviewed from the start — auditable data flows, least-privilege API access, and no silent failure points. You get automation that your security team can actually sign off on.',
+    desc:  'Every system I build is security-reviewed from the start - auditable data flows, least-privilege API access, and no silent failure points. You get automation that your security team can actually sign off on.',
   },
   {
-    icon:  '🤖',
+    icon:  Robot,
     title: 'Multi-Agent Architecture Expertise',
-    desc:  'I design and deploy systems where multiple AI agents coordinate — each specialized, each accountable. Not chatbots. Actual agent pipelines with human approval gates on every consequential action.',
+    desc:  'I design and deploy systems where multiple AI agents coordinate - each specialized, each accountable. Not chatbots. Actual agent pipelines with human approval gates on every consequential action.',
   },
   {
-    icon:  '🚀',
+    icon:  Rocket,
     title: 'Production Deployments, Not Demos',
-    desc:  'The workflows I showcase are live and running — connected to real APIs, processing real data, triggered by real events. I don\'t build prototypes for portfolios. I build systems that run at 2am without me.',
+    desc:  'The workflows I showcase are live and running - connected to real APIs, processing real data, triggered by real events. I don\'t build prototypes for portfolios. I build systems that run at 2am without me.',
   },
 ]
 
@@ -547,7 +511,9 @@ function WhySection() {
                   borderLeft:  '3px solid var(--color-accent)',
                 }}
               >
-                <span className="text-3xl">{b.icon}</span>
+                <span style={{ color: 'var(--color-accent)' }}>
+                  <b.icon size={30} weight="duotone" />
+                </span>
                 <h3
                   className="font-display font-bold text-[17px] leading-snug"
                   style={{ color: 'var(--color-text)' }}
@@ -569,10 +535,169 @@ function WhySection() {
   )
 }
 
+/* ─── Project carousel (spotlight, spring, infinite) ─────── */
+const CARD_W = 380
+const GAP    = 24
+const SLOT_W = CARD_W + GAP
+
+function ProjectCarousel({ projects }: { projects: ProjectData[] }) {
+  const reduce = useReducedMotionSafe()
+
+  const [activeIndex, setActiveIndex] = useState(1)
+  const [isJumping,   setIsJumping]   = useState(false)
+
+  const stageRef       = useRef<HTMLDivElement>(null)
+  const lastWheelRef   = useRef(0)
+
+  const displayList     = [projects.at(-1)!, ...projects, projects[0]!]
+  const realActiveIndex = (activeIndex - 1 + projects.length) % projects.length
+
+  // Reset to first card when project list changes (filter tab switch)
+  useEffect(() => {
+    setActiveIndex(1)
+    setIsJumping(false)
+  }, [projects])
+
+  function advance(dir: 1 | -1) {
+    setIsJumping(false)
+    setActiveIndex(prev => prev + dir)
+  }
+
+  function handleAnimationComplete() {
+    if (isJumping) { setIsJumping(false); return }
+    if (activeIndex === 0) {
+      setIsJumping(true); setActiveIndex(projects.length); return
+    }
+    if (activeIndex === displayList.length - 1) {
+      setIsJumping(true); setActiveIndex(1); return
+    }
+  }
+
+  useEffect(() => {
+    const el = stageRef.current
+    if (!el) return
+    const onWheel = (e: WheelEvent) => {
+      const now = Date.now()
+      if (now - lastWheelRef.current < 800) return
+      const dx = Math.abs(e.deltaX), dy = Math.abs(e.deltaY)
+      if (dx < 30 && dy < 30) return
+      e.preventDefault()
+      lastWheelRef.current = now
+      const dir = dx > dy ? (e.deltaX > 0 ? 1 : -1) : (e.deltaY > 0 ? 1 : -1)
+      setActiveIndex(prev => prev + dir)
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [])
+
+  const btnStyle: React.CSSProperties = {
+    background: 'var(--color-surface)',
+    border:     '1px solid var(--color-border)',
+    color:      'var(--color-text)',
+    cursor:     'pointer',
+  }
+
+  return (
+    <div className="relative">
+      {/* Flank nav buttons — desktop only */}
+      <button
+        aria-label="Previous project"
+        onClick={() => advance(-1)}
+        className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 items-center justify-center w-9 h-9 rounded-full transition-opacity hover:opacity-80"
+        style={btnStyle}
+      >
+        <CaretLeft size={16} weight="bold" />
+      </button>
+      <button
+        aria-label="Next project"
+        onClick={() => advance(1)}
+        className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 items-center justify-center w-9 h-9 rounded-full transition-opacity hover:opacity-80"
+        style={btnStyle}
+      >
+        <CaretRight size={16} weight="bold" />
+      </button>
+
+      {/* Stage — clips the translated track */}
+      <div ref={stageRef} className="overflow-hidden -mx-5 sm:mx-0">
+        <motion.div
+          style={{
+            display:      'flex',
+            gap:          GAP,
+            paddingLeft:  `calc(50% - ${CARD_W / 2}px)`,
+            paddingRight: `calc(50% - ${CARD_W / 2}px)`,
+            willChange:   'transform',
+          }}
+          animate={{ x: -(activeIndex * SLOT_W) }}
+          transition={
+            isJumping || reduce
+              ? { duration: 0 }
+              : { type: 'spring', stiffness: 300, damping: 30 }
+          }
+          onAnimationComplete={handleAnimationComplete}
+        >
+          {displayList.map((p, i) => {
+            const dist = Math.abs(i - activeIndex)
+            return (
+              <motion.div
+                key={`slot-${i}`}
+                style={{
+                  width:          CARD_W,
+                  flexShrink:     0,
+                  transformOrigin: 'center center',
+                  pointerEvents:  dist !== 0 ? 'none' : 'auto',
+                }}
+                animate={{
+                  scale:   dist === 0 ? 1 : dist === 1 ? 0.9 : 0.82,
+                  opacity: dist === 0 ? 1 : dist === 1 ? 0.45 : 0.2,
+                  filter:  `blur(${dist === 0 ? 0 : dist === 1 ? 1 : 2}px)`,
+                }}
+                transition={
+                  reduce
+                    ? { duration: 0 }
+                    : { type: 'spring', stiffness: 300, damping: 30 }
+                }
+                aria-hidden={dist !== 0}
+              >
+                <ProjectCard project={p} delay={0} skipReveal />
+              </motion.div>
+            )
+          })}
+        </motion.div>
+      </div>
+
+      {/* Dot indicators */}
+      <div className="flex items-center justify-center gap-2 mt-5" role="tablist" aria-label="Project navigation">
+        {projects.map((p, i) => {
+          const isActive = i === realActiveIndex
+          return (
+            <button
+              key={p.name}
+              role="tab"
+              aria-selected={isActive}
+              aria-label={`Go to ${p.name}`}
+              onClick={() => { setIsJumping(false); setActiveIndex(i + 1) }}
+              style={{
+                width:        isActive ? 20 : 6,
+                height:       6,
+                borderRadius: 3,
+                padding:      0,
+                border:       'none',
+                background:   isActive ? 'var(--color-accent)' : 'var(--color-border)',
+                cursor:       'pointer',
+                transition:   reduce ? 'none' : 'width 200ms ease, background 200ms ease',
+              }}
+            />
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 /* ─── Work section ────────────────────────────────────────── */
 type FilterTab = 'All' | ProjectCategory
 
-const FILTER_TABS: FilterTab[] = ['All', 'n8n', 'Make.com', 'Web Dev', 'Digital Templates']
+const FILTER_TABS: FilterTab[] = ['All', 'n8n', 'Make.com', 'Web Dev']
 
 function WorkSection() {
   const [active, setActive] = useState<FilterTab>('All')
@@ -632,17 +757,8 @@ function WorkSection() {
           </div>
         </Reveal>
 
-        {/* Project cards grid */}
-        {visibleCards.length > 0 && (
-          <div
-            className="grid gap-5"
-            style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))' }}
-          >
-            {visibleCards.map((p, i) => (
-              <ProjectCard key={p.name} project={p} delay={i * 80} />
-            ))}
-          </div>
-        )}
+        {/* Project cards carousel */}
+        {visibleCards.length > 0 && <ProjectCarousel projects={visibleCards} />}
 
         {/* Expanded pipeline-only cards */}
         {visibleExpanded.length > 0 && (
@@ -670,12 +786,12 @@ function WorkSection() {
 const EMAIL = 'joemarbelmonte.automation@gmail.com'
 
 const INFO_ROWS = [
-  { label: 'Location',     value: 'Philippines'           },
-  { label: 'Timezone',     value: 'PHT (UTC+8)'           },
+  { label: 'Location',     value: 'Philippines'      },
+  { label: 'Timezone',     value: 'PHT (UTC+8)'      },
   { label: 'Availability', value: 'Open for Projects' },
-  { label: 'Response',     value: 'Within 24 hours'       },
-  { label: 'Project Min.', value: 'USD 500'               },
-  { label: 'Status',       value: 'Open for Work'         },
+  { label: 'Response',     value: 'Within 24 hours'  },
+  { label: 'Project Min.', value: 'USD 500'          },
+  { label: 'Status',       value: 'Open for Work'    },
 ]
 
 function CopyEmailButton() {
@@ -702,7 +818,7 @@ function CopyEmailButton() {
         cursor:     'pointer',
       }}
     >
-      <span style={{ fontSize: 14 }}>{copied ? '✓' : '📋'}</span>
+      {copied ? <Check size={14} weight="bold" /> : <Copy size={14} />}
       <span className="truncate">{copied ? 'Copied!' : EMAIL}</span>
     </button>
   )
@@ -722,7 +838,7 @@ function ContactSection() {
             className="font-mono text-[11px] uppercase tracking-[0.22em]"
             style={{ color: 'var(--color-accent)' }}
           >
-            // Contact
+            Contact
           </span>
           <h2
             className="font-display font-bold text-3xl sm:text-4xl mt-2 leading-tight"
@@ -741,7 +857,7 @@ function ContactSection() {
         {/* Two-column grid: info (fixed 380px) + Calendly widget */}
         <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-8 items-start">
 
-          {/* Left — info panel */}
+          {/* Left - info panel */}
           <Reveal>
             <div
               className="rounded-xl p-6"
@@ -801,7 +917,7 @@ function ContactSection() {
             </div>
           </Reveal>
 
-          {/* Right — Calendly inline widget (no Reveal wrapper — avoids opacity-0 init issues) */}
+          {/* Right - Calendly inline widget (no Reveal wrapper - avoids opacity-0 init issues) */}
           <CalendlyWidget />
         </div>
       </div>
@@ -825,7 +941,7 @@ export default function StaticSection() {
         style={{ borderTop: '1px solid var(--color-border)' }}
       >
         <p className="font-mono text-[11px]" style={{ color: 'var(--color-muted)', opacity: 0.4 }}>
-          Joemar Belmonte · AI Automation Specialist · Philippines
+          Joemar Belmonte / AI Automation Specialist / Philippines
         </p>
       </footer>
     </div>

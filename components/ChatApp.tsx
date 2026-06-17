@@ -3,7 +3,9 @@
 import { useChat } from 'ai/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react'
-import { ArrowUp, ArrowLeft, ArrowDown, Loader2, Sun, Moon, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowUp, ArrowLeft, ArrowDown, Loader2, Sun, Moon, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Lightning, CurrencyDollar, LinkSimple, CalendarBlank, type Icon } from '@phosphor-icons/react'
+import { useReducedMotionSafe } from '@/lib/hooks'
 import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -15,10 +17,10 @@ type AvatarState = 'idle' | 'thinking' | 'replying'
 type Theme       = 'dark' | 'light'
 
 /* ─── Static data ─────────────────────────────────────────── */
-const WELCOME_CHIPS = [
-  { text: "I'm losing hours to repetitive work — what can you automate for me?", icon: '⚡' },
-  { text: 'How much does an automation project cost?',                            icon: '💰' },
-  { text: 'Can you work with the tools my business already uses?',                icon: '🔗' },
+const WELCOME_CHIPS: { text: string; icon: Icon }[] = [
+  { text: "I'm losing hours to repetitive work - what can you automate for me?", icon: Lightning },
+  { text: 'How much does an automation project cost?',                            icon: CurrencyDollar },
+  { text: 'Can you work with the tools my business already uses?',                icon: LinkSimple },
 ]
 
 const CHAT_CHIPS = [
@@ -37,7 +39,7 @@ export default function ChatApp() {
   const textareaRef          = useRef<HTMLTextAreaElement>(null)
 
   const { messages, input, handleInputChange, handleSubmit,
-          isLoading, append, setMessages, setInput } = useChat({
+          isLoading, append, setMessages, setInput, error, reload } = useChat({
     api: '/api/chat',
     onResponse: ()  => setAvatarState('replying'),
     onFinish:   ()  => setTimeout(() => setAvatarState('idle'), 900),
@@ -66,7 +68,7 @@ export default function ChatApp() {
   useEffect(() => {
     const el = messagesContainerRef.current
     if (!el) return
-    // Use scrollTop directly — scrollTo with behavior:'smooth' can propagate
+    // Use scrollTop directly - scrollTo with behavior:'smooth' can propagate
     // to the window on some browsers and reveal the portfolio section below.
     el.scrollTop = el.scrollHeight
   }, [messages, isLoading])
@@ -191,6 +193,8 @@ export default function ChatApp() {
               messages={messages}
               input={input}
               isLoading={isLoading}
+              error={error}
+              onRetry={reload}
               messagesContainerRef={messagesContainerRef}
               textareaRef={textareaRef}
               onChange={handleTextareaChange}
@@ -203,39 +207,8 @@ export default function ChatApp() {
             />
           )}
         </AnimatePresence>
-
-        {/* Scroll indicator — points to static section below */}
-        <ScrollIndicator targetId="portfolio" />
       </div>
     </>
-  )
-}
-
-/* ─── Scroll indicator ────────────────────────────────────── */
-function ScrollIndicator({ targetId }: { targetId: string }) {
-  const [visible, setVisible] = useState(true)
-  const { scrollY } = useScroll()
-
-  useMotionValueEvent(scrollY, 'change', (latest) => {
-    setVisible(latest < 60)
-  })
-
-  const scrollTo = () => {
-    document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' })
-  }
-
-  if (!visible) return null
-
-  return (
-    <button
-      onClick={scrollTo}
-      aria-label="Scroll to portfolio"
-      className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-opacity hover:opacity-70"
-      style={{ color: 'var(--color-muted)', opacity: 0.5, zIndex: 20 }}
-    >
-      <span className="font-mono text-[9px] uppercase tracking-[0.2em]">Portfolio</span>
-      <ChevronDown size={14} className="animate-bounce" />
-    </button>
   )
 }
 
@@ -244,6 +217,8 @@ const NAV_LINKS = [
   { label: 'Ask Me',   href: '#top'      },
   { label: 'Services', href: '#services' },
   { label: 'Work',     href: '#work'     },
+  { label: 'Why',      href: '#why'      },
+  { label: 'Pricing',  href: '#pricing'  },
   { label: 'Contact',  href: '#contact'  },
 ]
 
@@ -277,7 +252,7 @@ function NavBar({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () => v
         transition:     'background 250ms ease, border-color 250ms ease, backdrop-filter 250ms ease',
       }}
     >
-      {/* Brand — terminal logo */}
+      {/* Brand - terminal logo */}
       <button
         onClick={() => handleNav('#top')}
         className="flex items-center gap-0 flex-shrink-0"
@@ -292,7 +267,7 @@ function NavBar({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () => v
         <span className="nav-cursor" style={{ color: 'var(--color-accent)', fontFamily: 'monospace', fontWeight: 700, fontSize: 15 }}>_</span>
       </button>
 
-      {/* Links — hidden on mobile */}
+      {/* Links - hidden on mobile */}
       <div className="hidden sm:flex items-center gap-1">
         {NAV_LINKS.map(link => (
           <button
@@ -621,8 +596,12 @@ function ChipsScroller({ chips, onChipClick }: { chips: string[]; onChipClick: (
 /* ─── Typewriter hook ─────────────────────────────────────── */
 function useTypewriter(text: string, speed = 65, startDelay = 400, loopDelay = 3000) {
   const [displayed, setDisplayed] = useState('')
+  const reduce = useReducedMotionSafe()
 
   useEffect(() => {
+    // Reduced motion: skip the animation, show the full text immediately.
+    if (reduce) { setDisplayed(text); return }
+
     let cancelled = false
     let iv: ReturnType<typeof setInterval> | null = null
     let t:  ReturnType<typeof setTimeout>  | null = null
@@ -652,7 +631,7 @@ function useTypewriter(text: string, speed = 65, startDelay = 400, loopDelay = 3
       if (t  !== null) clearTimeout(t)
       if (iv !== null) clearInterval(iv)
     }
-  }, [text, speed, startDelay, loopDelay])
+  }, [text, speed, startDelay, loopDelay, reduce])
 
   return displayed
 }
@@ -674,6 +653,7 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
   const NAME     = 'Joemar Belmonte'
   const typedName = useTypewriter(NAME, 65, 400)
   const nameDone  = typedName.length === NAME.length
+  const reduce    = useReducedMotionSafe()
 
   return (
     <motion.div
@@ -722,7 +702,7 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
               {' '}
               <motion.span
                 style={{ display: 'inline-block', originX: 0.7, originY: 0.8 }}
-                animate={{ rotate: [0, 24, -12, 24, -8, 0] }}
+                animate={reduce ? undefined : { rotate: [0, 24, -12, 24, -8, 0] }}
                 transition={{ delay: 0.15, duration: 1.1, repeat: 1, repeatDelay: 1.5 }}
               >
                 👋
@@ -732,8 +712,10 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         </h1>
         <p className="font-mono text-muted text-[0.82rem] tracking-[0.2em] uppercase">
           AI Automation Specialist
-          <span className="text-accent/40 mx-2.5">·</span>
-          Ex-Cybersecurity · Philippines
+          <span className="text-accent/40 mx-2.5">/</span>
+          Ex-Cybersecurity
+          <span className="text-accent/40 mx-2.5">/</span>
+          Philippines
         </p>
         <motion.p
           className="text-muted text-[0.9rem] leading-relaxed max-w-[28rem] mx-auto"
@@ -741,7 +723,7 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.28, duration: 0.5 }}
         >
-          10+ years in cybersecurity — now building AI automation systems that run without you.
+          10+ years in cybersecurity - now building AI automation systems that run without you.
           n8n, Make.com, multi-agent architectures, and custom tools built security-first from day one.
         </motion.p>
       </motion.div>
@@ -768,10 +750,11 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
           onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '0.88' }}
           onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '1' }}
         >
-          📅 Book a Free Call
+          <CalendarBlank size={17} weight="bold" />
+          Book a Free Call
         </a>
         <span className="font-mono text-[11px]" style={{ color: 'var(--color-muted)', opacity: 0.65 }}>
-          Free 30-min scoping call — no obligation.
+          Free 30-min scoping call - no obligation.
         </span>
       </motion.div>
 
@@ -794,7 +777,7 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
           >
-            <span role="img" aria-hidden="true">{chip.icon}</span>
+            <chip.icon size={15} weight="bold" style={{ flexShrink: 0, color: 'var(--color-accent)' }} />
             {chip.text}
           </motion.button>
         ))}
@@ -824,7 +807,7 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         animate={{ opacity: 0.3 }}
         transition={{ delay: 0.7 }}
       >
-        Powered by Groq · Llama 3.3
+        Powered by Groq / Llama 3.3
       </motion.p>
     </motion.div>
   )
@@ -836,6 +819,8 @@ interface ChatViewProps {
   messages:       Message[]
   input:          string
   isLoading:      boolean
+  error?:         Error
+  onRetry:        () => void
   messagesContainerRef: React.RefObject<HTMLDivElement>
   textareaRef:    React.RefObject<HTMLTextAreaElement>
   onChange:       (e: React.ChangeEvent<HTMLTextAreaElement>) => void
@@ -847,7 +832,7 @@ interface ChatViewProps {
   onToggleTheme:  () => void
 }
 
-function ChatView({ avatarState, messages, input, isLoading, messagesContainerRef,
+function ChatView({ avatarState, messages, input, isLoading, error, onRetry, messagesContainerRef,
                     textareaRef, onChange, onSubmit, onKeyDown, onBack, onChipClick,
                     theme, onToggleTheme }: ChatViewProps) {
   const userMessageCount = messages.filter(m => m.role === 'user').length
@@ -860,7 +845,7 @@ function ChatView({ avatarState, messages, input, isLoading, messagesContainerRe
       animate={{ opacity: 1 }}
       transition={{ duration: 0.25 }}
     >
-      {/* Header — sits just below the fixed global NavBar */}
+      {/* Header - sits just below the fixed global NavBar */}
       <header
         className="flex items-center gap-3 px-4 sm:px-5 py-2.5 sticky top-[60px] z-20"
         style={{
@@ -895,7 +880,7 @@ function ChatView({ avatarState, messages, input, isLoading, messagesContainerRe
         </div>
       </header>
 
-      {/* Messages — flex col so mt-auto anchors messages to bottom */}
+      {/* Messages - flex col so mt-auto anchors messages to bottom */}
       <div ref={messagesContainerRef} className="flex-1 overflow-y-auto flex flex-col">
         <div className="max-w-[720px] mx-auto w-full px-5 sm:px-8 py-7 space-y-5 mt-auto">
           {messages.map((m, idx) => {
@@ -905,6 +890,8 @@ function ChatView({ avatarState, messages, input, isLoading, messagesContainerRe
             return <MessageRow key={m.id} message={m} triggerText={triggerText} />
           })}
           {isLoading && <TypingBubble />}
+
+          {error && !isLoading && <ChatError onRetry={onRetry} />}
 
           {showBookingCard && <BookingCard />}
         </div>
@@ -931,6 +918,34 @@ function ChatView({ avatarState, messages, input, isLoading, messagesContainerRe
           />
         </div>
       </div>
+    </motion.div>
+  )
+}
+
+/* ─── Chat error row + retry ──────────────────────────────── */
+function ChatError({ onRetry }: { onRetry: () => void }) {
+  return (
+    <motion.div
+      role="alert"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
+      className="rounded-xl p-4 flex items-center gap-3"
+      style={{
+        background: 'color-mix(in srgb, #ef4444 8%, var(--color-surface))',
+        border:     '1px solid color-mix(in srgb, #ef4444 40%, var(--color-border))',
+      }}
+    >
+      <span className="flex-1 text-[13px]" style={{ color: 'var(--color-text)' }}>
+        Message failed to send. Check your connection and try again.
+      </span>
+      <button
+        onClick={onRetry}
+        className="flex-shrink-0 inline-flex items-center px-3 py-1.5 rounded-md text-[12px] font-semibold transition-opacity hover:opacity-85"
+        style={{ background: 'var(--color-accent)', color: 'var(--color-bg)', cursor: 'pointer' }}
+      >
+        Retry
+      </button>
     </motion.div>
   )
 }

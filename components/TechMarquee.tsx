@@ -20,7 +20,7 @@ interface Tile {
   bgColor?:   string
 }
 
-// ROW1 — Automation & AI
+// ROW1 - Automation & AI
 const ROW1: Tile[] = [
   { name: 'n8n',      Icon: N8n.Color },
   { name: 'Make.com', Icon: Make.Color },
@@ -32,7 +32,7 @@ const ROW1: Tile[] = [
   { name: 'Telegram', iconUrl: 'https://cdn.simpleicons.org/telegram/26A5E4', initColor: '#26A5E4' },
 ]
 
-// ROW2 — Web, eCommerce & Deployment
+// ROW2 - Web, eCommerce & Deployment
 const ROW2: Tile[] = [
   { name: 'React',    iconUrl: 'https://cdn.simpleicons.org/react/61DAFB',     initColor: '#61DAFB' },
   { name: 'Next.js',  iconUrl: 'https://cdn.simpleicons.org/nextdotjs/888888', initColor: '#888888' },

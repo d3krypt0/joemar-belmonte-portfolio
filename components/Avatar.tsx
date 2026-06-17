@@ -19,7 +19,7 @@ const MOUTH = {
 export default function Avatar({ state = 'idle', size = 160 }: AvatarProps) {
   const [isBlinking, setIsBlinking] = useState(false)
 
-  // Randomized blink every 2.5–6 seconds
+  // Randomized blink every 2.5-6 seconds
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>
     const scheduleBlink = () => {
@@ -135,7 +135,7 @@ export default function Avatar({ state = 'idle', size = 160 }: AvatarProps) {
           <g transform="translate(70, 90)">
             {/* Socket */}
             <circle r="12" fill="#080808" />
-            {/* Iris + highlight — shifts when thinking */}
+            {/* Iris + highlight - shifts when thinking */}
             <motion.g
               animate={pupilOffset}
               transition={{ duration: 0.45, ease: 'easeInOut' }}
@@ -146,7 +146,7 @@ export default function Avatar({ state = 'idle', size = 160 }: AvatarProps) {
               {/* Small secondary highlight */}
               <circle cx="2.8" cy="-2.8" r="1.1" fill="rgba(255,255,255,0.88)" />
             </motion.g>
-            {/* Eyelid — animates height for blinking */}
+            {/* Eyelid - animates height for blinking */}
             <motion.rect
               x="-13"
               y="-13"

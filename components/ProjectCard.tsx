@@ -52,7 +52,7 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
           ✕
         </button>
 
-        {/* Workflow image */}
+        {/* Workflow image(s) */}
         <div
           style={{
             background:   '#f4f4f4',
@@ -63,12 +63,25 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
           }}
         >
           {project.workflowImage ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={project.workflowImage}
-              alt={`${project.name} workflow`}
-              style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '16px 16px 0 0' }}
-            />
+            <div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={project.workflowImage}
+                alt={`${project.name} workflow`}
+                style={{ width: '100%', height: 'auto', display: 'block', borderRadius: project.workflowImage2 ? '16px 16px 0 0' : '16px 16px 0 0' }}
+              />
+              {project.workflowImage2 && (
+                <>
+                  <div style={{ height: 1, background: `${project.accent}33` }} />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={project.workflowImage2}
+                    alt={`${project.name} workflow 2`}
+                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                  />
+                </>
+              )}
+            </div>
           ) : (
             <div className="relative flex items-center justify-center" style={{ height: 220 }}>
               <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
@@ -233,7 +246,7 @@ export default function ProjectCard({ project, delay = 0, skipReveal = false }: 
   const [hovered, setHovered]   = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
 
-  const borderColor = hovered ? project.accent : '#1A1A2E'
+  const borderColor = hovered ? project.accent : `${project.accent}44`
   const shadowColor = hovered ? `${project.accent}33` : 'transparent'
 
   return (
@@ -281,7 +294,7 @@ export default function ProjectCard({ project, delay = 0, skipReveal = false }: 
               <img
                 src={project.workflowImage}
                 alt={`${project.name} workflow`}
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center center' }}
               />
             ) : (
               <div className="relative z-10 flex flex-col items-center gap-2 opacity-30">

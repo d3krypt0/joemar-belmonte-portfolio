@@ -547,7 +547,6 @@ function ProjectCarousel({ projects }: { projects: ProjectData[] }) {
   const [isJumping,   setIsJumping]   = useState(false)
 
   const stageRef       = useRef<HTMLDivElement>(null)
-  const lastWheelRef   = useRef(0)
 
   const displayList     = [projects.at(-1)!, ...projects, projects[0]!]
   const realActiveIndex = (activeIndex - 1 + projects.length) % projects.length
@@ -572,23 +571,6 @@ function ProjectCarousel({ projects }: { projects: ProjectData[] }) {
       setIsJumping(true); setActiveIndex(1); return
     }
   }
-
-  useEffect(() => {
-    const el = stageRef.current
-    if (!el) return
-    const onWheel = (e: WheelEvent) => {
-      const now = Date.now()
-      if (now - lastWheelRef.current < 800) return
-      const dx = Math.abs(e.deltaX), dy = Math.abs(e.deltaY)
-      if (dx < 30 && dy < 30) return
-      e.preventDefault()
-      lastWheelRef.current = now
-      const dir = dx > dy ? (e.deltaX > 0 ? 1 : -1) : (e.deltaY > 0 ? 1 : -1)
-      setActiveIndex(prev => prev + dir)
-    }
-    el.addEventListener('wheel', onWheel, { passive: false })
-    return () => el.removeEventListener('wheel', onWheel)
-  }, [])
 
   const btnStyle: React.CSSProperties = {
     background: 'var(--color-surface)',
@@ -636,20 +618,25 @@ function ProjectCarousel({ projects }: { projects: ProjectData[] }) {
           onAnimationComplete={handleAnimationComplete}
         >
           {displayList.map((p, i) => {
-            const dist = Math.abs(i - activeIndex)
+            const dist    = Math.abs(i - activeIndex)
+            const isAdj   = dist === 1
+            const dir     = i < activeIndex ? -1 : 1
             return (
               <motion.div
                 key={`slot-${i}`}
+                onClick={isAdj ? () => advance(dir) : undefined}
                 style={{
                   width:          CARD_W,
                   flexShrink:     0,
                   transformOrigin: 'center center',
-                  pointerEvents:  dist !== 0 ? 'none' : 'auto',
+                  pointerEvents:  dist >= 2 ? 'none' : 'auto',
+                  cursor:         isAdj ? 'pointer' : 'default',
+                  borderRadius:   12,
+                  boxShadow:      dist === 0 ? '0 0 0 1.5px var(--color-accent)' : 'none',
                 }}
                 animate={{
-                  scale:   dist === 0 ? 1 : dist === 1 ? 0.9 : 0.82,
-                  opacity: dist === 0 ? 1 : dist === 1 ? 0.45 : 0.2,
-                  filter:  `blur(${dist === 0 ? 0 : dist === 1 ? 1 : 2}px)`,
+                  scale:   dist === 0 ? 1 : dist === 1 ? 0.94 : 0.88,
+                  opacity: dist === 0 ? 1 : dist === 1 ? 0.55 : 0.25,
                 }}
                 transition={
                   reduce
@@ -697,7 +684,7 @@ function ProjectCarousel({ projects }: { projects: ProjectData[] }) {
 /* ─── Work section ────────────────────────────────────────── */
 type FilterTab = 'All' | ProjectCategory
 
-const FILTER_TABS: FilterTab[] = ['All', 'n8n', 'Make.com', 'Web Dev']
+const FILTER_TABS: FilterTab[] = ['All', 'n8n', 'Make.com']
 
 function WorkSection() {
   const [active, setActive] = useState<FilterTab>('All')
@@ -730,10 +717,13 @@ function WorkSection() {
               const isActive = active === tab
               const count    = counts[tab]
               return (
-                <button
+                <motion.button
                   key={tab}
                   onClick={() => setActive(tab)}
-                  className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-mono text-[12px] transition-all duration-150"
+                  whileHover={isActive ? { scale: 1.05, filter: 'brightness(1.15)' } : { scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                  className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-mono text-[12px] transition-colors duration-150"
                   style={{
                     background:  isActive ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'var(--color-surface)',
                     border:      `1px solid ${isActive ? 'var(--color-accent)' : 'var(--color-border)'}`,
@@ -751,7 +741,7 @@ function WorkSection() {
                   >
                     {count}
                   </span>
-                </button>
+                </motion.button>
               )
             })}
           </div>

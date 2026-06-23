@@ -684,7 +684,7 @@ function ProjectCarousel({ projects }: { projects: ProjectData[] }) {
 /* ─── Work section ────────────────────────────────────────── */
 type FilterTab = 'All' | ProjectCategory
 
-const FILTER_TABS: FilterTab[] = ['All', 'n8n', 'Make.com']
+const FILTER_TABS: FilterTab[] = ['All', 'n8n']
 
 function WorkSection() {
   const [active, setActive] = useState<FilterTab>('All')

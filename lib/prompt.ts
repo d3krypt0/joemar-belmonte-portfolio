@@ -39,11 +39,11 @@ Unlike pure AI developers, I bring 10+ years of enterprise security engineering 
 - SerpAPI, Google Trends API, RSS / Google Alerts
 - Docker / Docker Compose, nginx, Railway
 
-**Cybersecurity (10+ Years Enterprise - BFSI & Government Sector)**
+**Cybersecurity (10+ Years Enterprise - Banking, Healthcare & Energy Sectors)**
 - Web Application Vulnerability Management, Application Security
 - Penetration Testing, Threat Modeling, Secure Development Reviews
 - Security-first architecture applied to every automation system I build
-- Former enterprise analyst in banking, financial services, and government environments - high-stakes, compliance-sensitive contexts
+- Former enterprise analyst in banking, healthcare, and energy environments - high-stakes, compliance-sensitive contexts
 
 ---
 
@@ -166,7 +166,7 @@ PRICING (starting rates - final quote after scoping):
 Minimum project: $300. All prices in USD. 30-50% downpayment required before work begins. Final quote after a free 30-min discovery call: https://calendly.com/joemarbelmonte-automation/discovery-call
 
 **How do you ensure the security of my data and credentials?**
-Security is my background - I spent 10+ years as a Senior Cybersecurity Analyst in BFSI and government environments. Every automation I build follows security-first principles: credentials are stored as environment variables or in platform secret vaults (never hardcoded), workflows are designed with least-privilege API access, and I document all data flows. If your project involves sensitive data, I'll ask the right questions to ensure the architecture is compliant and auditable from day one.
+Security is my background - I spent 10+ years as a Senior Cybersecurity Analyst across banking, healthcare, and energy environments. Every automation I build follows security-first principles: credentials are stored as environment variables or in platform secret vaults (never hardcoded), workflows are designed with least-privilege API access, and I document all data flows. If your project involves sensitive data, I'll ask the right questions to ensure the architecture is compliant and auditable from day one.
 
 ---
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { type ProjectData } from '@/lib/projects'
-import { useVisible } from '@/lib/hooks'
+import { useVisible, useReducedMotionSafe } from '@/lib/hooks'
 
 interface Props {
   project:      ProjectData
@@ -243,6 +243,7 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
 export default function ProjectCard({ project, delay = 0, skipReveal = false }: Props) {
   const { ref, vis: rawVis } = useVisible(0.08)
   const vis = skipReveal ? true : rawVis
+  const reduce = useReducedMotionSafe()
   const [hovered, setHovered]   = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
 
@@ -266,7 +267,8 @@ export default function ProjectCard({ project, delay = 0, skipReveal = false }: 
             border:       `1px solid ${borderColor}`,
             borderRadius: 12,
             boxShadow:    `0 0 0 1px ${shadowColor}`,
-            transition:   'border-color 200ms ease, box-shadow 200ms ease',
+            transform:    !reduce && hovered ? 'translateY(-4px)' : 'translateY(0)',
+            transition:   'border-color 200ms ease, box-shadow 200ms ease, transform 250ms ease',
             cursor:       'default',
           }}
           onMouseEnter={() => setHovered(true)}
@@ -400,6 +402,42 @@ export default function ProjectCard({ project, delay = 0, skipReveal = false }: 
                 </div>
               )
             })}
+          </div>
+
+          {/* ── Zone D: Tools used ───────────────────────────── */}
+          <div className="px-5 pb-5 mt-auto">
+            <p
+              style={{
+                fontFamily:    'monospace',
+                fontSize:      9,
+                fontWeight:    600,
+                letterSpacing: '0.12em',
+                color:         'var(--color-muted)',
+                textTransform: 'uppercase',
+                marginBottom:  8,
+              }}
+            >
+              Tools Used
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {project.stack.map(s => (
+                <span
+                  key={s}
+                  style={{
+                    background:    `${project.accent}12`,
+                    border:        `1px solid ${project.accent}44`,
+                    color:         'var(--color-text)',
+                    borderRadius:  6,
+                    padding:       '3px 9px',
+                    fontSize:      11,
+                    fontFamily:    'monospace',
+                    letterSpacing: '0.03em',
+                  }}
+                >
+                  {s}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -1,14 +1,25 @@
 import type { Metadata } from 'next'
-import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
-import { Syne } from 'next/font/google'
+import { Inter_Tight } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import ErrorBoundary from '@/components/ErrorBoundary'
 
-const syne = Syne({
-  subsets: ['latin'],
+const cabinetGrotesk = localFont({
   variable: '--font-display',
-  weight: ['600', '700', '800'],
+  display: 'swap',
+  src: [
+    { path: '../fonts/CabinetGrotesk-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../fonts/CabinetGrotesk-Medium.woff2', weight: '500', style: 'normal' },
+    { path: '../fonts/CabinetGrotesk-Bold.woff2', weight: '700', style: 'normal' },
+    { path: '../fonts/CabinetGrotesk-Extrabold.woff2', weight: '800', style: 'normal' },
+  ],
+})
+
+const interTight = Inter_Tight({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  weight: ['400', '500', '600', '700'],
 })
 
 export const metadata: Metadata = {
@@ -39,7 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${syne.variable} ${GeistSans.variable} ${GeistMono.variable}`}
+      className={`${cabinetGrotesk.variable} ${interTight.variable} ${GeistMono.variable}`}
     >
       <body><ErrorBoundary>{children}</ErrorBoundary></body>
     </html>

@@ -216,9 +216,10 @@ export default function ChatApp() {
 const NAV_LINKS = [
   { label: 'Ask Me',   href: '#top'      },
   { label: 'Services', href: '#services' },
-  { label: 'Work',     href: '#work'     },
-  { label: 'Why',      href: '#why'      },
-  { label: 'Pricing',  href: '#pricing'  },
+  { label: 'Projects', href: '#work'     },
+  { label: 'Process',  href: '#process'  },
+  { label: 'About Me', href: '#why'      },
+  { label: 'Experience', href: '#experience' },
   { label: 'Contact',  href: '#contact'  },
 ]
 
@@ -657,29 +658,32 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
 
   return (
     <motion.div
-      className="flex flex-col items-center h-full overflow-y-auto px-5 pb-6 gap-4"
-      style={{ paddingTop: '70px' }}
+      className="flex flex-col items-center h-full overflow-y-auto px-5 gap-4"
+      style={{ paddingTop: '104px', paddingBottom: '32px', justifyContent: 'safe center' }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, y: -28, transition: { duration: 0.25 } }}
     >
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-10 w-full max-w-3xl">
       <motion.div
+        className="flex-shrink-0"
         initial={{ scale: 0.72, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.58, ease: [0.16, 1, 0.3, 1] }}
       >
-        <ProfilePhoto state={avatarState} size={120} />
+        <ProfilePhoto state={avatarState} size={260} />
       </motion.div>
 
+      <div className="flex flex-col items-center lg:items-start gap-4">
       <motion.div
-        className="text-center space-y-1"
+        className="text-center lg:text-left space-y-1"
         initial={{ y: 18, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.14, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
         <h1 className="font-display text-[2.2rem] sm:text-[2.8rem] font-bold tracking-tight leading-none">
           Hey, I&apos;m{' '}
-          <span style={{ whiteSpace: 'nowrap' }}>
+          <span style={{ whiteSpace: 'nowrap', color: 'var(--color-accent)' }}>
             {typedName}
             {!nameDone && (
               <motion.span
@@ -718,19 +722,19 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
           Philippines
         </p>
         <motion.p
-          className="text-muted text-[0.9rem] leading-relaxed max-w-[28rem] mx-auto"
+          className="text-muted text-[0.9rem] leading-relaxed max-w-[28rem] mx-auto lg:mx-0"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.28, duration: 0.5 }}
         >
           10+ years in cybersecurity - now building AI automation systems that run without you.
-          n8n, Make.com, multi-agent architectures, and custom tools built security-first from day one.
+          Multi-agent architectures and custom tools built security-first from day one.
         </motion.p>
       </motion.div>
 
       {/* Primary CTA */}
       <motion.div
-        className="flex flex-col items-center gap-1.5"
+        className="flex flex-col items-center lg:items-start gap-1.5"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.36, duration: 0.45 }}
@@ -739,7 +743,7 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
           href="https://calendly.com/joemarbelmonte-automation/discovery-call"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 font-semibold rounded-lg transition-colors"
+          className="btn-press inline-flex items-center gap-2 font-semibold rounded-lg"
           style={{
             background:  'var(--color-accent)',
             color:       '#060D14',
@@ -757,6 +761,8 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
           Free 30-min scoping call - no obligation.
         </span>
       </motion.div>
+      </div>
+      </div>
 
       <motion.div
         className="flex flex-wrap justify-center gap-2 max-w-lg"

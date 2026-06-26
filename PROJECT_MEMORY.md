@@ -50,7 +50,7 @@ Living snapshot of the Joemar Belmonte AI Automation Portfolio. Auto-updated by 
 |---|---|
 | `app/layout.tsx` | Root layout: Syne + Geist fonts via `next/font`, ErrorBoundary wrapper, global metadata |
 | `app/globals.css` | CSS variable theme tokens (dark/light), Tailwind layers, chip/button styles, marquee keyframes, Calendly height overrides |
-| `components/StaticSection.tsx` | Full scrollable portfolio; contains: `SectionDivider`, `ServicesSection` (with inline `PricingTable`), `WorkSection`, `ContactSection` |
+| `components/StaticSection.tsx` | Full scrollable portfolio; contains: `ServicesSection`, `WorkSection`, `HowItWorks`, `WhySection`, `ContactSection`. No pricing section (removed); `ContactSection` is the Calendly widget only (info card removed) |
 | `components/CalendlyWidget.tsx` | Inline Calendly widget; `next/dynamic({ ssr: false })`; dark/light theme sync via MutationObserver on `data-theme`; `overflow: clip` wrapper |
 | `components/ErrorBoundary.tsx` | React class error boundary wrapping entire app; shows reload prompt on uncaught render errors |
 | `components/ProjectCard.tsx` | Animated project card with IntersectionObserver reveal, 3-zone layout (problem/solution/result), embedded WorkflowPreview |
@@ -129,19 +129,9 @@ Living snapshot of the Joemar Belmonte AI Automation Portfolio. Auto-updated by 
 
 ---
 
-## Pricing Tiers (PricingTable in ServicesSection)
+## Pricing
 
-5-card grid (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-5`). AI Automation Build highlighted with accent border + "Recommended" badge. Founding Client has amber border + "Limited" badge.
-
-| Tier | Price Range | Highlight |
-|---|---|---|
-| Simple Automation | $300–$1,500 | no |
-| Founding Client | From $750 | amber border + "Limited" badge |
-| AI Automation Build | $2,000–$5,000 | yes — accent border + tinted bg + "Recommended" badge |
-| Enterprise AI | $5,000–$20,000+ | no |
-| Monthly Retainer | $300–$1,000+/mo | no |
-
-Footer note: retainer ~20% of project cost, 30-50% downpayment required. No table headers — pure card layout with checkmark lists.
+The on-page pricing section was removed. Rates now live only in the chatbot's `SYSTEM_PROMPT` (`lib/prompt.ts`): Hourly $10-$20/hr, Simple Automation $300-$1,500, AI Automation Build $2,000-$5,000, Enterprise AI $5,000-$20,000+, Monthly Retainer $300-$1,000+/mo (~20% of project cost), 30-50% downpayment to start.
 
 ---
 
@@ -154,13 +144,13 @@ Footer note: retainer ~20% of project cost, 30-50% downpayment required. No tabl
 
 ## Recent Changes
 
-- 2026-06-17 13:13 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-17 12:48 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-17 12:47 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-17 12:47 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-17 12:46 — create-a-carousel-animation-modular-gray.md: Write via Claude Code
-- 2026-06-17 12:36 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-17 12:35 — StaticSection.tsx: Edit via Claude Code
-- 2026-06-17 12:35 — ProjectCard.tsx: Edit via Claude Code
-- 2026-06-17 12:35 — ProjectCard.tsx: Edit via Claude Code
-- 2026-06-17 12:16 — create-a-carousel-animation-modular-gray.md: Write via Claude Code
+- 2026-06-26 16:44 — ChatApp.tsx: Edit via Claude Code
+- 2026-06-26 16:43 — ChatApp.tsx: Edit via Claude Code
+- 2026-06-26 16:43 — ChatApp.tsx: Edit via Claude Code
+- 2026-06-26 16:34 — ChatApp.tsx: Edit via Claude Code
+- 2026-06-26 16:34 — ChatApp.tsx: Edit via Claude Code
+- 2026-06-26 16:33 — ChatApp.tsx: Edit via Claude Code
+- 2026-06-26 16:33 — ChatApp.tsx: Edit via Claude Code
+- 2026-06-26 16:21 — StaticSection.tsx: Edit via Claude Code
+- 2026-06-26 16:21 — ChatApp.tsx: Edit via Claude Code
+- 2026-06-26 16:21 — StaticSection.tsx: Edit via Claude Code

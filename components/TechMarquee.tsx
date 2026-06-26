@@ -160,7 +160,7 @@ export default function TechMarquee() {
             className="font-display font-bold text-3xl sm:text-4xl mt-1 leading-tight"
             style={{ color: 'var(--color-text)' }}
           >
-            Tools &amp; Technologies
+            Tools &amp; <span style={{ color: 'var(--color-accent)' }}>Technologies</span>
           </h2>
           <p
             className="mx-auto mt-4 text-[15px] leading-relaxed"

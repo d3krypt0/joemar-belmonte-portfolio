@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
-import { motion } from 'motion/react'
+import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import { GearSix, Robot, Wrench, Lock, Rocket, Copy, Check, CaretLeft, CaretRight, type Icon } from '@phosphor-icons/react'
+import { GearSix, Robot, Wrench, Lock, Rocket, MagnifyingGlass, ShieldCheck, ChartLineUp, Briefcase, EnvelopeSimple, CalendarBlank, MapPin, ArrowUp, type Icon } from '@phosphor-icons/react'
 import { ALL_PROJECTS, type ProjectData, type PipelineNode, type ProjectCategory } from '@/lib/projects'
 import { useVisible, useReducedMotionSafe } from '@/lib/hooks'
 import ProjectCard from './ProjectCard'
@@ -39,7 +38,8 @@ function Reveal({
 }
 
 /* ─── Section heading ─────────────────────────────────────── */
-function SectionHeading({ eyebrow, title }: { eyebrow?: string; title: string }) {
+function SectionHeading({ eyebrow, title, highlight }: { eyebrow?: string; title: string; highlight?: string }) {
+  const parts = highlight && title.includes(highlight) ? title.split(highlight) : null
   return (
     <Reveal className="text-center mb-12 sm:mb-16">
       {eyebrow && (
@@ -54,9 +54,43 @@ function SectionHeading({ eyebrow, title }: { eyebrow?: string; title: string })
         className="font-display font-bold text-3xl sm:text-4xl mt-2 leading-tight"
         style={{ color: 'var(--color-text)' }}
       >
-        {title}
+        {parts
+          ? <>{parts[0]}<span style={{ color: 'var(--color-accent)' }}>{highlight}</span>{parts[1]}</>
+          : title}
       </h2>
     </Reveal>
+  )
+}
+
+/* ─── Stats strip (under hero) ────────────────────────────── */
+const STATS: { value: string; label: string }[] = [
+  { value: '10+',  label: 'Years in Enterprise Tech & Security' },
+  { value: '8',    label: 'Production Automation Systems Built' },
+  { value: '12+', label: 'Tools & Platforms Integrated' },
+]
+
+function StatsStrip() {
+  return (
+    <section className="py-16 sm:py-20 px-5" style={{ borderTop: '1px solid var(--color-border)' }}>
+      <Reveal className="max-w-[1000px] mx-auto grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-6 text-center">
+        {STATS.map(stat => (
+          <div key={stat.label} className="flex flex-col items-center">
+            <span
+              className="font-display font-extrabold text-4xl sm:text-5xl leading-none"
+              style={{ color: 'var(--color-accent)' }}
+            >
+              {stat.value}
+            </span>
+            <span
+              className="mt-3 text-sm max-w-[14rem]"
+              style={{ color: 'var(--color-muted)' }}
+            >
+              {stat.label}
+            </span>
+          </div>
+        ))}
+      </Reveal>
+    </section>
   )
 }
 
@@ -167,7 +201,7 @@ function ExpandedProjectCard({ project, delay = 0 }: { project: ProjectData; del
   return (
     <Reveal delay={delay}>
       <div
-        className="rounded-xl p-5 lg:p-7"
+        className="rounded-xl p-5 lg:p-7 hover-lift"
         style={{
           background:  'var(--color-surface)',
           border:      '1px solid var(--color-border)',
@@ -237,167 +271,6 @@ function ExpandedProjectCard({ project, delay = 0 }: { project: ProjectData; del
   )
 }
 
-/* ─── Pricing table (Shopify-style cards) ────────────────── */
-interface PricingTier {
-  name:      string
-  priceFrom: string
-  priceTo?:  string
-  tagline:   string
-  items:     string[]
-  highlight: boolean
-}
-
-const PRICING_TIERS: PricingTier[] = [
-  {
-    name:      'SIMPLE AUTOMATION',
-    priceFrom: '$300',
-    priceTo:   '$1,500',
-    tagline:   'Single-process workflows connecting 2-3 tools. Includes AI audit and strategy sessions.',
-    items:     ['Basic chatbot setup', '2-3 tool workflow builds', 'Lead capture & notifications', 'AI audit + roadmap ($500-$1,000)'],
-    highlight: false,
-  },
-  {
-    name:      'HOURLY PART-TIME / FULL-TIME',
-    priceFrom: '$10',
-    priceTo:   '$15/hr',
-    tagline:   'Flexible part-time or full-time engagement billed hourly. Ideal for ongoing builds, embedded team work, or dedicated automation support.',
-    items:     ['Part-time or full-time hours', 'Dedicated async collaboration', 'Workflow builds & iterations', 'Weekly progress reporting'],
-    highlight: false,
-  },
-  {
-    name:      'AI AUTOMATION BUILD',
-    priceFrom: '$2,000',
-    priceTo:   '$5,000',
-    tagline:   'Multi-step AI pipelines with 4+ tool integrations built to run without you.',
-    items:     ['Multi-step n8n workflows (4+ tools)', 'AI lead qualification & scoring', 'CRM + Slack + email integration', 'Monitoring, alerting & reporting'],
-    highlight: true,
-  },
-  {
-    name:      'ENTERPRISE AI',
-    priceFrom: '$5,000',
-    priceTo:   '$20,000+',
-    tagline:   'Full end-to-end AI agents and large-scale automation across entire business operations.',
-    items:     ['End-to-end AI agent systems', 'Multi-agent architectures', 'Large-scale data pipelines', 'Department-wide process automation'],
-    highlight: false,
-  },
-  {
-    name:      'MONTHLY RETAINER',
-    priceFrom: '$300',
-    priceTo:   '$1,000+/mo',
-    tagline:   'Ongoing maintenance, prompt updates, API changes, and new feature additions.',
-    items:     ['Workflow monitoring & fixes', 'Prompt updates & API changes', 'New automation additions', 'Priority response'],
-    highlight: false,
-  },
-]
-
-function PricingTable() {
-  return (
-    <Reveal>
-      <div className="text-center mb-12">
-        <span
-          className="font-mono text-[11px] uppercase tracking-[0.22em]"
-          style={{ color: 'var(--color-accent)' }}
-        >
-          Pricing
-        </span>
-        <h2
-          className="font-display font-bold text-3xl sm:text-4xl mt-2 leading-tight"
-          style={{ color: 'var(--color-text)' }}
-        >
-          Transparent, Value-Based Rates
-        </h2>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-        {PRICING_TIERS.map(tier => (
-            <div
-              key={tier.name}
-              className="relative rounded-xl p-3.5 flex flex-col"
-              style={{
-                background: tier.highlight
-                  ? 'color-mix(in srgb, var(--color-accent) 5%, var(--color-surface))'
-                  : 'var(--color-surface)',
-                border: tier.highlight
-                  ? '2px solid var(--color-accent)'
-                  : '1px solid var(--color-border)',
-              }}
-            >
-              {/* Recommended badge */}
-              {tier.highlight && (
-                <span
-                  className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase whitespace-nowrap"
-                  style={{ background: 'var(--color-accent)', color: '#050505' }}
-                >
-                  Recommended
-                </span>
-              )}
-
-              {/* Plan name */}
-              <p
-                className="font-mono text-[9px] font-bold tracking-[0.18em] uppercase mb-3"
-                style={{ color: 'var(--color-accent)' }}
-              >
-                {tier.name}
-              </p>
-
-              {/* Price */}
-              <div className="mb-1 flex items-baseline gap-1 flex-wrap">
-                <span
-                  className="font-display font-bold tabular-nums"
-                  style={{ fontSize: 22, lineHeight: 1, color: 'var(--color-text)' }}
-                >
-                  {tier.priceFrom}
-                </span>
-                {tier.priceTo && (
-                  <span
-                    className="font-display font-semibold"
-                    style={{ fontSize: 14, color: 'var(--color-muted)' }}
-                  >
-                    - {tier.priceTo}
-                  </span>
-                )}
-              </div>
-              <p className="text-[10px] mb-3" style={{ color: 'var(--color-muted)' }}>
-                Starting price. Final quote after scoping.
-              </p>
-
-              {/* Tagline */}
-              <p
-                className="text-[12px] leading-relaxed mb-3"
-                style={{ color: 'var(--color-text)', opacity: 0.8 }}
-              >
-                {tier.tagline}
-              </p>
-
-              {/* Divider */}
-              <div className="mb-3" style={{ borderTop: '1px solid var(--color-border)' }} />
-
-              {/* Label */}
-              <p
-                className="font-mono text-[9px] font-bold tracking-[0.14em] uppercase mb-2"
-                style={{ color: 'var(--color-muted)' }}
-              >
-                Perfect for
-              </p>
-              <ul className="flex flex-col gap-2 flex-1">
-                {tier.items.map(item => (
-                  <li key={item} className="flex items-start gap-2 text-[12px]" style={{ color: 'var(--color-muted)' }}>
-                    <span style={{ color: 'var(--color-accent)', flexShrink: 0, marginTop: 1 }}>✓</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-        ))}
-      </div>
-
-      {/* Footer note */}
-      <p className="mt-5 text-[12px] text-center" style={{ color: 'var(--color-muted)' }}>
-        Retainer priced at ~20% of project cost. 30-50% downpayment required to start. Final quote after a free scoping call.
-      </p>
-    </Reveal>
-  )
-}
-
 /* ─── Services section ────────────────────────────────────── */
 const SERVICES: { icon: Icon; title: string; description: string; deliverables: string[] }[] = [
   {
@@ -424,12 +297,12 @@ function ServicesSection() {
   return (
     <section id="services" className="py-20 sm:py-28 px-5" style={{ borderTop: '1px solid var(--color-border)' }}>
       <div className="max-w-6xl mx-auto">
-        <SectionHeading eyebrow="Services" title="What I Build" />
+        <SectionHeading eyebrow="Services" title="What I Build" highlight="I Build" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {SERVICES.map((s, i) => (
             <Reveal key={s.title} delay={i * 80} className="h-full">
               <div
-                className="h-full rounded-xl p-6 flex flex-col"
+                className="h-full rounded-xl p-6 flex flex-col hover-lift"
                 style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
               >
                 <div className="mb-4" style={{ color: 'var(--color-accent)' }}>
@@ -458,15 +331,114 @@ function ServicesSection() {
   )
 }
 
-function PricingSection() {
+/* ─── How It Works (process timeline) ────────────────────── */
+const HOW_STEPS: { icon: Icon; title: string; desc: string }[] = [
+  {
+    icon:  MagnifyingGlass,
+    title: 'Discovery Call',
+    desc:  'We map your workflow bottlenecks on a free 30-minute call and pinpoint the automations with the highest return. No prep needed, just show me how the work flows today.',
+  },
+  {
+    icon:  ShieldCheck,
+    title: 'Architecture & Security Review',
+    desc:  'I design your custom automation blueprint with every data flow, integration, and approval gate mapped out. Consequential actions get a human checkpoint. No black boxes, no silent failures.',
+  },
+  {
+    icon:  Wrench,
+    title: 'Build & Test',
+    desc:  'I build against real APIs and test on real data before anything touches production. You watch it run end to end and sign off before we go live.',
+  },
+  {
+    icon:  Rocket,
+    title: 'Launch & Handover',
+    desc:  'We deploy live and I walk your team through running it. You get documentation and a recorded walkthrough, not a system only I can operate.',
+  },
+  {
+    icon:  ChartLineUp,
+    title: 'Monitor & Evolve',
+    desc:  'I watch for silent failures, patch API changes, and add new automations as you grow. Your system gets more capable over time, not more fragile.',
+  },
+]
+
+function HowItWorks() {
   return (
     <section
-      id="pricing"
+      id="process"
       className="py-20 sm:py-28 px-5"
       style={{ borderTop: '1px solid var(--color-border)' }}
     >
-      <div className="max-w-6xl mx-auto">
-        <PricingTable />
+      <div className="max-w-3xl mx-auto">
+        <SectionHeading eyebrow="Process" title="How We'll Work Together" highlight="Work Together" />
+
+        <div className="relative">
+          {/* Vertical connector line behind the nodes */}
+          <div
+            aria-hidden
+            className="absolute top-5 bottom-5"
+            style={{ left: 19, width: 2, background: 'var(--color-border)' }}
+          />
+
+          <div className="flex flex-col gap-9 sm:gap-11">
+            {HOW_STEPS.map((s, i) => (
+              <Reveal key={s.title} delay={i * 80}>
+                <div className="flex gap-5">
+                  {/* Numbered node */}
+                  <div className="flex-shrink-0">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center relative z-10"
+                      style={{
+                        background: 'var(--color-surface)',
+                        border:     '1px solid var(--color-accent)',
+                      }}
+                    >
+                      <span
+                        className="font-mono text-[13px] font-bold tabular-nums"
+                        style={{ color: 'var(--color-accent)' }}
+                      >
+                        {i + 1}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Step content */}
+                  <div className="pt-1">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span style={{ color: 'var(--color-accent)' }}>
+                        <s.icon size={18} weight="duotone" />
+                      </span>
+                      <h3
+                        className="font-display font-bold text-[16px] sm:text-[17px] leading-snug"
+                        style={{ color: 'var(--color-text)' }}
+                      >
+                        {s.title}
+                      </h3>
+                    </div>
+                    <p
+                      className="text-[14px] leading-relaxed"
+                      style={{ color: 'var(--color-muted)' }}
+                    >
+                      {s.desc}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <Reveal delay={HOW_STEPS.length * 80} className="text-center mt-12">
+          <a
+            href="https://calendly.com/joemarbelmonte-automation/discovery-call"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-press inline-flex items-center gap-2 rounded-lg font-semibold text-[14px] px-6 py-3 hover:opacity-85"
+            style={{ background: 'var(--color-accent)', color: '#050505' }}
+          >
+            Start with a Free Discovery Call
+            <span aria-hidden>→</span>
+          </a>
+        </Reveal>
       </div>
     </section>
   )
@@ -499,12 +471,44 @@ function WhySection() {
       style={{ borderTop: '1px solid var(--color-border)' }}
     >
       <div className="max-w-6xl mx-auto">
-        <SectionHeading eyebrow="Differentiators" title="Why Work With Me" />
+        <SectionHeading eyebrow="Differentiators" title="Why Work With Me" highlight="Work With Me" />
+
+        <Reveal className="max-w-3xl mx-auto text-center -mt-6 mb-14">
+          <p className="text-[16px] sm:text-[17px] leading-relaxed" style={{ color: 'var(--color-muted)' }}>
+            I turn messy, manual processes into organized, auditable systems that are easy to manage and scale. By combining workflow automation, AI solutions, and custom tooling with a security-first mindset, I help businesses cut busywork, gain visibility, and run more efficiently without trading away control or reliability.
+          </p>
+        </Reveal>
+
+        <Reveal className="max-w-3xl mx-auto mb-16">
+          <div
+            className="rounded-xl p-6 sm:p-8"
+            style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+          >
+            <h3 className="font-display font-bold text-xl sm:text-2xl mb-5" style={{ color: 'var(--color-text)' }}>
+              About Me
+            </h3>
+            <div className="flex flex-col gap-4 text-[14px] sm:text-[15px] leading-relaxed" style={{ color: 'var(--color-muted)' }}>
+              <p>
+                My background is in enterprise cybersecurity. For over 10 years I worked as a security analyst and engineer across banking, healthcare, and energy, handling penetration testing, application security, and vulnerability management in high-stakes, compliance-sensitive environments.
+              </p>
+              <p>
+                That work trained me to think in systems: map how data flows, find where things break, and design for reliability under pressure. I learned never to trust a process I cannot audit, and to assume anything left unmonitored will eventually fail at the worst possible time.
+              </p>
+              <p>
+                Along the way I kept noticing how much time teams lost to repetitive, manual work, so I started building automations to remove it. n8n and Make.com workflows, custom scripts, and AI agents that connect the tools a business already uses. Seeing the hours those systems gave back is what turned automation from a side interest into my focus.
+              </p>
+              <p>
+                Today I design AI-powered workflow and automation systems that connect apps, streamline operations, and help businesses run more efficiently, built with the same security-first discipline I carried from a decade in enterprise security.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {WHY_BULLETS.map((b, i) => (
             <Reveal key={b.title} delay={i * 80} className="h-full">
               <div
-                className="h-full rounded-xl p-6 flex flex-col gap-4"
+                className="h-full rounded-xl p-6 flex flex-col gap-4 hover-lift"
                 style={{
                   background:  'var(--color-surface)',
                   border:      '1px solid var(--color-border)',
@@ -535,168 +539,146 @@ function WhySection() {
   )
 }
 
-/* ─── Project carousel (spotlight, spring, infinite) ─────── */
-const CARD_W = 380
-const GAP    = 24
-const SLOT_W = CARD_W + GAP
+/* ─── Experience (professional timeline) ──────────────────── */
+const EXPERIENCE: { role: string; org: string; period: string; bullets: string[] }[] = [
+  {
+    role:   'AI Automation Specialist',
+    org:    'Independent / Freelance',
+    period: 'January 2026 - Present',
+    bullets: [
+      'Design and ship production AI automation systems on n8n and Make.com, integrating Claude and OpenAI with CRMs, Slack, Telegram, Airtable, and Shopify.',
+      'Built multi-agent pipelines where specialized agents research, decide, and act, with human approval gates on every consequential step.',
+      'Architect every build security-first, applying a 10+ year cybersecurity background to auditable data flows and least-privilege API access.',
+      'Develop custom full-stack tools and dashboards (React / Next.js, Python, Docker) that turn automations into products clients can operate themselves.',
+    ],
+  },
+  {
+    role:   'Senior Security Analyst',
+    org:    'Accenture, Inc.',
+    period: 'May 2019 - Present',
+    bullets: [
+      'Performed DAST scans on web applications and APIs, enabling remediation of critical vulnerabilities within SLA.',
+      'Reduced false positives by 35% through customized scanning configurations and advanced analysis techniques.',
+      'Conducted web application / API penetration testing and thick-client testing for enterprise applications, uncovering and remediating multiple high-severity vulnerabilities.',
+      'Delivered comprehensive security reports with actionable recommendations to stakeholders and developers.',
+      'Coordinated with development teams to ensure vulnerabilities were remediated within agreed timelines.',
+    ],
+  },
+  {
+    role:   'Systems Engineer',
+    org:    'Trend Micro Inc.',
+    period: 'May 2018 - April 2019',
+    bullets: [
+      'Provided escalation support for enterprise clients, resolving complex security product issues across email, phone, and chat channels.',
+      'Managed high-priority incident cases to resolution, ensuring minimal downtime and customer impact.',
+      'Shared expertise through technical knowledge base contributions and internal security trainings.',
+    ],
+  },
+  {
+    role:   'Cloud Security Engineer (Technical Support)',
+    org:    'Trend Micro Inc.',
+    period: 'July 2016 - May 2018',
+    bullets: [
+      'Delivered technical support to home and small office users, ensuring rapid malware remediation through remote sessions.',
+      'Provided first-line triage for security incidents, escalating advanced cases to engineering teams.',
+      'Authored technical guides and trained peers on best practices in cloud-based threat detection and prevention.',
+    ],
+  },
+]
 
-function ProjectCarousel({ projects }: { projects: ProjectData[] }) {
-  const reduce = useReducedMotionSafe()
-
-  const [activeIndex, setActiveIndex] = useState(1)
-  const [isJumping,   setIsJumping]   = useState(false)
-
-  const stageRef       = useRef<HTMLDivElement>(null)
-
-  const displayList     = [projects.at(-1)!, ...projects, projects[0]!]
-  const realActiveIndex = (activeIndex - 1 + projects.length) % projects.length
-
-  // Reset to first card when project list changes (filter tab switch)
-  useEffect(() => {
-    setActiveIndex(1)
-    setIsJumping(false)
-  }, [projects])
-
-  function advance(dir: 1 | -1) {
-    setIsJumping(false)
-    setActiveIndex(prev => prev + dir)
-  }
-
-  function handleAnimationComplete() {
-    if (isJumping) { setIsJumping(false); return }
-    if (activeIndex === 0) {
-      setIsJumping(true); setActiveIndex(projects.length); return
-    }
-    if (activeIndex === displayList.length - 1) {
-      setIsJumping(true); setActiveIndex(1); return
-    }
-  }
-
-  const btnStyle: React.CSSProperties = {
-    background: 'var(--color-surface)',
-    border:     '1px solid var(--color-border)',
-    color:      'var(--color-text)',
-    cursor:     'pointer',
-  }
-
+function ExperienceSection() {
   return (
-    <div className="relative">
-      {/* Flank nav buttons — desktop only */}
-      <button
-        aria-label="Previous project"
-        onClick={() => advance(-1)}
-        className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 items-center justify-center w-9 h-9 rounded-full transition-opacity hover:opacity-80"
-        style={btnStyle}
-      >
-        <CaretLeft size={16} weight="bold" />
-      </button>
-      <button
-        aria-label="Next project"
-        onClick={() => advance(1)}
-        className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 items-center justify-center w-9 h-9 rounded-full transition-opacity hover:opacity-80"
-        style={btnStyle}
-      >
-        <CaretRight size={16} weight="bold" />
-      </button>
+    <section
+      id="experience"
+      className="py-20 sm:py-28 px-5"
+      style={{ borderTop: '1px solid var(--color-border)' }}
+    >
+      <div className="max-w-3xl mx-auto">
+        <SectionHeading eyebrow="Experience" title="Where I've Worked" highlight="I've Worked" />
 
-      {/* Stage — clips the translated track */}
-      <div ref={stageRef} className="overflow-hidden -mx-5 sm:mx-0">
-        <motion.div
-          style={{
-            display:      'flex',
-            gap:          GAP,
-            paddingLeft:  `calc(50% - ${CARD_W / 2}px)`,
-            paddingRight: `calc(50% - ${CARD_W / 2}px)`,
-            willChange:   'transform',
-          }}
-          animate={{ x: -(activeIndex * SLOT_W) }}
-          transition={
-            isJumping || reduce
-              ? { duration: 0 }
-              : { type: 'spring', stiffness: 300, damping: 30 }
-          }
-          onAnimationComplete={handleAnimationComplete}
-        >
-          {displayList.map((p, i) => {
-            const dist    = Math.abs(i - activeIndex)
-            const isAdj   = dist === 1
-            const dir     = i < activeIndex ? -1 : 1
-            return (
-              <motion.div
-                key={`slot-${i}`}
-                onClick={isAdj ? () => advance(dir) : undefined}
-                style={{
-                  width:          CARD_W,
-                  flexShrink:     0,
-                  transformOrigin: 'center center',
-                  pointerEvents:  dist >= 2 ? 'none' : 'auto',
-                  cursor:         isAdj ? 'pointer' : 'default',
-                  borderRadius:   12,
-                  boxShadow:      dist === 0 ? '0 0 0 1.5px var(--color-accent)' : 'none',
-                }}
-                animate={{
-                  scale:   dist === 0 ? 1 : dist === 1 ? 0.94 : 0.88,
-                  opacity: dist === 0 ? 1 : dist === 1 ? 0.55 : 0.25,
-                }}
-                transition={
-                  reduce
-                    ? { duration: 0 }
-                    : { type: 'spring', stiffness: 300, damping: 30 }
-                }
-                aria-hidden={dist !== 0}
-              >
-                <ProjectCard project={p} delay={0} skipReveal />
-              </motion.div>
-            )
-          })}
-        </motion.div>
-      </div>
+        <div className="relative">
+          {/* Vertical connector line behind the nodes */}
+          <div
+            aria-hidden
+            className="absolute top-5 bottom-5"
+            style={{ left: 19, width: 2, background: 'var(--color-border)' }}
+          />
 
-      {/* Dot indicators */}
-      <div className="flex items-center justify-center gap-2 mt-5" role="tablist" aria-label="Project navigation">
-        {projects.map((p, i) => {
-          const isActive = i === realActiveIndex
-          return (
-            <button
-              key={p.name}
-              role="tab"
-              aria-selected={isActive}
-              aria-label={`Go to ${p.name}`}
-              onClick={() => { setIsJumping(false); setActiveIndex(i + 1) }}
-              style={{
-                width:        isActive ? 20 : 6,
-                height:       6,
-                borderRadius: 3,
-                padding:      0,
-                border:       'none',
-                background:   isActive ? 'var(--color-accent)' : 'var(--color-border)',
-                cursor:       'pointer',
-                transition:   reduce ? 'none' : 'width 200ms ease, background 200ms ease',
-              }}
-            />
-          )
-        })}
+          <div className="flex flex-col gap-9 sm:gap-11">
+            {EXPERIENCE.map((job, i) => (
+              <Reveal key={`${job.role}-${job.period}`} delay={i * 80}>
+                <div className="flex gap-5">
+                  {/* Node */}
+                  <div className="flex-shrink-0">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center relative z-10"
+                      style={{
+                        background: 'var(--color-surface)',
+                        border:     '1px solid var(--color-accent)',
+                      }}
+                    >
+                      <span style={{ color: 'var(--color-accent)' }}>
+                        <Briefcase size={18} weight="duotone" />
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Role content */}
+                  <div className="pt-0.5">
+                    <h3
+                      className="font-display font-bold text-[16px] sm:text-[17px] leading-snug"
+                      style={{ color: 'var(--color-text)' }}
+                    >
+                      {job.role}
+                    </h3>
+                    <p className="font-mono text-[12px] mt-1 mb-3" style={{ color: 'var(--color-accent)' }}>
+                      {job.org} / {job.period}
+                    </p>
+                    <ul className="space-y-2">
+                      {job.bullets.map(b => (
+                        <li key={b} className="flex gap-2 text-[14px] leading-relaxed" style={{ color: 'var(--color-muted)' }}>
+                          <span className="flex-shrink-0" style={{ color: 'var(--color-accent)' }}>→</span>
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   )
 }
 
 /* ─── Work section ────────────────────────────────────────── */
 type FilterTab = 'All' | ProjectCategory
 
-const FILTER_TABS: FilterTab[] = ['All', 'n8n']
+const FILTER_TABS: FilterTab[] = ['All', 'Lead & Sales', 'Marketing & Content', 'Operations', 'Security']
 
 function WorkSection() {
   const [active, setActive] = useState<FilterTab>('All')
+  const [query,  setQuery]  = useState('')
 
-  const allCard     = ALL_PROJECTS.filter(p => p.pattern && p.problem)
+  const cards        = ALL_PROJECTS.filter(p => p.pattern && p.problem)
   const expandedOnly = ALL_PROJECTS.filter(p => p.pipeline && !p.pattern)
 
-  const visibleCards    = active === 'All' ? allCard     : allCard.filter(p => p.category === active)
-  const visibleExpanded = active === 'All' ? expandedOnly : expandedOnly.filter(p => p.category === active)
+  const q = query.trim().toLowerCase()
+  const matchesCat    = (p: ProjectData) => active === 'All' || p.category === active
+  const matchesSearch = (p: ProjectData) =>
+    q === '' ||
+    p.name.toLowerCase().includes(q) ||
+    p.description.toLowerCase().includes(q) ||
+    p.stack.some(s => s.toLowerCase().includes(q))
 
+  const visibleCards    = cards.filter(p => matchesCat(p) && matchesSearch(p))
+  const visibleExpanded = expandedOnly.filter(p => matchesCat(p) && matchesSearch(p))
+  const isEmpty = visibleCards.length === 0 && visibleExpanded.length === 0
+
+  const all = [...cards, ...expandedOnly]
   const counts = FILTER_TABS.reduce<Record<FilterTab, number>>((acc, tab) => {
-    const all = [...allCard, ...expandedOnly]
     acc[tab] = tab === 'All' ? all.length : all.filter(p => p.category === tab).length
     return acc
   }, {} as Record<FilterTab, number>)
@@ -708,112 +690,107 @@ function WorkSection() {
       style={{ borderTop: '1px solid var(--color-border)' }}
     >
       <div className="max-w-6xl mx-auto">
-        <SectionHeading eyebrow="Work" title="Automation Solutions I've Built" />
+        <SectionHeading eyebrow="Projects" title="Automation Solutions I've Built" highlight="I've Built" />
 
-        {/* Filter tabs */}
-        <Reveal className="mb-8 -mt-4">
-          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
-            {FILTER_TABS.map(tab => {
-              const isActive = active === tab
-              const count    = counts[tab]
-              return (
-                <motion.button
-                  key={tab}
-                  onClick={() => setActive(tab)}
-                  whileHover={isActive ? { scale: 1.05, filter: 'brightness(1.15)' } : { scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                  className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-mono text-[12px] transition-colors duration-150"
+        <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-8 lg:gap-10">
+
+          {/* Sidebar: search + categories */}
+          <Reveal>
+            <aside className="lg:sticky lg:top-24 self-start">
+              <p
+                className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] mb-3"
+                style={{ color: 'var(--color-muted)' }}
+              >
+                Categories
+              </p>
+
+              {/* Search */}
+              <div className="relative mb-4">
+                <MagnifyingGlass
+                  size={15}
+                  weight="bold"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
+                  style={{ color: 'var(--color-muted)' }}
+                />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                  placeholder="Search projects"
+                  aria-label="Search projects"
+                  className="w-full rounded-lg pl-9 pr-3 py-2 text-[13px] outline-none transition-colors focus:border-[var(--color-accent)]"
                   style={{
-                    background:  isActive ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'var(--color-surface)',
-                    border:      `1px solid ${isActive ? 'var(--color-accent)' : 'var(--color-border)'}`,
-                    color:       isActive ? 'var(--color-accent)' : 'var(--color-muted)',
-                    cursor:      'pointer',
+                    background: 'var(--color-surface)',
+                    border:     '1px solid var(--color-border)',
+                    color:      'var(--color-text)',
                   }}
-                >
-                  {tab}
-                  <span
-                    className="inline-flex items-center justify-center w-[18px] h-[18px] rounded-full text-[9px] font-bold"
-                    style={{
-                      background: isActive ? 'var(--color-accent)' : 'var(--color-surface-2)',
-                      color:      isActive ? '#050505'              : 'var(--color-muted)',
-                    }}
-                  >
-                    {count}
-                  </span>
-                </motion.button>
-              )
-            })}
-          </div>
-        </Reveal>
+                />
+              </div>
 
-        {/* Project cards carousel */}
-        {visibleCards.length > 0 && <ProjectCarousel projects={visibleCards} />}
+              {/* Category list */}
+              <ul className="flex flex-row lg:flex-col gap-1.5 overflow-x-auto no-scrollbar lg:overflow-visible pb-1 lg:pb-0">
+                {FILTER_TABS.map(tab => {
+                  const isActive = active === tab
+                  return (
+                    <li key={tab} className="flex-shrink-0">
+                      <button
+                        onClick={() => setActive(tab)}
+                        className="btn-press w-full flex items-center justify-between gap-3 rounded-lg px-3.5 py-2 text-[13.5px] text-left whitespace-nowrap"
+                        style={{
+                          background: isActive ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'transparent',
+                          color:      isActive ? 'var(--color-accent)' : 'var(--color-muted)',
+                          fontWeight: isActive ? 600 : 400,
+                          cursor:     'pointer',
+                        }}
+                      >
+                        {tab}
+                        <span
+                          className="font-mono text-[11px] tabular-nums"
+                          style={{ color: isActive ? 'var(--color-accent)' : 'var(--color-muted)', opacity: 0.65 }}
+                        >
+                          {counts[tab]}
+                        </span>
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+            </aside>
+          </Reveal>
 
-        {/* Expanded pipeline-only cards */}
-        {visibleExpanded.length > 0 && (
-          <div className={`flex flex-col gap-5 ${visibleCards.length > 0 ? 'mt-5' : ''}`}>
-            {visibleExpanded.map((p, i) => (
-              <ExpandedProjectCard key={p.name} project={p} delay={i * 80} />
-            ))}
-          </div>
-        )}
+          {/* Cards */}
+          <div>
+            {visibleCards.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {visibleCards.map((p, i) => (
+                  <ProjectCard key={p.name} project={p} delay={(i % 2) * 80} />
+                ))}
+              </div>
+            )}
 
-        {/* Empty state */}
-        {visibleCards.length === 0 && visibleExpanded.length === 0 && (
-          <div className="py-16 text-center">
-            <p className="font-mono text-[13px]" style={{ color: 'var(--color-muted)' }}>
-              No projects in this category yet.
-            </p>
+            {visibleExpanded.length > 0 && (
+              <div className={`flex flex-col gap-5 ${visibleCards.length > 0 ? 'mt-6' : ''}`}>
+                {visibleExpanded.map((p, i) => (
+                  <ExpandedProjectCard key={p.name} project={p} delay={i * 80} />
+                ))}
+              </div>
+            )}
+
+            {isEmpty && (
+              <div className="py-16 text-center">
+                <p className="font-mono text-[13px]" style={{ color: 'var(--color-muted)' }}>
+                  No projects match your search.
+                </p>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </section>
   )
 }
 
 /* ─── Contact section ─────────────────────────────────────── */
-const EMAIL = 'joemarbelmonte.automation@gmail.com'
-
-const INFO_ROWS = [
-  { label: 'Location',     value: 'Philippines'      },
-  { label: 'Timezone',     value: 'PHT (UTC+8)'      },
-  { label: 'Availability', value: 'Open for Projects' },
-  { label: 'Response',     value: 'Within 24 hours'  },
-  { label: 'Project Min.', value: 'USD 500'          },
-  { label: 'Status',       value: 'Open for Work'    },
-]
-
-function CopyEmailButton() {
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(EMAIL)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // clipboard not available
-    }
-  }
-
-  return (
-    <button
-      onClick={handleCopy}
-      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all w-full"
-      style={{
-        background: 'var(--color-surface-2)',
-        color:      copied ? '#10b981' : 'var(--color-text)',
-        border:     `1px solid ${copied ? '#10b981' : 'var(--color-border)'}`,
-        cursor:     'pointer',
-      }}
-    >
-      {copied ? <Check size={14} weight="bold" /> : <Copy size={14} />}
-      <span className="truncate">{copied ? 'Copied!' : EMAIL}</span>
-    </button>
-  )
-}
-
 function ContactSection() {
   return (
     <section
@@ -834,7 +811,7 @@ function ContactSection() {
             className="font-display font-bold text-3xl sm:text-4xl mt-2 leading-tight"
             style={{ color: 'var(--color-text)' }}
           >
-            Ready to automate your business?
+            Ready to <span style={{ color: 'var(--color-accent)' }}>automate your business?</span>
           </h2>
           <p
             className="mx-auto mt-3 text-[15px] leading-relaxed"
@@ -844,96 +821,131 @@ function ContactSection() {
           </p>
         </Reveal>
 
-        {/* Two-column grid: info (fixed 380px) + Calendly widget */}
-        <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-8 items-start">
-
-          {/* Left - info panel */}
-          <Reveal>
-            <div
-              className="rounded-xl p-6"
-              style={{
-                background: 'var(--color-surface)',
-                border:     '1px solid var(--color-border)',
-              }}
-            >
-              {/* Info rows */}
-              <div>
-                {INFO_ROWS.map((row, i) => (
-                  <div
-                    key={row.label}
-                    className="flex items-center justify-between py-3"
-                    style={{
-                      borderBottom: i < INFO_ROWS.length - 1 ? '1px solid var(--color-border)' : 'none',
-                    }}
-                  >
-                    <span
-                      className="font-mono text-[11px] uppercase tracking-[0.12em]"
-                      style={{ color: 'var(--color-muted)' }}
-                    >
-                      {row.label}
-                    </span>
-                    <span
-                      className="text-[13px] font-medium flex items-center gap-1.5 text-right"
-                      style={{ color: 'var(--color-text)' }}
-                    >
-                      {row.label === 'Status' && (
-                        <span
-                          className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0"
-                          style={{ animation: 'pulse 2s ease-in-out infinite' }}
-                        />
-                      )}
-                      {row.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Email fallback */}
-              <div className="mt-5 pt-5" style={{ borderTop: '1px solid var(--color-border)' }}>
-                <p
-                  className="text-[14px] font-semibold mb-3"
-                  style={{ fontFamily: 'var(--font-display, system-ui)', color: 'var(--color-text)' }}
-                >
-                  Prefer email?
-                </p>
-                <p className="mb-2 text-[12px]" style={{ color: 'var(--color-muted)' }}>
-                  Click to copy my email address.
-                </p>
-                <CopyEmailButton />
-                <p className="mt-2 text-[12px]" style={{ color: 'var(--color-muted)' }}>
-                  I respond within 24 hours.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* Right - Calendly inline widget (no Reveal wrapper - avoids opacity-0 init issues) */}
-          <CalendlyWidget />
-        </div>
+        {/* Calendly inline widget (no Reveal wrapper - avoids opacity-0 init issues) */}
+        <CalendlyWidget />
       </div>
     </section>
   )
 }
 
 
+/* ─── Footer ──────────────────────────────────────────────── */
+const FOOTER_NAV: { label: string; href: string }[] = [
+  { label: 'Services',   href: '#services'   },
+  { label: 'Work',       href: '#work'       },
+  { label: 'Process',    href: '#process'    },
+  { label: 'About Me',   href: '#why'        },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Contact',    href: '#contact'    },
+]
+
+function Footer() {
+  const email    = 'joemarbelmonte.automation@gmail.com'
+  const calendly = 'https://calendly.com/joemarbelmonte-automation/discovery-call'
+
+  return (
+    <footer style={{ borderTop: '1px solid var(--color-border)', background: 'var(--color-surface)' }}>
+      <div className="max-w-6xl mx-auto px-5 py-14 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+
+          {/* Brand */}
+          <div className="lg:col-span-5">
+            <p className="font-display font-bold text-xl" style={{ color: 'var(--color-text)' }}>
+              Joemar Belmonte
+            </p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] mt-1" style={{ color: 'var(--color-accent)' }}>
+              AI Automation Specialist
+            </p>
+            <p className="text-[14px] leading-relaxed mt-4 max-w-sm" style={{ color: 'var(--color-muted)' }}>
+              Building auditable AI automation systems that connect your tools and run without you, security-first from day one.
+            </p>
+            <div className="flex items-center gap-2 mt-5">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0" style={{ animation: 'pulse 2s ease-in-out infinite' }} />
+              <span className="text-[13px]" style={{ color: 'var(--color-text)' }}>Open for Work</span>
+            </div>
+          </div>
+
+          {/* Navigate */}
+          <div className="lg:col-span-3">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] mb-4" style={{ color: 'var(--color-muted)' }}>
+              Navigate
+            </p>
+            <ul className="grid grid-cols-2 sm:grid-cols-1 gap-2.5">
+              {FOOTER_NAV.map(item => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    className="text-[14px] transition-colors hover:text-[var(--color-accent)]"
+                    style={{ color: 'var(--color-muted)' }}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Get in touch */}
+          <div className="lg:col-span-4">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] mb-4" style={{ color: 'var(--color-muted)' }}>
+              Get in touch
+            </p>
+            <ul className="flex flex-col gap-3">
+              <li>
+                <a href={`mailto:${email}`} className="inline-flex items-center gap-2.5 text-[14px] transition-colors hover:text-[var(--color-accent)]" style={{ color: 'var(--color-muted)' }}>
+                  <EnvelopeSimple size={17} weight="duotone" style={{ color: 'var(--color-accent)' }} />
+                  <span className="truncate">{email}</span>
+                </a>
+              </li>
+              <li>
+                <a href={calendly} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2.5 text-[14px] transition-colors hover:text-[var(--color-accent)]" style={{ color: 'var(--color-muted)' }}>
+                  <CalendarBlank size={17} weight="duotone" style={{ color: 'var(--color-accent)' }} />
+                  Book a discovery call
+                </a>
+              </li>
+              <li className="inline-flex items-center gap-2.5 text-[14px]" style={{ color: 'var(--color-muted)' }}>
+                <MapPin size={17} weight="duotone" style={{ color: 'var(--color-accent)' }} />
+                Quezon City, Philippines (PHT, UTC+8)
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div
+          className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-12 pt-6"
+          style={{ borderTop: '1px solid var(--color-border)' }}
+        >
+          <p className="font-mono text-[11px]" style={{ color: 'var(--color-muted)' }}>
+            © 2026 Joemar Belmonte. All rights reserved.
+          </p>
+          <a
+            href="#top"
+            className="btn-press inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] hover:text-[var(--color-accent)]"
+            style={{ color: 'var(--color-muted)' }}
+          >
+            Back to top
+            <ArrowUp size={13} weight="bold" />
+          </a>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
 /* ─── Export ──────────────────────────────────────────────── */
 export default function StaticSection() {
   return (
     <div style={{ background: 'var(--color-bg)' }}>
-      <ServicesSection />
+      <StatsStrip />
       <TechMarquee />
+      <ServicesSection />
       <WorkSection />
+      <HowItWorks />
       <WhySection />
-      <PricingSection />
+      <ExperienceSection />
       <ContactSection />
-      <footer
-        className="py-8 px-5 text-center"
-        style={{ borderTop: '1px solid var(--color-border)' }}
-      >
-        <p className="font-mono text-[11px]" style={{ color: 'var(--color-muted)', opacity: 0.4 }}>
-          Joemar Belmonte / AI Automation Specialist / Philippines
-        </p>
-      </footer>
+      <Footer />
     </div>
   )
 }

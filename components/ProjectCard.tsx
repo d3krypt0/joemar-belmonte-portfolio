@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { type ProjectData } from '@/lib/projects'
 import { useVisible, useReducedMotionSafe } from '@/lib/hooks'
@@ -20,11 +20,14 @@ const ZONE_LABELS = {
 } as const
 
 function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: () => void }) {
+  const closeRef = useRef<HTMLButtonElement>(null)
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', onKey)
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    closeRef.current?.focus()
     return () => {
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = prevOverflow
@@ -36,6 +39,9 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(8px)' }}
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${project.name} workflow details`}
     >
       <div
         className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl flex flex-col"
@@ -44,6 +50,7 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
       >
         {/* Close button */}
         <button
+          ref={closeRef}
           onClick={onClose}
           className="absolute top-4 right-4 z-10 flex items-center justify-center w-8 h-8 rounded-full"
           style={{ background: '#00000012', color: '#444444', fontSize: 16, fontWeight: 600 }}
@@ -279,6 +286,11 @@ export default function ProjectCard({ project, delay = 0, skipReveal = false }: 
             className="relative flex-shrink-0 flex items-center justify-center overflow-hidden"
             style={{ height: 200, background: '#0d0d1a', cursor: 'pointer' }}
             onClick={() => setModalOpen(true)}
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setModalOpen(true) } }}
+            role="button"
+            tabIndex={0}
+            aria-haspopup="dialog"
+            aria-label={`View ${project.name} workflow`}
             title="Click to view workflow"
           >
             {/* Subtle grid */}

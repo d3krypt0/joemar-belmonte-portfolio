@@ -154,7 +154,7 @@ export default function TechMarquee() {
             className="font-mono text-[11px] uppercase tracking-[0.22em] block mb-2"
             style={{ color: 'var(--color-accent)' }}
           >
-            // Tech Stack
+            {'// Tech Stack'}
           </span>
           <h2
             className="font-display font-bold text-3xl sm:text-4xl mt-1 leading-tight"

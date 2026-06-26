@@ -34,6 +34,7 @@ export default function ChatApp() {
   const [hasStarted, setHasStarted]   = useState(false)
   const [avatarState, setAvatarState] = useState<AvatarState>('idle')
   const [theme, setTheme]             = useState<Theme>('light')
+  const [hydrated, setHydrated]       = useState(false)
 
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const textareaRef          = useRef<HTMLTextAreaElement>(null)
@@ -46,16 +47,19 @@ export default function ChatApp() {
     onError:    ()  => setAvatarState('idle'),
   })
 
-  // Load saved theme once on mount
+  // Adopt the theme the pre-paint script already applied to <html> (avoids FOUC).
   useEffect(() => {
-    const saved = localStorage.getItem('theme') as Theme | null
-    if (saved === 'light' || saved === 'dark') setTheme(saved)
+    const applied = document.documentElement.dataset.theme as Theme | null
+    if (applied === 'light' || applied === 'dark') setTheme(applied)
+    setHydrated(true)
   }, [])
 
-  // Sync theme to <html> so CSS variables cascade to the whole page
+  // Sync theme to <html> so CSS variables cascade. Skip the first mount so we
+  // don't clobber the value the pre-paint script set before state catches up.
   useEffect(() => {
+    if (!hydrated) return
     document.documentElement.dataset.theme = theme
-  }, [theme])
+  }, [theme, hydrated])
 
   useEffect(() => {
     if (messages.length > 0 && !hasStarted) setHasStarted(true)
@@ -1074,7 +1078,6 @@ function InputForm({ input, isLoading, textareaRef, onChange, onSubmit, onKeyDow
         rows={1}
         className="chat-input"
         disabled={isLoading}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={autoFocus}
         aria-label="Message input"
       />

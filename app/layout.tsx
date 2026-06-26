@@ -50,8 +50,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${cabinetGrotesk.variable} ${interTight.variable} ${GeistMono.variable}`}
     >
+      <head>
+        {/* Set theme before first paint to avoid a light-mode flash for dark-mode visitors. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=(t==='dark'||t==='light')?t:'light'}catch(e){document.documentElement.dataset.theme='light'}",
+          }}
+        />
+      </head>
       <body><ErrorBoundary>{children}</ErrorBoundary></body>
     </html>
   )

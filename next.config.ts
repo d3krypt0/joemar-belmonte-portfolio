@@ -3,9 +3,16 @@ import type { NextConfig } from 'next'
 // ponytail: 'unsafe-inline' on script/style is required because Next injects
 // inline bootstrap scripts (no nonce in static export) and the app uses inline
 // style={{}} throughout. CSP still restricts origins, framing, and base-uri.
+// 'unsafe-eval' is needed only in dev (React dev build + Turbopack use eval);
+// production never uses eval, so it is omitted there.
+const scriptSrc =
+  process.env.NODE_ENV === 'development'
+    ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://assets.calendly.com"
+    : "script-src 'self' 'unsafe-inline' https://assets.calendly.com"
+
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://assets.calendly.com",
+  scriptSrc,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self' data:",

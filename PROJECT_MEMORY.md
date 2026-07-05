@@ -144,13 +144,13 @@ The on-page pricing section was removed. Rates now live only in the chatbot's `S
 
 ## Recent Changes
 
+- 2026-07-05 15:33 — projects.ts: Edit via Claude Code
+- 2026-07-05 15:28 — StaticSection.tsx: Edit via Claude Code
+- 2026-07-05 15:28 — projects.ts: Edit via Claude Code
+- 2026-07-05 15:28 — projects.ts: Edit via Claude Code
+- 2026-06-26 17:19 — MEMORY.md: Edit via Claude Code
+- 2026-06-26 17:19 — pending-audits.md: Write via Claude Code
+- 2026-06-26 17:14 — next.config.ts: Edit via Claude Code
 - 2026-06-26 17:10 — eslint.config.mjs: Write via Claude Code
 - 2026-06-26 17:10 — ChatApp.tsx: Edit via Claude Code
 - 2026-06-26 17:09 — TechMarquee.tsx: Edit via Claude Code
-- 2026-06-26 17:08 — eslint.config.mjs: Write via Claude Code
-- 2026-06-26 17:06 — package.json: Edit via Claude Code
-- 2026-06-26 17:06 — eslint.config.mjs: Write via Claude Code
-- 2026-06-26 17:05 — ProjectCard.tsx: Edit via Claude Code
-- 2026-06-26 17:05 — ProjectCard.tsx: Edit via Claude Code
-- 2026-06-26 17:05 — ProjectCard.tsx: Edit via Claude Code
-- 2026-06-26 17:04 — ChatApp.tsx: Edit via Claude Code

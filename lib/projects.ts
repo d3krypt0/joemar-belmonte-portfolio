@@ -11,7 +11,7 @@ export interface PipelineNode {
 }
 
 export type PatternType     = 'pipeline' | 'hub' | 'grid' | 'branch' | 'funnel' | 'launch'
-export type ProjectCategory = 'Lead & Sales' | 'Marketing & Content' | 'Operations' | 'Security'
+export type ProjectCategory = 'Lead & Sales' | 'Marketing & Content' | 'Operations' | 'Security' | 'SaaS'
 
 export interface ProjectData {
   name:           string
@@ -33,6 +33,22 @@ export interface ProjectData {
 }
 
 export const ALL_PROJECTS: ProjectData[] = [
+  {
+    name:        'OnlyStamps',
+    type:        'SaaS Product',
+    description: 'Digital loyalty stamp card PWA for cafes - customers earn stamps via a server-signed QR code, track Bronze/Silver/Gold tier progress, and redeem rewards. Staff scan-and-award flow syncs instantly through Supabase Realtime.',
+    stack:       ['Next.js 15', 'TypeScript', 'Supabase', 'Tailwind CSS', 'PWA'],
+    metrics:     [{ value: '60s', label: 'QR Token TTL' }, { value: '3', label: 'Reward Tiers' }],
+    accent:      '#0EA5E9',
+    category:    'SaaS',
+    keywords:    ['onlystamps', 'loyalty app', 'stamp card', 'loyalty pwa', 'cafe rewards', 'digital stamp card', 'loyalty program saas'],
+    pills:       ['NEXT.JS 15', 'SUPABASE', 'PWA'],
+    pattern:     'launch',
+    workflowImage: '/workflows/OnlyStamps.png',
+    problem:     'Paper loyalty cards get lost, can\'t be validated in real time, and give cafe owners no visibility into repeat customers or reward redemption.',
+    solution:    'Customers open the PWA to display a server-signed QR code that rotates every 60 seconds. Staff scan it, the API validates the token and awards a stamp, and Supabase Realtime pushes the update straight to the customer\'s home screen with an instant fill animation. Tier progress (Bronze, Silver, Gold) and reward eligibility update automatically as stamps accrue.',
+    result:      'A fully digital, tamper-resistant loyalty system - no physical cards, real-time stamp sync between staff and customer, and tier-gated rewards that run themselves.',
+  },
   {
     name:        'UGC Ads Veo & Sora & Grok',
     type:        'n8n Automation',

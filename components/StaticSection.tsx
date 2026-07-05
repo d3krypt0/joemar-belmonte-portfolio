@@ -656,7 +656,7 @@ function ExperienceSection() {
 /* ─── Work section ────────────────────────────────────────── */
 type FilterTab = 'All' | ProjectCategory
 
-const FILTER_TABS: FilterTab[] = ['All', 'Lead & Sales', 'Marketing & Content', 'Operations', 'Security']
+const FILTER_TABS: FilterTab[] = ['All', 'Lead & Sales', 'Marketing & Content', 'Operations', 'Security', 'SaaS']
 
 function WorkSection() {
   const [active, setActive] = useState<FilterTab>('All')

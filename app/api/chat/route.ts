@@ -79,7 +79,7 @@ export async function POST(req: Request) {
         system: SYSTEM_PROMPT,
         messages,
         maxTokens: 1024,
-        temperature: 0.72,
+        temperature: 0.2,
         onError: ({ error }) => logStreamError('Groq', error),
       })
       return result.toDataStreamResponse()
@@ -92,7 +92,7 @@ export async function POST(req: Request) {
         system: SYSTEM_PROMPT,
         messages,
         maxTokens: 1024,
-        temperature: 0.72,
+        temperature: 0.2,
         onError: ({ error }) => logStreamError('OpenAI', error),
       })
       return result.toDataStreamResponse()

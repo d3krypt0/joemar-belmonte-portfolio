@@ -35,6 +35,21 @@ export interface ProjectData {
 
 export const ALL_PROJECTS: ProjectData[] = [
   {
+    name:        'Pitchroom',
+    type:        'Local Business Pitch Workspace',
+    description: 'Research a local business, develop tailored website concepts, and prepare outreach drafts and quotation packages for operator review.',
+    stack:       ['JavaScript', 'HTML', 'CSS', 'Business Research'],
+    metrics:     [{ value: '3', label: 'Quote Tiers' }, { value: 'Review', label: 'Approval Gate' }],
+    accent:      '#C9A66B',
+    category:    'Lead & Sales',
+    keywords:    ['pitchroom', 'pitch room', 'local business pitch', 'website pitch'],
+    pills:       ['RESEARCH', 'WEBSITE CONCEPTS', 'REVIEW'],
+    pattern:     'launch',
+    problem:     'A useful website proposal needs business context, a design direction, and a clear offer before outreach.',
+    solution:    'An intake starts business research and creates website concept options, outreach drafts, and quotation packages. The operator reviews the concepts and decides whether to approve or reject the pitch.',
+    result:      'A local workspace for reviewing website pitches and keeping a history of decisions. Outreach drafts require operator review.',
+  },
+  {
     name:        'Extraction Point',
     type:        'Cafe Operations Platform',
     description: 'Cafe web app connecting customer ordering and queue tracking with staff POS, kitchen display, inventory, and analytics views.',
@@ -228,7 +243,7 @@ export const ALL_PROJECTS: ProjectData[] = [
   },
 ]
 
-const DETECTABLE = ALL_PROJECTS.filter(p => p.keywords && p.keywords.length > 0)
+const DETECTABLE = ALL_PROJECTS.filter(p => p.name !== 'SEO Site Audit' && p.keywords && p.keywords.length > 0)
 
 export function detectProjectsInText(text: string): ProjectData[] {
   const lower = text.toLowerCase()

@@ -10,6 +10,11 @@ const MAX_MESSAGES    = 20
 const MAX_TOTAL_CHARS = 8_000
 const JSON_HEADERS    = { 'Content-Type': 'application/json' }
 
+function logStreamError(provider: string, error: unknown) {
+  const message = error instanceof Error ? `${error.name}: ${error.message}` : 'Unknown provider error'
+  console.error(`[/api/chat] ${provider} stream failed: ${message}`)
+}
+
 // Per-IP fixed-window rate limit. In-memory: scoped to a single serverless
 // instance, so it is best-effort, not a hard global cap. For a strict global
 // limit across instances, swap this for @upstash/ratelimit + Vercel KV.
@@ -70,11 +75,12 @@ export async function POST(req: Request) {
     if (process.env.GROQ_API_KEY) {
       const groq = createGroq({ apiKey: process.env.GROQ_API_KEY })
       const result = streamText({
-        model: groq('llama-3.3-70b-versatile'),
+        model: groq('openai/gpt-oss-120b'),
         system: SYSTEM_PROMPT,
         messages,
         maxTokens: 1024,
         temperature: 0.72,
+        onError: ({ error }) => logStreamError('Groq', error),
       })
       return result.toDataStreamResponse()
     }
@@ -87,6 +93,7 @@ export async function POST(req: Request) {
         messages,
         maxTokens: 1024,
         temperature: 0.72,
+        onError: ({ error }) => logStreamError('OpenAI', error),
       })
       return result.toDataStreamResponse()
     }

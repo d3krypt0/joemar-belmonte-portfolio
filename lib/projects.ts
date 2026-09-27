@@ -17,6 +17,7 @@ export interface ProjectData {
   name:           string
   type:           string
   description:    string
+  url?:           string
   stack:          string[]
   metrics:        [ProjectMetric, ProjectMetric]
   accent:         string
@@ -33,6 +34,40 @@ export interface ProjectData {
 }
 
 export const ALL_PROJECTS: ProjectData[] = [
+  {
+    name:        'Extraction Point',
+    type:        'Cafe Operations Platform',
+    description: 'Cafe web app connecting customer ordering and queue tracking with staff POS, kitchen display, inventory, and analytics views.',
+    url:         'https://extraction-point.vercel.app/',
+    stack:       ['React', 'TypeScript', 'Vite', 'Tailwind CSS'],
+    metrics:     [{ value: '5', label: 'Core Views' }, { value: 'QR', label: 'Table Ordering' }],
+    accent:      '#C5A880',
+    category:    'Operations',
+    keywords:    ['extraction point', 'extraction-point', 'cafe operations platform'],
+    pills:       ['REACT', 'POS', 'KITCHEN'],
+    pattern:     'launch',
+    workflowImage: '/workflows/extraction-point-preview.png',
+    problem:     'Cafe orders, queues, kitchen tickets, inventory, and sales information are difficult to follow when each lives in a separate workflow.',
+    solution:    'A customer menu and checkout feed into staff-facing POS and kitchen views, alongside queue, table, inventory, and analytics screens.',
+    result:      'A public app that brings the customer and staff sides of a cafe workflow into one interface.',
+  },
+  {
+    name:        'NicheStudio',
+    type:        'AI YouTube Production Workspace',
+    description: 'YouTube planning workspace for topic research, narration scripts, scene prompts, thumbnail concepts, and SEO metadata across long-form and Shorts formats.',
+    url:         'https://nichestudio-iota.vercel.app/',
+    stack:       ['Next.js', 'TypeScript', 'Supabase', 'Tailwind CSS'],
+    metrics:     [{ value: '7', label: 'Pipeline Stages' }, { value: '9:16', label: 'Shorts Format' }],
+    accent:      '#38BDF8',
+    category:    'SaaS',
+    keywords:    ['nichestudio', 'niche studio', 'youtube production pipeline'],
+    pills:       ['NEXT.JS', 'AI SCRIPTS', 'YOUTUBE'],
+    pattern:     'launch',
+    workflowImage: '/workflows/nichestudio-preview-redacted.png',
+    problem:     'Planning a video means moving between topic research, writing, visual direction, thumbnails, and search metadata.',
+    solution:    'NicheStudio organizes topic discovery and AI-assisted script creation with scene prompts, thumbnail concepts, and SEO metadata in one production workspace.',
+    result:      'Creators can assemble a structured production blueprint for long-form videos or 9:16 Shorts from one workspace.',
+  },
   {
     name:        'OnlyStamps',
     type:        'SaaS Product',
@@ -122,30 +157,6 @@ export const ALL_PROJECTS: ProjectData[] = [
     ],
   },
   {
-    name:        'Dropshipping AI Content Hub',
-    type:        'n8n Automation',
-    description: 'Form-triggered workflow with five AI content branches - product research, SEO descriptions, platform ad copy, customer support replies, and 30-day sales analysis. Ollama runs the local LLM; results land in an Airtable Content Review Queue in 1-2 minutes.',
-    stack:       ['n8n', 'Ollama (Local LLM)', 'Shopify', 'Airtable'],
-    metrics:     [{ value: '5', label: 'Content Branches' }, { value: 'Local', label: 'Ollama LLM' }],
-    accent:      '#06B6D4',
-    category:    'Marketing & Content',
-    keywords:    ['dropshipping ai content', 'content hub', 'dropshipping content', 'ollama workflow', 'shopify content automation', 'ai product description', 'ai ad copy', 'ai content hub', 'dropshipping ai', 'content automation'],
-    pills:       ['N8N', 'OLLAMA', 'AIRTABLE'],
-    pattern:     'branch',
-    workflowImage: '/workflows/Dropshipping AI Content Hub.png',
-    problem:     'Running a dropshipping store means constantly producing product descriptions, ad copy, customer replies, and sales analysis - across multiple tools, manually, with no consistent output and no review queue.',
-    solution:    'One form. Five AI branches. Select a task type - Research, Description, Ad Copy, Support, or Analysis - and fill in your context. The workflow routes to the right branch, optionally pulls live product or order data from Shopify, builds a structured prompt, and sends it to Ollama (local LLM, no cloud costs). Ad Copy produces three platform-ready variants (Facebook, Instagram, Google). All output lands in Airtable marked Pending Review.',
-    result:      'Five content pipelines in one workflow. From form submit to Airtable in 1-2 minutes. Zero cloud AI costs - fully local via Ollama.',
-    pipeline: [
-      { num: '01', integration: 'N8N -> FORM TRIGGER',   title: 'Content Request',         desc: 'User selects Task Type (Research / Description / Ad Copy / Support / Analysis) and fills in context. Optional Shopify Product ID for live data.' },
-      { num: '02', integration: 'N8N -> SWITCH',          title: 'Route by Task Type',      desc: 'Switch node fans out to one of five dedicated branches based on the selected task type.' },
-      { num: '03', integration: 'SHOPIFY -> FETCH',       title: 'Live Product/Order Data', desc: 'Description, Ad Copy, and Analysis branches optionally fetch live product details or 30-day order history from Shopify Admin API.' },
-      { num: '04', integration: 'N8N -> CODE NODE',       title: 'Prompt Assembly',         desc: 'Combines form input with Shopify data into a role-specific structured prompt tailored to each content type.' },
-      { num: '05', integration: 'OLLAMA -> LOCAL LLM',    title: 'AI Content Generation',   desc: 'HTTP request to local Ollama instance. Model generates research, descriptions, ad variants, support replies, or sales insights.' },
-      { num: '06', integration: 'AIRTABLE -> SAVE',       title: 'Queue for Review',        desc: 'Output formatted and saved to Airtable Content Review Queue with Task Type, AI Output, Status (Pending Review), and Error Flag.' },
-    ],
-  },
-  {
     name:        'WebSecScan: AI Security Auditor',
     type:        'n8n Automation',
     description: 'Form-triggered security audit that runs two parallel Groq AI agents - one checking headers and security configurations, another scanning for XSS, CSRF, and client-side vulnerabilities. Results merged, graded A-F, and delivered as a professional HTML email report.',
@@ -190,22 +201,6 @@ export const ALL_PROJECTS: ProjectData[] = [
       { num: '04', integration: 'GROQ AI -> REPORT',     title: 'AI Report Build',    desc: 'Groq AI transforms raw API data into a structured, readable markdown audit report. Result cached back to Airtable.' },
       { num: '05', integration: 'GOOGLE DRIVE -> SLACK', title: 'Report & Notify',    desc: 'Creates a Google Drive file with the formatted report. Writes run log. Slack success notification sent.' },
     ],
-  },
-  {
-    name:        'LeadPulse: AI Jobs Qualifier',
-    type:        'CRM Automation Pipeline',
-    description: 'Gmail-triggered workflow that scores inbound leads with Groq AI and routes them to Airtable with Telegram alerts for hot leads.',
-    stack:       ['n8n', 'Groq API', 'Gmail', 'Airtable', 'Telegram'],
-    metrics:     [{ value: '0', label: 'Manual Review' }, { value: 'AI', label: 'Lead Scoring' }],
-    accent:      '#EA4B71',
-    category:    'Lead & Sales',
-    keywords:    ['leadpulse', 'lead qualifier', 'lead scoring', 'n8n lead', 'groq', 'email automation', 'lead pulse'],
-    pills:       ['N8N', 'GROQ AI', 'GMAIL'],
-    pattern:     'branch',
-    workflowImage: '/workflows/n8n-lead-qualifier-workflow.png',
-    problem:     'Inbound leads arriving via email were being reviewed manually - no scoring, no prioritization, and hot leads were sitting unanswered for hours or getting lost entirely.',
-    solution:    'Every inbound email gets scored the moment it lands. Hot leads trigger an instant Telegram alert so you respond first - cold leads get quietly logged without wasting your attention. Your inbox becomes a prioritized pipeline, not a to-do list.',
-    result:      'Every inbound lead scored and routed in seconds. Hot leads get a Telegram alert before the email client even refreshes - zero manual triage required.',
   },
   {
     name:        'AI Jobs Scraper + Resume Optimizer',

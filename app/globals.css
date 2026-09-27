@@ -5,6 +5,7 @@
 /* ── Theme tokens ─────────────────────────────────────────── */
 :root,
 [data-theme="dark"] {
+  --font-sans:       var(--font-geist-sans), 'Helvetica Neue', Arial, sans-serif;
   --color-bg:        #050505;
   --color-surface:   #0c0c0c;
   --color-surface-2: #161616;

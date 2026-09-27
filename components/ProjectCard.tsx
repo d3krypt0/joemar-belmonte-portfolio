@@ -41,7 +41,7 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label={`${project.name} workflow details`}
+      aria-label={`${project.name} project details`}
     >
       <div
         className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl flex flex-col"
@@ -59,7 +59,7 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
           ✕
         </button>
 
-        {/* Workflow image(s) */}
+        {/* Project image(s) */}
         <div
           style={{
             background:   '#f4f4f4',
@@ -74,8 +74,8 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={project.workflowImage}
-                alt={`${project.name} workflow`}
-                style={{ width: '100%', height: 'auto', display: 'block', borderRadius: project.workflowImage2 ? '16px 16px 0 0' : '16px 16px 0 0' }}
+                alt={project.url ? `${project.name} website preview` : `${project.name} workflow`}
+                style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '16px 16px 0 0' }}
               />
               {project.workflowImage2 && (
                 <>
@@ -110,7 +110,9 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
                     </div>
                   ))}
                 </div>
-                <p style={{ color: '#888888', fontSize: 13, fontFamily: 'monospace' }}>Workflow screenshot coming soon</p>
+                <p style={{ color: '#888888', fontSize: 13, fontFamily: 'monospace' }}>
+                  {project.url ? 'Live project details' : 'Workflow screenshot coming soon'}
+                </p>
               </div>
             </div>
           )}
@@ -129,6 +131,16 @@ function WorkflowModal({ project, onClose }: { project: ProjectData; onClose: ()
           >
             {project.name}
           </h2>
+          {project.url && (
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ alignSelf: 'flex-start', color: '#222222', border: '1px solid #dddddd', borderRadius: 8, padding: '8px 12px', fontSize: 13, fontWeight: 600 }}
+            >
+              Visit live site
+            </a>
+          )}
 
           {/* How it works */}
           <div>
@@ -281,7 +293,7 @@ export default function ProjectCard({ project, delay = 0, skipReveal = false }: 
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
-          {/* ── Zone A: Workflow image placeholder ─────────── */}
+          {/* ── Zone A: Project image ────────────────────────── */}
           <div
             className="relative flex-shrink-0 flex items-center justify-center overflow-hidden"
             style={{ height: 200, background: '#0d0d1a', cursor: 'pointer' }}
@@ -290,8 +302,8 @@ export default function ProjectCard({ project, delay = 0, skipReveal = false }: 
             role="button"
             tabIndex={0}
             aria-haspopup="dialog"
-            aria-label={`View ${project.name} workflow`}
-            title="Click to view workflow"
+            aria-label={`View ${project.name} details`}
+            title="Click to view project details"
           >
             {/* Subtle grid */}
             <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
@@ -307,8 +319,8 @@ export default function ProjectCard({ project, delay = 0, skipReveal = false }: 
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={project.workflowImage}
-                alt={`${project.name} workflow`}
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center center' }}
+                alt={project.url ? `${project.name} website preview` : `${project.name} workflow`}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: project.url ? 'cover' : 'contain', objectPosition: project.url ? 'center top' : 'center center' }}
               />
             ) : (
               <div className="relative z-10 flex flex-col items-center gap-2 opacity-30">
@@ -322,12 +334,14 @@ export default function ProjectCard({ project, delay = 0, skipReveal = false }: 
                     </div>
                   ))}
                 </div>
-                <span style={{ color: '#666', fontSize: 11, fontFamily: 'monospace' }}>click to view workflow</span>
+                <span style={{ color: '#666', fontSize: 11, fontFamily: 'monospace' }}>
+                  {project.url ? 'click to view details' : 'click to view workflow'}
+                </span>
               </div>
             )}
 
             {/* Pill tags */}
-            {project.pills && (
+            {project.pills && (!project.url || !project.workflowImage) && (
               <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10">
                 {project.pills.map(pill => (
                   <span
@@ -450,6 +464,18 @@ export default function ProjectCard({ project, delay = 0, skipReveal = false }: 
                 </span>
               ))}
             </div>
+            {project.url && (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex mt-4 px-3 py-2 rounded-lg text-[13px] font-semibold"
+                style={{ color: 'var(--color-text)', background: 'var(--color-surface-2)', border: '1px solid var(--color-border)' }}
+                aria-label={`Visit ${project.name} live site`}
+              >
+                Visit live site
+              </a>
+            )}
           </div>
         </div>
       </div>

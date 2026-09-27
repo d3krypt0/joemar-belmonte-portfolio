@@ -12,7 +12,7 @@ Inspired by [toukoum.fr](https://www.toukoum.fr/) — built on Next.js 15, Verce
 |---|---|
 | Framework | Next.js 15 (App Router, Edge Runtime) |
 | AI Streaming | Vercel AI SDK v4 (`ai`, `@ai-sdk/groq`, `@ai-sdk/openai`) |
-| LLM | Groq Llama-3.1-70B (primary) · OpenAI GPT-4o-mini (fallback) |
+| LLM | Groq GPT-OSS 120B (primary) · OpenAI GPT-4o-mini (fallback) |
 | Animation | Motion (`motion/react`) |
 | Styling | Tailwind CSS v3 + custom CSS |
 | Fonts | Syne (display) · Geist Sans (body) · Geist Mono |

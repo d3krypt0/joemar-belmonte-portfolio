@@ -118,14 +118,15 @@ Living snapshot of the Joemar Belmonte AI Automation Portfolio. Auto-updated by 
 
 | Name | Type | Category | Pattern | Accent |
 |---|---|---|---|---|
-| SEO Site Audit | n8n Automation | n8n | pipeline | `#F97316` |
-| AI Jobs Scraper + Resume Optimizer | n8n Automation | n8n | pipeline | `#6366F1` |
-| WebSecScan: AI Security Auditor | n8n Automation | n8n | pipeline | `#EF4444` |
-| AI Media Monitoring & PR System | Make.com Automation | Make.com | pipeline | `#7C3AED` |
-| LeadPulse: AI Qualifier | CRM Automation Pipeline | n8n | branch | `#EA4B71` |
-| 6-Agent AI Dropshipping System | AI Automation Architecture | n8n | hub | `#0078B8` |
-| DropshipIQ: Product Intelligence Platform | Full-Stack Intelligence Platform | Web Dev | funnel | `#0090CC` |
-| MenuCostingAI | SaaS Product — Freemium | Web Dev | branch | `#008060` |
+| Extraction Point | Cafe Operations Platform | Operations | launch | `#C5A880` |
+| NicheStudio | AI YouTube Production Workspace | SaaS | launch | `#38BDF8` |
+| OnlyStamps | SaaS Product | SaaS | launch | `#0EA5E9` |
+| UGC Ads Veo & Sora & Grok | n8n Automation | Marketing & Content | branch | `#F59E0B` |
+| AbandonedCart Recovery System | n8n Automation | Lead & Sales | pipeline | `#8B5CF6` |
+| Automated Invoice Data Entry | n8n Automation | Operations | branch | `#10B981` |
+| WebSecScan: AI Security Auditor | n8n Automation | Security | pipeline | `#EF4444` |
+| SEO Site Audit | n8n Automation | Marketing & Content | pipeline | `#F97316` |
+| AI Jobs Scraper + Resume Optimizer | n8n Automation | Operations | pipeline | `#6366F1` |
 
 ---
 

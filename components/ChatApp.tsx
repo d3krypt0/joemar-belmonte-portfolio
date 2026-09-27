@@ -817,7 +817,7 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         animate={{ opacity: 0.3 }}
         transition={{ delay: 0.7 }}
       >
-        Powered by Groq / Llama 3.3
+        Powered by Groq
       </motion.p>
     </motion.div>
   )
@@ -947,7 +947,7 @@ function ChatError({ onRetry }: { onRetry: () => void }) {
       }}
     >
       <span className="flex-1 text-[13px]" style={{ color: 'var(--color-text)' }}>
-        Message failed to send. Check your connection and try again.
+        The assistant couldn’t reply. Please try again in a moment.
       </span>
       <button
         onClick={onRetry}
@@ -1050,6 +1050,18 @@ function ChatProjectCard({ project }: { project: ProjectData }) {
             </div>
           ))}
         </div>
+        {project.url && (
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex mt-4 px-3 py-2 rounded-lg text-[13px] font-semibold"
+            style={{ color: 'var(--color-text)', background: 'var(--color-surface-2)', border: '1px solid var(--color-border)' }}
+            aria-label={`Visit ${project.name} live site`}
+          >
+            Visit live site
+          </a>
+        )}
       </div>
     </motion.div>
   )

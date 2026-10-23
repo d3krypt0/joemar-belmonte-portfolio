@@ -195,6 +195,58 @@
   }
   .assistant-bubble hr { @apply my-4; border-color: var(--color-border); }
 
+  /* Markdown tables */
+  .assistant-bubble .table-wrapper {
+    @apply my-3.5 overflow-x-auto rounded-xl;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+  .assistant-bubble table {
+    @apply w-full border-collapse text-left;
+    font-size: 13px;
+    min-width: 480px;
+  }
+  .assistant-bubble thead {
+    background: var(--color-surface-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .assistant-bubble th {
+    @apply py-2.5 px-3.5 font-semibold uppercase tracking-wider whitespace-nowrap text-left;
+    font-size: 11px;
+    color: var(--color-muted);
+  }
+  .assistant-bubble tbody tr {
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color 150ms ease;
+  }
+  .assistant-bubble tbody tr:last-child {
+    border-bottom: none;
+  }
+  .assistant-bubble tbody tr:hover {
+    background: color-mix(in srgb, var(--color-surface-2) 60%, transparent);
+  }
+  .assistant-bubble td {
+    @apply py-2.5 px-3.5 align-middle;
+    line-height: 1.5;
+    color: var(--color-text);
+  }
+  /* Column 1: Offering name */
+  .assistant-bubble td:first-child {
+    @apply font-semibold whitespace-nowrap;
+    color: var(--color-text);
+  }
+  /* Column 2: Starting rate */
+  .assistant-bubble td:nth-child(2) {
+    @apply font-mono font-semibold whitespace-nowrap;
+    color: var(--color-accent);
+  }
+  /* Column 3: Typical scope / description */
+  .assistant-bubble td:nth-child(3) {
+    color: var(--color-muted);
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+
   /* Code */
   .code-block {
     @apply rounded-xl p-4 my-3 overflow-x-auto font-mono text-xs whitespace-pre;

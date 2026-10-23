@@ -1324,11 +1324,51 @@ function MessageRow({ message, triggerText }: { message: Message; triggerText?: 
                       href={href ?? '#'}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline underline-offset-2 transition-opacity hover:opacity-70"
+                      className="underline underline-offset-2 transition-opacity hover:opacity-70 break-all"
                       style={{ color: 'var(--color-accent)' }}
                     >
                       {children}
                     </a>
+                  )
+                },
+                table({ children }) {
+                  return (
+                    <div className="table-wrapper my-3.5 overflow-x-auto rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm">
+                      <table className="w-full border-collapse text-left text-[13px] min-w-[480px]">
+                        {children}
+                      </table>
+                    </div>
+                  )
+                },
+                thead({ children }) {
+                  return (
+                    <thead className="bg-[var(--color-surface-2)] border-b border-[var(--color-border)]">
+                      {children}
+                    </thead>
+                  )
+                },
+                th({ children }) {
+                  return (
+                    <th className="py-2.5 px-3.5 text-[11px] font-mono font-semibold uppercase tracking-wider text-[var(--color-muted)] whitespace-nowrap text-left">
+                      {children}
+                    </th>
+                  )
+                },
+                tbody({ children }) {
+                  return <tbody>{children}</tbody>
+                },
+                tr({ children }) {
+                  return (
+                    <tr className="border-b border-[var(--color-border)] last:border-b-0 hover:bg-[color-mix(in_srgb,var(--color-surface-2)_50%,transparent)] transition-colors">
+                      {children}
+                    </tr>
+                  )
+                },
+                td({ children }) {
+                  return (
+                    <td className="py-2.5 px-3.5 align-middle text-[13px] leading-relaxed text-[var(--color-text)]">
+                      {children}
+                    </td>
                   )
                 },
               }}

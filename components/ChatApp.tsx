@@ -227,19 +227,105 @@ const NAV_LINKS = [
   { label: 'Contact',  href: '#contact'  },
 ]
 
+// Sections in reverse order (bottom to top) for top-down scroll detection
+const SECTION_DETECTION_ORDER = [
+  { id: 'contact',    href: '#contact' },
+  { id: 'experience', href: '#experience' },
+  { id: 'why',        href: '#why' },
+  { id: 'process',    href: '#process' },
+  { id: 'work',       href: '#work' },
+  { id: 'services',   href: '#services' },
+]
+
 function NavBar({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () => void }) {
   const [scrolled, setScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState('#top')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const isManualScroll = useRef(false)
+  const manualScrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const updateActiveSection = useCallback((currentY: number) => {
+    if (isManualScroll.current) return
+
+    const docHeight = document.documentElement.scrollHeight
+    const winHeight = window.innerHeight
+
+    // Near the very bottom of the page (user has reached Contact)
+    if (winHeight + currentY >= docHeight - 90) {
+      setActiveSection('#contact')
+      return
+    }
+
+    // Near the very top of the page (chat hero)
+    if (currentY < 120) {
+      setActiveSection('#top')
+      return
+    }
+
+    // Check sections from bottom to top; the first one whose top <= 140 is the active section
+    for (const section of SECTION_DETECTION_ORDER) {
+      const el = document.getElementById(section.id)
+      if (el) {
+        const rect = el.getBoundingClientRect()
+        if (rect.top <= 140) {
+          setActiveSection(section.href)
+          return
+        }
+      }
+    }
+
+    setActiveSection('#top')
+  }, [])
   const { scrollY } = useScroll()
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
     setScrolled(latest > 80)
+    updateActiveSection(latest)
   })
 
+  // Set initial active section and cancel manual scroll lock on user interaction
+  useEffect(() => {
+    updateActiveSection(window.scrollY)
+
+    const cancelManualScroll = () => {
+      isManualScroll.current = false
+      if (manualScrollTimeout.current) clearTimeout(manualScrollTimeout.current)
+    }
+
+    window.addEventListener('wheel', cancelManualScroll, { passive: true })
+    window.addEventListener('touchstart', cancelManualScroll, { passive: true })
+    return () => {
+      window.removeEventListener('wheel', cancelManualScroll)
+      window.removeEventListener('touchstart', cancelManualScroll)
+    }
+  }, [updateActiveSection])
+
+  // Close mobile dropdown when clicking outside
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+    const close = () => setMobileMenuOpen(false)
+    window.addEventListener('click', close)
+    return () => window.removeEventListener('click', close)
+  }, [mobileMenuOpen])
+
   const handleNav = (href: string) => {
+    setActiveSection(href)
+    isManualScroll.current = true
+    if (manualScrollTimeout.current) clearTimeout(manualScrollTimeout.current)
+    manualScrollTimeout.current = setTimeout(() => {
+      isManualScroll.current = false
+    }, 850)
     if (href === '#top') {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } else {
-      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+      const targetId = href.replace('#', '')
+      const el = document.getElementById(targetId)
+      if (el) {
+        const navHeight = 60
+        const elementPosition = el.getBoundingClientRect().top + window.scrollY
+        const offsetPosition = Math.max(0, elementPosition - navHeight - 12)
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
+      }
     }
   }
 
@@ -272,33 +358,122 @@ function NavBar({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () => v
         <span className="nav-cursor" style={{ color: 'var(--color-accent)', fontFamily: 'monospace', fontWeight: 700, fontSize: 15 }}>_</span>
       </button>
 
-      {/* Links - hidden on mobile */}
+      {/* Desktop Links with active indicator pill */}
       <div className="hidden sm:flex items-center gap-1">
-        {NAV_LINKS.map(link => (
-          <button
-            key={link.label}
-            onClick={() => handleNav(link.href)}
-            className="px-3.5 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-150"
-            style={{ color: 'var(--color-muted)' }}
-            onMouseEnter={e => {
-              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text)'
-              ;(e.currentTarget as HTMLButtonElement).style.background = 'var(--color-surface)'
-            }}
-            onMouseLeave={e => {
-              (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-muted)'
-              ;(e.currentTarget as HTMLButtonElement).style.background = 'transparent'
-            }}
-          >
-            {link.label}
-          </button>
-        ))}
+        {NAV_LINKS.map(link => {
+          const isActive = activeSection === link.href
+          return (
+            <button
+              key={link.label}
+              onClick={() => handleNav(link.href)}
+              className="relative px-3.5 py-1.5 rounded-lg text-[13px] transition-colors duration-150"
+              style={{
+                color: isActive ? 'var(--color-accent)' : 'var(--color-muted)',
+                fontWeight: isActive ? 600 : 500,
+                isolation: 'isolate',
+              }}
+              onMouseEnter={e => {
+                if (!isActive) {
+                  (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text)'
+                }
+              }}
+              onMouseLeave={e => {
+                if (!isActive) {
+                  (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-muted)'
+                }
+              }}
+            >
+              {isActive && (
+                <motion.span
+                  layoutId="activeNavIndicator"
+                  className="absolute inset-0 rounded-lg pointer-events-none"
+                  style={{
+                    background: 'color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))',
+                    border: '1px solid color-mix(in srgb, var(--color-accent) 32%, var(--color-border))',
+                    zIndex: -1,
+                  }}
+                  transition={{ type: 'spring', stiffness: 380, damping: 28 }}
+                />
+              )}
+              {link.label}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Mobile active section indicator & menu */}
+      <div className="sm:hidden relative">
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            setMobileMenuOpen(prev => !prev)
+          }}
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono transition-colors"
+          style={{
+            background: 'color-mix(in srgb, var(--color-surface) 85%, transparent)',
+            border: '1px solid var(--color-border)',
+            color: 'var(--color-accent)',
+          }}
+          aria-label="Current section and menu"
+        >
+          <span
+            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+            style={{ background: 'var(--color-accent)' }}
+          />
+          <span className="font-semibold truncate max-w-[85px]">
+            {NAV_LINKS.find(l => l.href === activeSection)?.label ?? 'Ask Me'}
+          </span>
+          <span className="text-[9px] opacity-70">▾</span>
+        </button>
+
+        {/* Mobile dropdown menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -6, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -6, scale: 0.96 }}
+              transition={{ duration: 0.15 }}
+              onClick={(e) => e.stopPropagation()}
+              className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-44 p-1.5 rounded-xl shadow-2xl flex flex-col gap-0.5"
+              style={{
+                background: 'var(--color-surface)',
+                border: '1px solid var(--color-border)',
+                zIndex: 200,
+                backdropFilter: 'blur(16px)',
+              }}
+            >
+              {NAV_LINKS.map(link => {
+                const isCurrent = activeSection === link.href
+                return (
+                  <button
+                    key={link.label}
+                    onClick={() => {
+                      handleNav(link.href)
+                      setMobileMenuOpen(false)
+                    }}
+                    className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors text-left"
+                    style={{
+                      background: isCurrent ? 'color-mix(in srgb, var(--color-accent) 15%, transparent)' : 'transparent',
+                      color: isCurrent ? 'var(--color-accent)' : 'var(--color-text)',
+                      fontWeight: isCurrent ? 600 : 400,
+                    }}
+                  >
+                    <span>{link.label}</span>
+                    {isCurrent && <span className="text-[10px] text-[var(--color-accent)]">●</span>}
+                  </button>
+                )
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Right: theme toggle + Book a Call */}
       <div className="flex items-center gap-2 flex-shrink-0">
         <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         <button
-          onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          onClick={() => handleNav('#contact')}
           className="inline-flex items-center rounded-[6px] font-semibold transition-colors"
           style={{ background: '#00A8E8', color: '#060D14' }}
           onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#00C8FF' }}

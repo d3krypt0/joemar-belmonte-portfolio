@@ -295,7 +295,7 @@ const SERVICES: { icon: Icon; title: string; description: string; deliverables: 
 
 function ServicesSection() {
   return (
-    <section id="services" className="py-20 sm:py-28 px-5" style={{ borderTop: '1px solid var(--color-border)' }}>
+    <section id="services" className="py-20 sm:py-28 px-5 scroll-mt-20" style={{ borderTop: '1px solid var(--color-border)' }}>
       <div className="max-w-6xl mx-auto">
         <SectionHeading eyebrow="Services" title="What I Build" highlight="I Build" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -364,7 +364,7 @@ function HowItWorks() {
   return (
     <section
       id="process"
-      className="py-20 sm:py-28 px-5"
+      className="py-20 sm:py-28 px-5 scroll-mt-20"
       style={{ borderTop: '1px solid var(--color-border)' }}
     >
       <div className="max-w-3xl mx-auto">
@@ -467,7 +467,7 @@ function WhySection() {
   return (
     <section
       id="why"
-      className="py-20 sm:py-28 px-5"
+      className="py-20 sm:py-28 px-5 scroll-mt-20"
       style={{ borderTop: '1px solid var(--color-border)' }}
     >
       <div className="max-w-6xl mx-auto">
@@ -590,7 +590,7 @@ function ExperienceSection() {
   return (
     <section
       id="experience"
-      className="py-20 sm:py-28 px-5"
+      className="py-20 sm:py-28 px-5 scroll-mt-20"
       style={{ borderTop: '1px solid var(--color-border)' }}
     >
       <div className="max-w-3xl mx-auto">
@@ -686,7 +686,7 @@ function WorkSection() {
   return (
     <section
       id="work"
-      className="py-20 sm:py-28 px-5"
+      className="py-20 sm:py-28 px-5 scroll-mt-20"
       style={{ borderTop: '1px solid var(--color-border)' }}
     >
       <div className="max-w-6xl mx-auto">
@@ -795,7 +795,7 @@ function ContactSection() {
   return (
     <section
       id="contact"
-      className="py-20 sm:py-28 px-5"
+      className="py-20 sm:py-28 px-5 scroll-mt-20"
       style={{ borderTop: '1px solid var(--color-border)' }}
     >
       <div className="max-w-6xl mx-auto">

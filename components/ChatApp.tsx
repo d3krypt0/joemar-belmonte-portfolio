@@ -860,9 +860,14 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.14, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <h1 className="font-display text-[2.2rem] sm:text-[2.8rem] font-bold tracking-tight leading-none">
-          Hey, I&apos;m{' '}
-          <span style={{ whiteSpace: 'nowrap', color: 'var(--color-accent)' }}>
+        <h1 className="font-display text-[2.2rem] sm:text-[2.8rem] font-bold tracking-tight leading-tight">
+          <span className="block text-[var(--color-text)]">
+            Hey, I&apos;m
+          </span>
+          <span
+            className="block text-[var(--color-accent)] min-h-[1.15em] mt-0.5 sm:mt-1"
+            style={{ whiteSpace: 'nowrap' }}
+          >
             {typedName}
             {!nameDone && (
               <motion.span
@@ -871,27 +876,27 @@ function WelcomeView({ avatarState, input, isLoading, textareaRef,
                   width:         3,
                   height:        '0.8em',
                   background:    'var(--color-accent)',
-                  marginLeft:    2,
-                  verticalAlign: 'middle',
+                  marginLeft:    3,
+                  verticalAlign: 'baseline',
                   borderRadius:  1,
                 }}
                 animate={{ opacity: [1, 0, 1] }}
                 transition={{ duration: 0.9, repeat: Infinity, ease: 'linear' }}
               />
             )}
+            {nameDone && (
+              <>
+                {' '}
+                <motion.span
+                  style={{ display: 'inline-block', originX: 0.7, originY: 0.8 }}
+                  animate={reduce ? undefined : { rotate: [0, 24, -12, 24, -8, 0] }}
+                  transition={{ delay: 0.15, duration: 1.1, repeat: 1, repeatDelay: 1.5 }}
+                >
+                  👋
+                </motion.span>
+              </>
+            )}
           </span>
-          {nameDone && (
-            <>
-              {' '}
-              <motion.span
-                style={{ display: 'inline-block', originX: 0.7, originY: 0.8 }}
-                animate={reduce ? undefined : { rotate: [0, 24, -12, 24, -8, 0] }}
-                transition={{ delay: 0.15, duration: 1.1, repeat: 1, repeatDelay: 1.5 }}
-              >
-                👋
-              </motion.span>
-            </>
-          )}
         </h1>
         <p className="font-mono text-muted text-[0.82rem] tracking-[0.2em] uppercase">
           AI Automation Specialist

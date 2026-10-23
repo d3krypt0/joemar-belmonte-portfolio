@@ -6,9 +6,11 @@ import { SYSTEM_PROMPT } from '@/lib/prompt'
 
 export const maxDuration = 30
 
-const MAX_MESSAGES    = 20
-const MAX_TOTAL_CHARS = 8_000
-const JSON_HEADERS    = { 'Content-Type': 'application/json' }
+const MAX_MESSAGES         = 20
+const MAX_USER_CHARS       = 2_000
+const MAX_ASSISTANT_CHARS  = 4_000
+const MAX_TOTAL_CHARS      = 8_000
+const JSON_HEADERS         = { 'Content-Type': 'application/json' }
 
 function logStreamError(provider: string, error: unknown) {
   const message = error instanceof Error ? `${error.name}: ${error.message}` : 'Unknown provider error'
@@ -36,16 +38,32 @@ function rateLimited(ip: string): boolean {
 
 // Only user/assistant turns reach the model. Reject system/tool/unknown roles
 // so a crafted payload cannot override SYSTEM_PROMPT (prompt injection).
-const MessageSchema = z.object({
-  role: z.enum(['user', 'assistant']),
-  content: z.string(),
-})
+const MessageSchema = z
+  .object({
+    role: z.enum(['user', 'assistant']),
+    content: z.string().trim().min(1).max(MAX_ASSISTANT_CHARS),
+  })
+  .refine(
+    (msg) => msg.role !== 'user' || msg.content.length <= MAX_USER_CHARS,
+    { message: 'User message exceeds maximum length.' },
+  )
+
 const BodySchema = z.object({
-  messages: z.array(MessageSchema).max(MAX_MESSAGES),
+  messages: z
+    .array(MessageSchema)
+    .min(1)
+    .max(MAX_MESSAGES)
+    .refine(
+      (msgs) => msgs[msgs.length - 1]?.role === 'user',
+      { message: 'Final message must be from user.' },
+    ),
 })
 
 function err400(msg: string) {
   return new Response(JSON.stringify({ error: msg }), { status: 400, headers: JSON_HEADERS })
+}
+function err403() {
+  return new Response(JSON.stringify({ error: 'Forbidden origin.' }), { status: 403, headers: JSON_HEADERS })
 }
 function err429() {
   return new Response(JSON.stringify({ error: 'Too many requests. Please slow down.' }), {
@@ -59,7 +77,18 @@ function err500() {
 
 export async function POST(req: Request) {
   try {
+    // Verify same-origin in production to prevent cross-site API piggybacking
+    if (process.env.NODE_ENV === 'production') {
+      const origin = req.headers.get('origin')
+      const reqOrigin = new URL(req.url).origin
+      if (origin && origin !== reqOrigin && !origin.endsWith('.vercel.app')) {
+        return err403()
+      }
+    }
+
+    // Prefer Vercel's edge-verified IP header before standard proxy headers
     const ip =
+      req.headers.get('x-vercel-forwarded-for')?.split(',')[0]?.trim() ||
       req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
       req.headers.get('x-real-ip') ||
       'unknown'

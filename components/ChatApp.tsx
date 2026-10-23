@@ -1323,10 +1323,15 @@ function MessageRow({ message, triggerText }: { message: Message; triggerText?: 
                   }
                   return <code className="inline-code">{children}</code>
                 },
+                img() { return null },
                 a({ href, children }) {
+                  const safeHref =
+                    href && /^(https?:\/\/|mailto:|#)/i.test(href.trim())
+                      ? href.trim()
+                      : '#'
                   return (
                     <a
-                      href={href ?? '#'}
+                      href={safeHref}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline underline-offset-2 transition-opacity hover:opacity-70 break-all"
